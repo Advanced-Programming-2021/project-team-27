@@ -20,14 +20,53 @@ public class User {
 
 
     public User(String username, String password, String nickname) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.score = 0;
+        setUsername(username);
+        setPassword(password);
+        setNickname(nickname);
+        setScore(score);
         cards = new ArrayList<>();
         decks = new HashMap<>();
         this.zekhametKir = 0;
         allUsers.add(this);
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public Deck getActiveDeck() {
+        return activeDeck;
+    }
+
+    public HashMap<String, Deck> getDecks() {
+        return decks;
+    }
 }
