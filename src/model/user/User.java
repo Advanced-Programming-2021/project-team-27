@@ -17,8 +17,6 @@ public class User {
     private ArrayList<Card> cards;
     private int credit;
 
-
-
     public User(String username, String password, String nickname) {
         setUsername(username);
         setPassword(password);
@@ -29,6 +27,27 @@ public class User {
         setCredit(0);
         allUsers.add(this);
     }
+
+
+    public static User getUserByNickname(String nickname){
+        for (User user : allUsers) {
+            if (user.getNickname().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static User getUserByUsername(String username){
+        for (User user : allUsers) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
 
     public void setCredit(int credit) {
         this.credit = credit;
@@ -53,6 +72,10 @@ public class User {
 
     public int getCredit() {
         return credit;
+    }
+
+    public void setActiveDeck(Deck activeDeck) {
+        this.activeDeck = activeDeck;
     }
 
     public String getNickname() {
@@ -83,22 +106,11 @@ public class User {
         return decks;
     }
 
-    public static User getUserByNickname(String nickname){
-        for (User user : allUsers) {
-            if (user.getNickname().equals(nickname)) {
-                return user;
-            }
-        }
-        return null;
-    }
 
-    public static User getUserByUsername(String username){
-        for (User user : allUsers) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
+    public boolean isDeckNameIdentical(String deckName){
+
+        //To Do
+        return true;
     }
 
 }

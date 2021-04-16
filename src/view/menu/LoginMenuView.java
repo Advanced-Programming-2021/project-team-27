@@ -14,7 +14,8 @@ public class LoginMenuView {
         /*  Command Checker  */
     }
 
-    public void newUser(String input) {
+
+    public void createNewUser(String input) {
         String username = "Arad";
         String nickname = "Ghadi";
         String password = "123";
@@ -28,6 +29,14 @@ public class LoginMenuView {
             /*  error  */
         }
         loginMenu.registerNewUser(username, nickname, password);
+    }
+
+    public void loginUser(String input) {
+        String username = " ";
+        String password = " ";
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, " ");
+        LoginMenu loginMenu = new LoginMenu();
+        loginMenu.loginUser(username, password);
     }
 
 }
