@@ -110,7 +110,7 @@ public class DuelMenuView {
 
     public void setWinner(String input){
         Matcher matcher;
-        String nicknameOfPlayer;
+        String nickname;
     }
 
 
