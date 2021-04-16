@@ -1,6 +1,7 @@
 package view.menu;
 
 import controller.menu.ShopMenu;
+import view.TerminalOutput;
 
 import java.util.regex.Matcher;
 
@@ -13,8 +14,7 @@ public class DuelMenuView {
 
     public void cardShow(String input) {
         ShopMenu shopMenu = new ShopMenu();
-        System.out.println(shopMenu.cardShow("ko"));
-
+        TerminalOutput.output(shopMenu.cardShow("kiri"));
     }
 
     public void newDuel(String input) {
@@ -70,6 +70,47 @@ public class DuelMenuView {
 
     public void activeEffect(){
 
+    }
+
+    public void specialSummon(){
+
+    }
+
+    public void showGraveyard(){
+
+    }
+
+    public void selectedCardShow(){
+
+    }
+
+    public void checkForEndGame(){
+
+    }
+
+    public void surrender(){
+
+    }
+
+    public void increaseMoney(String input){
+        Matcher matcher;
+        int amount;
+    }
+
+    public void increaseLifePoint(String input){
+        Matcher matcher;
+        int amount;
+    }
+
+    public void selectHand(String input){
+        Matcher matcher;
+        String cardName;
+
+    }
+
+    public void setWinner(String input){
+        Matcher matcher;
+        String nickname;
     }
 
 

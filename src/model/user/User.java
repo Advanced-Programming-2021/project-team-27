@@ -28,6 +28,7 @@ public class User {
         allUsers.add(this);
     }
 
+
     public static User getUserByNickname(String nickname){
         for (User user : allUsers) {
             if (user.getNickname().equals(nickname)) {
@@ -46,9 +47,12 @@ public class User {
         return null;
     }
 
+
+
     public void setCredit(int credit) {
         this.credit = credit;
     }
+
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -102,9 +106,11 @@ public class User {
         return decks;
     }
 
-    public boolean isDeckNameIdentical(String deckName) {
+
+    public boolean isDeckNameIdentical(String deckName){
 
         //To Do
         return true;
     }
+
 }

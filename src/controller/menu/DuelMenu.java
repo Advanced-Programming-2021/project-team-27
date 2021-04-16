@@ -54,29 +54,60 @@ public class DuelMenu {
 
     }
 
-    public void changeCardPosition(boolean isOnAttack){
+    public void changeCardPosition(boolean isOnAttack) {
 
     }
 
-    public void flipSummon(){
+    public void flipSummon() {
 
     }
 
-    public void attack(int number){
+    public void attack(int number) {
 
     }
 
-    public void directAttack(){
+    public void directAttack() {
 
     }
 
-    public void activeEffect(){
+    public void activeEffect() {
 
     }
 
-    public void checkForQuickChangeTurn(){
+    public void checkForQuickChangeTurn() {
 
     }
 
+    public void ritualSummon() {
+
+    }
+
+    public void showGraveyard() {
+
+    }
+
+    public void selectedCardShow() {
+
+    }
+
+    public void surrender(){
+
+    }
+
+    public void increaseMoney(int amount){
+
+    }
+
+    public void increaseLifePoint(int amount){
+
+    }
+
+    public void selectHand(String cardName){
+
+    }
+
+    public void setWinner(String nickname){
+
+    }
 
 }
