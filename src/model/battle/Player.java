@@ -7,7 +7,7 @@ public class Player {
     private User user;
     private Card currentSelectedCard;
 
-    public Player (User user){
+    public Player(User user) {
         setUser(user);
     }
 
