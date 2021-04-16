@@ -1,7 +1,6 @@
 package view.menu;
 
-import controller.menu.ShopMenu;
-import model.mat.Mat;
+import controller.ShopMenu;
 
 import java.util.regex.Matcher;
 

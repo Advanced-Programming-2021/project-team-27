@@ -1,6 +1,6 @@
 package view.menu;
 
-import controller.menu.LoginMenu;
+import controller.LoginMenu;
 import view.CommandMatcher;
 import view.ScanInput;
 

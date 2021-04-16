@@ -1,6 +1,7 @@
-package controller.menu;
+package controller;
 
 import model.user.User;
+import view.menu.LoginMenuView;
 
 public class MainMenu {
     private User currentUser;

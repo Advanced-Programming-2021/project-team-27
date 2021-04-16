@@ -1,4 +1,6 @@
-package controller.menu;
+package controller;
+
+import view.menu.MainMenuView;
 
 import model.user.User;
 

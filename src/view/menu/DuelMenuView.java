@@ -1,6 +1,6 @@
 package view.menu;
 
-import controller.menu.ShopMenu;
+import controller.ShopMenu;
 import view.TerminalOutput;
 
 import java.util.regex.Matcher;

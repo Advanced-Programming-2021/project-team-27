@@ -1,4 +1,5 @@
-package controller.menu;
+package controller;
+import view.menu.MainMenuView;
 
 public class ScoreboardMenu {
 

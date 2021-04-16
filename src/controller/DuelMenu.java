@@ -1,7 +1,10 @@
-package controller.menu;
+package controller;
 
+import model.battle.Ai;
+import model.battle.Phase;
 import model.battle.Player;
 import model.user.User;
+import view.menu.MainMenuView;
 
 import java.net.PortUnreachableException;
 
@@ -12,6 +15,8 @@ public class DuelMenu {
     private Player secondPlayer;
     private int numberOfRounds;
     private User currentTurnUser;
+    private Phase phase;
+    private Ai ai;
 
 
     public String cardShow(String cardName) {
