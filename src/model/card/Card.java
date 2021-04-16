@@ -11,6 +11,14 @@ public class Card {
 
 
 
+    public static ArrayList<Card> getAllCards(){
+        return null;
+    }
+
+    public static ArrayList<Card> sortCardsByName(){
+        return null;
+    }
+
 
     public static Card getCardByName(String name){
         // benevis koni

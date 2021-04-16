@@ -35,5 +35,8 @@ public class DeckMenu {
     public void showOneDeck(String deckName,boolean isSideDeck){
 
     }
+    public void showAllCards(){
+
+    }
 
 }

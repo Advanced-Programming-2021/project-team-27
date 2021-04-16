@@ -55,4 +55,7 @@ public class DeckMenuView {
         boolean isSideDeck;
         Matcher matcher;
     }
+    public void showAllCards(String input){
+
+    }
 }

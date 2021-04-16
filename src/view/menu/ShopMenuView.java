@@ -2,6 +2,8 @@ package view.menu;
 
 import controller.menu.ShopMenu;
 
+import java.util.regex.Matcher;
+
 public class ShopMenuView {
 
     public void shopMenuView(){
@@ -12,6 +14,11 @@ public class ShopMenuView {
         ShopMenu shopMenu=new ShopMenu();
         System.out.println(shopMenu.cardShow("ko"));
 
+    }
+
+    public void buyCard(String input){
+        String cardName;
+        Matcher matcher;
     }
 
 }

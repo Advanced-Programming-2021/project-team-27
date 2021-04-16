@@ -9,4 +9,13 @@ public class ShopMenu {
     public String cardShow(String cardName){
         return "k";
     }
+
+    public void buyCard(String cardName){
+
+    }
+
+    public void showAllCard(){
+
+    }
+
 }
