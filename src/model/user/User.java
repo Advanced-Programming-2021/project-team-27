@@ -15,7 +15,7 @@ public class User {
     private Deck activeDeck;
     private HashMap<String, Deck> decks;
     private ArrayList<Card> cards;
-    private int zekhametKir;
+    private int credit;
 
 
 
@@ -26,9 +26,14 @@ public class User {
         setScore(score);
         cards = new ArrayList<>();
         decks = new HashMap<>();
-        this.zekhametKir = 0;
+        setCredit(0);
         allUsers.add(this);
     }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -44,6 +49,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public String getUsername() {
@@ -69,4 +82,23 @@ public class User {
     public HashMap<String, Deck> getDecks() {
         return decks;
     }
+
+    public static User getUserByNickname(String nickname){
+        for (User user : allUsers) {
+            if (user.getNickname().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static User getUserByUsername(String username){
+        for (User user : allUsers) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 }
