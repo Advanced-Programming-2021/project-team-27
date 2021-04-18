@@ -36,7 +36,7 @@ public class ScoreboardMenu {
             if (allUserSorted[i].getScore()==allUserSorted[i-1].getScore())
                 TerminalOutput.output(rankHolder+"- "+toStringForOneUser(allUserSorted[i]));
             else {
-                TerminalOutput.output(rankCounter + "-" + toStringForOneUser(allUserSorted[i]));
+                TerminalOutput.output(rankCounter + "- " + toStringForOneUser(allUserSorted[i]));
                 rankHolder=rankCounter;
             }
             rankCounter+=1;
