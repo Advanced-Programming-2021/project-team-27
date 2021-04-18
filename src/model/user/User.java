@@ -47,6 +47,9 @@ public class User {
         return null;
     }
 
+    public static ArrayList getAllUsers(){
+        return allUsers;
+    }
 
 
     public void setCredit(int credit) {
