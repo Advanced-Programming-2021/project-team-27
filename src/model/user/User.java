@@ -16,6 +16,7 @@ public class User {
     private HashMap<String, Deck> decks;
     private ArrayList<Card> cards;
     private int credit;
+    private boolean isUserLoggedIn = false;
 
     public User(String username, String password, String nickname) {
         setUsername(username);
@@ -28,8 +29,7 @@ public class User {
         allUsers.add(this);
     }
 
-
-    public static User getUserByNickname(String nickname){
+    public static User getUserByNickname(String nickname) {
         for (User user : allUsers) {
             if (user.getNickname().equals(nickname)) {
                 return user;
@@ -38,7 +38,7 @@ public class User {
         return null;
     }
 
-    public static User getUserByUsername(String username){
+    public static User getUserByUsername(String username) {
         for (User user : allUsers) {
             if (user.getUsername().equals(username)) {
                 return user;
@@ -47,7 +47,7 @@ public class User {
         return null;
     }
 
-    public static ArrayList getAllUsers(){
+    public static ArrayList<User> getAllUsers() {
         return allUsers;
     }
 
@@ -110,10 +110,17 @@ public class User {
     }
 
 
-    public boolean isDeckNameIdentical(String deckName){
+    public boolean isDeckNameIdentical(String deckName) {
 
         //To Do
         return true;
     }
 
+    public boolean isUserLoggedIn() {
+        return isUserLoggedIn;
+    }
+
+    public void setUserLoggedIn(boolean userLoggedIn) {
+        isUserLoggedIn = userLoggedIn;
+    }
 }

@@ -1,6 +1,12 @@
 package controller;
 
 import model.user.User;
+import view.menu.LoginMenuView;
+import view.menu.MainMenuView;
+
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginMenu {
 
@@ -8,29 +14,25 @@ public class LoginMenu {
         new User(username, nickname, password);
     }
 
-    public void loginUser(String username,String password){
-        /*  MainMenu  */
+    public void loginUser(String username, String password) {
+        if (isUsernameAndPasswordMatch(username, password)) {
+            LoginMenuView.printSuccessfulLogin();
+            Objects.requireNonNull(User.getUserByUsername(username)).setUserLoggedIn(true);
+            MainMenuView mainMenuView = new MainMenuView(username);
+            mainMenuView.mainMenuRun();
+        } else {
+            LoginMenuView.printNonMatchUsernameAndPasswordError();
+        }
     }
 
-    public boolean wrongPasswordOrWrongUsername(String username,String password){
-        if (User.getUserByUsername(username)==null){
-            return true;
-        }
-        User user=User.getUserByUsername(username);
-        if (!user.getPassword().equals(password)){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean canRegister(String username, String nickname) {
-        if (User.getUserByUsername(username) != null || User.getUserByNickname(nickname) != null) {
+    public boolean isUsernameAndPasswordMatch(String username, String password) {
+        if (User.getUserByUsername(username) == null) {
             return false;
         }
-        return true;
+        User user = User.getUserByUsername(username);
+        assert user != null;
+        return user.getPassword().equals(password);
     }
-
-
 
 
 }

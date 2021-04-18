@@ -7,11 +7,9 @@ public class MainMenu {
     private User currentUser;
 
 
-    public void logout(){
+    public void logout() {
         /* loginMenu  */
     }
-
-
 
 
 }
