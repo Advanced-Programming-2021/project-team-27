@@ -97,6 +97,11 @@ public class User {
         return score;
     }
 
+    public void addCard(Card card){
+        cards.add(card);
+        setCredit(this.credit- card.getPrice());
+    }
+
     public ArrayList<Card> getCards() {
         return cards;
     }

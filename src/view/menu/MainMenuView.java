@@ -88,7 +88,7 @@ public class MainMenuView {
 
     private void goShopMenu() {
         TerminalOutput.output("enter shop menu successfully!");
-        ShopMenuView shopMenuView = new ShopMenuView();
+        ShopMenuView shopMenuView = new ShopMenuView(currentUserLoggedInUsername);
         shopMenuView.shopMenuRun();
     }
 }
