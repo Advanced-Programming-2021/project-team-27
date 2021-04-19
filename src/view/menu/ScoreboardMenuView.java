@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 
 public class ScoreboardMenuView {
 
-    public void scoreboardRun() {
+    public void scoreboardMenuRun() {
         String input;
         while (true) {
             Matcher matcher;

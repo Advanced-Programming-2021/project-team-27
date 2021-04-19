@@ -192,6 +192,6 @@ public class LoginMenuView {
     }
 
     public static void printSuccessfulLogin() {
-        TerminalOutput.output("user logged in successfully!\n");
+        TerminalOutput.output("user logged in successfully!");
     }
 }

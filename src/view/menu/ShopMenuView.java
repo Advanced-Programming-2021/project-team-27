@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 
 public class ShopMenuView {
 
-    public void shopMenuView(){
+    public void shopMenuRun(){
         String input;
     }
 
