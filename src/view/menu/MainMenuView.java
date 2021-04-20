@@ -76,7 +76,7 @@ public class MainMenuView {
 
     private void goProfileMenu() {
         TerminalOutput.output("enter profile menu successfully!");
-        ProfileMenuView  profileMenuView = new ProfileMenuView();
+        ProfileMenuView  profileMenuView = new ProfileMenuView(currentUserLoggedInUsername);
         profileMenuView.profileMenuRun();
     }
 
