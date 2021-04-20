@@ -59,7 +59,7 @@ public class ProfileMenuView {
         if (CommandMatcher.getCommandMatcher(input,"profile change (.+)") != null){
             if (CommandMatcher.getCommandMatcher(input,"--password") != null){
                 if (CommandMatcher.getCommandMatcher(input,"--current [^ -]+") !=null){
-                    if (CommandMatcher.getCommandMatcher(input,"new [^ -]+")!=null)
+                    if (CommandMatcher.getCommandMatcher(input,"--new [^ -]+")!=null)
                         return true;
                 }
             }
