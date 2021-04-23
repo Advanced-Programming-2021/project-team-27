@@ -1,13 +1,14 @@
 package model.user;
 
 import model.card.Card;
+import org.json.simple.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import org.json.simple.JSONObject;
 import java.util.HashMap;
 import org.json.simple.JSONArray;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
     private static ArrayList<User> allUsers = new ArrayList<>();
