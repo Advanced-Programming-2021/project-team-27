@@ -1,7 +1,12 @@
 package model.user;
 
 import model.card.Card;
+import org.json.simple.JSONObject;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import org.json.simple.JSONArray;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,6 +32,17 @@ public class User {
         decks = new HashMap<>();
         setCredit(0);
         allUsers.add(this);
+        JSONObject newUser = new JSONObject();
+        newUser.put("username", username);
+        newUser.put("password", password);
+        newUser.put("nickname", nickname);
+        String fileAddress = "resources/users/" + username + ".json";
+        try (FileWriter file = new FileWriter(fileAddress)) {
+            file.write(newUser.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static User getUserByNickname(String nickname) {
