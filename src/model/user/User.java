@@ -23,7 +23,7 @@ public class User {
     private int credit;
     private boolean isUserLoggedIn = false;
 
-    public User(String username, String password, String nickname) {
+    public User(String username, String nickname, String password) {
         setUsername(username);
         setPassword(password);
         setNickname(nickname);
