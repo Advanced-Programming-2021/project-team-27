@@ -1,3 +1,4 @@
+
 package view.menu;
 
 import model.user.User;
@@ -64,7 +65,7 @@ public class MainMenuView {
 
     private void goDuelMenu() {
         TerminalOutput.output("enter duel menu successfully!");
-        DuelMenuView duelMenuView = new DuelMenuView();
+        DuelMenuView duelMenuView = new DuelMenuView(currentUserLoggedInUsername);
         duelMenuView.duelMenuRun();
     }
 
