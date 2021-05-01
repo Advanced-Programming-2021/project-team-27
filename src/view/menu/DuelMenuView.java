@@ -1,15 +1,46 @@
 package view.menu;
 
+import controller.DuelMenu;
 import controller.ShopMenu;
+import view.CommandMatcher;
+import view.ScanInput;
 import view.TerminalOutput;
 
 import java.util.regex.Matcher;
 
 public class DuelMenuView {
 
+    private String username;
+    private DuelMenu duelMenu;
+
+    public DuelMenuView (String username){
+        setUsername(username);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public void duelMenuRun() {
         String input;
+        while (true){
+            input= ScanInput.getInput();
+            if (isInputNewDuelValid(input)){
+                newDuel(input);
+            }
+        }
+    }
+
+    public boolean isInputNewDuelValid(String input){
+        if (CommandMatcher.getCommandMatcher(input,"duel (.+)") != null){
+            if (CommandMatcher.getCommandMatcher(input,"--second-player [\\w]+") != null){
+                if (CommandMatcher.getCommandMatcher(input,"--rounds [\\d]") !=null){
+                    if (CommandMatcher.getCommandMatcher(input,"--new")!=null)
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void cardShow(String input) {
@@ -18,9 +49,11 @@ public class DuelMenuView {
     }
 
     public void newDuel(String input) {
-        String secondPlayer;
-        int numberOfRounds;
-        Matcher matcher;
+        Matcher matcher=CommandMatcher.getCommandMatcher(input,"--second-player ([\\w]+)");
+        String secondPlayer=matcher.group(1);
+        matcher=CommandMatcher.getCommandMatcher(input,"--rounds ([\\d]+)");
+        int numberOfRounds=Integer.parseInt(matcher.group(1));
+        duelMenu=new DuelMenu(this.username,secondPlayer,numberOfRounds);
     }
 
     public void newDuelWithAI() {
