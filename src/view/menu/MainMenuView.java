@@ -59,7 +59,7 @@ public class MainMenuView {
 
     private void goDeckMenu() {
         TerminalOutput.output("enter deck menu successfully!");
-        DeckMenuView deckMenuView = new DeckMenuView();
+        DeckMenuView deckMenuView = new DeckMenuView(User.getUserByUsername(currentUserLoggedInUsername));
         deckMenuView.deckMenuRun();
     }
 
