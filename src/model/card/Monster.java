@@ -3,7 +3,7 @@ package model.card;
 import java.util.ArrayList;
 
 public class Monster extends Card{
-    protected ArrayList<Monster> allMonsters = new ArrayList<>();
+    protected static ArrayList<Monster> allMonsters = new ArrayList<>();
 
     protected int level;
     protected int defence;
@@ -23,6 +23,15 @@ public class Monster extends Card{
         this.price = price;
         allMonsters.add(this);
         Card.addToCards(this);
+    }
+
+    public static Monster getMonsterByName(String name) {
+        for (Monster monster : allMonsters) {
+            if (monster.name.equals(name)){
+                return monster;
+            }
+        }
+        return null;
     }
 
 }

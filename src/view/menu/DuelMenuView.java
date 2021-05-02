@@ -2,6 +2,7 @@ package view.menu;
 
 import controller.DuelMenu;
 import controller.ShopMenu;
+import model.card.Card;
 import view.CommandMatcher;
 import view.ScanInput;
 import view.TerminalOutput;
@@ -24,9 +25,12 @@ public class DuelMenuView {
     public void duelMenuRun() {
         String input;
         while (true){
+
             input= ScanInput.getInput();
             if (isInputNewDuelValid(input)){
                 newDuel(input);
+            } else if (input.matches("card show [a-zA-Z\\s]+")) {
+                cardShow(input);
             }
         }
     }
@@ -44,8 +48,10 @@ public class DuelMenuView {
     }
 
     public void cardShow(String input) {
-        ShopMenu shopMenu = new ShopMenu();
-        TerminalOutput.output(shopMenu.cardShow("kiri"));
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "card show ([a-zA-Z\\s]+)");
+        assert matcher != null;
+        String cardName = matcher.group(1);
+        TerminalOutput.output(Card.showCard(cardName));
     }
 
     public void newDuel(String input) {
