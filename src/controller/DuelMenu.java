@@ -4,6 +4,7 @@ import model.battle.Ai;
 import model.battle.Phase;
 import model.battle.Player;
 import model.user.User;
+import view.TerminalOutput;
 import view.menu.MainMenuView;
 
 import java.net.PortUnreachableException;
@@ -17,7 +18,30 @@ public class DuelMenu {
     private User currentTurnUser;
     private Phase phase;
     private Ai ai;
+    private boolean isDuelIsOn;
 
+    public DuelMenu (String currentUser,String secondUser,int numberOfRounds){
+        setCurrentUser(User.getUserByUsername(currentUser));
+        if (!isUsernameExist(secondUser)){
+            TerminalOutput.output("there is no player whit this username");
+            isDuelIsOn=false;
+            return;
+        }
+        setSecondUser(User.getUserByUsername(secondUser));
+        /*  Other Error Code  */
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setSecondUser(User secondUser) {
+        this.secondUser = secondUser;
+    }
+
+    public void setNumberOfRounds(int numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
+    }
 
     public String cardShow(String cardName) {
         return "k";
@@ -28,7 +52,7 @@ public class DuelMenu {
     }
 
     public boolean isUsernameExist(String username) {
-        return true;
+        return User.getUserByUsername(username) != null;
     }
 
     public boolean isActiveDeckValid() {

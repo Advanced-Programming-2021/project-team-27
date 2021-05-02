@@ -6,7 +6,7 @@ import java.util.Comparator;
 public class Card {
     private static ArrayList<Card> cards = new ArrayList<>();
     protected String name;
-    protected String type;
+    protected String cardType;
     protected String description;
     protected String id;
     protected int price;
@@ -24,7 +24,11 @@ public class Card {
     }
 
     public static ArrayList<Card> getAllCards() {
+<<<<<<< HEAD
         return cards;
+=======
+        return null;
+>>>>>>> 7f49c134fb3486262c6327e32afa8689c14b8783
     }
 
     public static Comparator<Card> nameComparator = Comparator.comparing(card -> card.name);
@@ -43,6 +47,10 @@ public class Card {
                 return card;
         }
         return null;
+    }
+
+    public static void addToCards(Card card) {
+        cards.add(card);
     }
 
 }
