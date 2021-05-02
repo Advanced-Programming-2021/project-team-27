@@ -16,8 +16,8 @@ public class DeckMenu {
     private User currentUser;
     private HashMap<String, Deck> decks;
 
-    public DeckMenu(User currentUser){
-        this.currentUser = currentUser;
+    public DeckMenu(String currentUserName){
+        this.currentUser = User.getUserByUsername(currentUserName);
         decks = currentUser.getDecks();
     }
 

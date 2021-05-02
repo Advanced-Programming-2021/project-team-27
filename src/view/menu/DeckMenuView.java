@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 public class DeckMenuView {
 
     private DeckMenu deckMenu;
-    private User loggedInUser;
+    private String loggedInUser;
 
-    public DeckMenuView(User loggedInUser){
+    public DeckMenuView(String loggedInUser){
         this.loggedInUser = loggedInUser;
         deckMenu = new DeckMenu(loggedInUser);
     }
