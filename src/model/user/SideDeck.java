@@ -7,6 +7,10 @@ import java.util.ArrayList;
 public class SideDeck {
     private ArrayList<Card> sideDeckCards;
 
+    public ArrayList<Card> getSideDeckCards() {
+        return sideDeckCards;
+    }
+
     public int getSideDeckSize(){
         return sideDeckCards.size();
     }
@@ -15,6 +19,13 @@ public class SideDeck {
         return sideDeckCards;
     }
 
+    public void addCard(Card card){
+        sideDeckCards.add(card);
+    }
+
+    public void removeCard(Card card){
+        sideDeckCards.remove(card);
+    }
 
     public String toStringsSpellAndTrap(){
         return "mame";
