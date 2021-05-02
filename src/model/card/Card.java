@@ -1,9 +1,10 @@
 package model.card;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Card {
-    private static ArrayList<Card> cards=new ArrayList<>();
+    private static ArrayList<Card> cards = new ArrayList<>();
     protected String name;
     protected String type;
     protected String description;
@@ -22,12 +23,21 @@ public class Card {
         return name;
     }
 
-    public static ArrayList<Card> getAllCards(){
-        return null;
+    public static ArrayList<Card> getAllCards() {
+        return cards;
     }
 
+    public static Comparator<Card> nameComparator = Comparator.comparing(card -> card.name);
 
-    public static Card getCardByName(String name){
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public static Card getCardByName(String name) {
         for (Card card : cards) {
             if (card.getName().equals(name))
                 return card;
