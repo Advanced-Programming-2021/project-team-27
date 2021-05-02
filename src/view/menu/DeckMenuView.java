@@ -1,6 +1,9 @@
 package view.menu;
 
+import controller.DeckMenu;
 import controller.ShopMenu;
+import model.user.Deck;
+import model.user.User;
 import view.ScanInput;
 
 import java.util.regex.Matcher;
@@ -8,71 +11,130 @@ import java.util.regex.Pattern;
 
 public class DeckMenuView {
 
-        public void deckMenuRun(){
-            String input;
-            Matcher matcher;
-            while (true){
-                input = ScanInput.getInput();
-                if ((matcher = getMatcher(input, "deck create ([\\w]+)")).matches())
-                    createDeck(matcher);
-                if ((matcher = getMatcher(input, "deck delete ([\\w]+)")).matches())
-                    deleteDeck(matcher);
-                if ((matcher = getMatcher(input, "deck set-activate ([\\w]+)")).matches())
-                    setActive(matcher);
-                if ((matcher = getMatcher(input, "deck add-card --card ([\\w]+) --deck ([\\w]+)( --side|)")).matches())
-                    addCardToDeck(matcher);
-                if ((matcher = getMatcher(input, "deck rm-card --card ([\\w]+) --deck ([\\w]+)( --side|)")).matches())
-                    removeCardFromDeck(matcher);
-                if ((getMatcher(input, "deck show --all")).matches())
-                    showAllDeck();
-                if ((matcher = getMatcher(input, "deck show --deck-name ([\\w]+)( --side|)")).matches())
-                    showOneDeck(matcher);
-                if ((getMatcher(input, "deck show --cards")).matches())
-                    showAllCards();
-            }
+    private DeckMenu deckMenu;
+    private User loggedInUser;
+
+    public DeckMenuView(User loggedInUser){
+        this.loggedInUser = loggedInUser;
+        deckMenu = new DeckMenu(loggedInUser);
+    }
+
+    public void deckMenuRun() {
+        String input;
+        Matcher matcher;
+        while (true) {
+            input = ScanInput.getInput();
+            if ((matcher = getMatcher(input, "deck create ([\\w]+)")).matches())
+                createDeck(matcher);
+
+            else if ((matcher = getMatcher(input, "deck delete ([\\w]+)")).matches())
+                deleteDeck(matcher);
+
+            else if ((matcher = getMatcher(input, "deck set-activate ([\\w]+)")).matches())
+                setActive(matcher);
+
+            else if ((matcher = getMatcher(input, "deck add-card --(card|c) (?<card>[\\w]+) --(deck|d) (?<deck>[\\w]+)(?<side>( --side| --s|))")).matches())
+                addCardToDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck add-card --(card|c) (?<card>[\\w]+)(?<side>( --side| --s|)) --(deck|d) (?<deck>[\\w]+)")).matches())
+                addCardToDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck add-card --(deck|d) (?<deck>[\\w]+) --(card|c) (?<card>[\\w]+)(?<side>( --side| --s|))")).matches())
+                addCardToDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck add-card --(deck|d) (?<deck>[\\w]+)(?<side>( --side| --s|)) --(card|c) (?<card>[\\w]+)")).matches())
+                addCardToDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck add-card(?<side>( --side| --s|))--(card|c) (?<card>[\\w]+) --(deck|d) (?<deck>[\\w]+)")).matches())
+                addCardToDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck add-card(?<side>( --side| --s|)) --(deck|d) (?<deck>[\\w]+) --(card|c) (?<card>[\\w]+)")).matches())
+                addCardToDeck(matcher);
+
+            else if ((matcher = getMatcher(input, "deck rm-card --(card|c) (?<card>[\\w]+) --(deck|d) (?<deck>[\\w]+)(?<side>( --side| --s|))")).matches())
+                removeCardFromDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck rm-card --(card|c) (?<card>[\\w]+)(?<side>( --side| --s|)) --(deck|d) (?<deck>[\\w]+)")).matches())
+                removeCardFromDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck rm-card --(deck|d) (?<deck>[\\w]+) --(card|c) (?<card>[\\w]+)(?<side>( --side| --s|))")).matches())
+                removeCardFromDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck rm-card --(deck|d) (?<deck>[\\w]+)(?<side>( --side| --s|)) --(card|c) (?<card>[\\w]+)")).matches())
+                removeCardFromDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| --s|)) --(card|c) (?<card>[\\w]+) --(deck|d) (?<deck>[\\w]+)")).matches())
+                removeCardFromDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| --s|)) --(deck|d) (?<deck>[\\w]+) --(card|c) (?<card>[\\w]+)")).matches())
+                removeCardFromDeck(matcher);
+
+            else if ((getMatcher(input, "deck show --all")).matches())
+                showAllDeck();
+
+            else if ((matcher = getMatcher(input, "deck show --(deck-name|d) (?<deck-name>[\\w]+)(?<side> --side| --s|)")).matches())
+                showOneDeck(matcher);
+            else if ((matcher = getMatcher(input, "deck show(?<side> --side| --s|) --(deck-name|d) (?<deck-name>[\\w]+)")).matches())
+                showOneDeck(matcher);
+
+            else if ((getMatcher(input, "deck show --cards")).matches())
+                showAllCards();
+
+            else if ((getMatcher(input, "menu enter [\\w]+")).matches())
+                System.out.println("menu navigation is not possible");
+
+            else if ((getMatcher(input, "menu exit")).matches())
+                break;
+
+            else
+                System.out.println("invalid command");
+
+            System.out.println(deckMenu.getTerminalOutput());
         }
+    }
 
-        public void cardShow(Matcher matcher){
-            ShopMenu shopMenu=new ShopMenu();
-            System.out.println(shopMenu.cardShow("ko"));
+    public void cardShow(Matcher matcher) {
+        ShopMenu shopMenu = new ShopMenu();
+    }
 
-        }
+    public void createDeck(Matcher matcher) {
+        String deckName = matcher.group(1);
+        deckMenu.createDeck(deckName);
+    }
 
-        public void createDeck(Matcher matcher){
-        }
+    public void deleteDeck(Matcher matcher) {
+        String deckName = matcher.group(1);
+        deckMenu.deleteDeck(deckName);
+    }
 
-        public void deleteDeck(Matcher matcher){
-        }
+    public void setActive(Matcher matcher) {
+        String deckName = matcher.group(1);
+        deckMenu.setActive(deckName);
+    }
 
-        public void setActive(Matcher matcher){
-        }
+    public void addCardToDeck(Matcher matcher) {
+        String deckName = matcher.group("deck");
+        String cardName = matcher.group("card");
+        String sideDeck = matcher.group("side");
+        boolean isSideDeck = sideDeck.equals("side") || sideDeck.equals("s");
+        deckMenu.addCardToDeck(deckName, cardName, isSideDeck);
+    }
 
-        public void addCardToDeck(Matcher matcher){
-            String deckName;
-            String cardName;
-            boolean isSideDeck;
-        }
+    public void removeCardFromDeck(Matcher matcher) {
+        String deckName = matcher.group("deck");
+        String cardName = matcher.group("card");
+        String sideDeck = matcher.group("side");
+        boolean isSideDeck = sideDeck.equals("side") || sideDeck.equals("s");
+        deckMenu.removeCardFromDeck(deckName, cardName, isSideDeck);
+    }
 
-        public void removeCardFromDeck(Matcher matcher){
-            String deckName;
-            String cardName;
-            boolean isSideDeck;
-        }
+    public void showAllDeck() {
+        deckMenu.showAllDeck();
+    }
 
-        public void showAllDeck(){
+    public void showOneDeck(Matcher matcher) {
+        String deckName = matcher.group("deck-name");
+        String sideDeck = matcher.group("side");
+        boolean isSideDeck = sideDeck.equals("side") || sideDeck.equals("s");
+        deckMenu.showOneDeck(deckName, isSideDeck);
+    }
 
-        }
+    public void showAllCards() {
+        deckMenu.showAllCards();
+    }
 
-        public void showOneDeck(Matcher matcher){
-            String deckName;
-            boolean isSideDeck;
-        }
-        public void showAllCards(){
-
-        }
-
-        private Matcher getMatcher(String input, String regex){
-            Pattern pattern = Pattern.compile(regex);
-            return pattern.matcher(input);
-        }
+    private Matcher getMatcher(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input);
+    }
 }
