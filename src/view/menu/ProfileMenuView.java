@@ -35,8 +35,12 @@ public class ProfileMenuView {
                 TerminalOutput.output("Profile Menu");
             } else if (input.matches("menu enter (.+)")) {
                 TerminalOutput.output("menu navigation is not possible");
+            }else if (input.matches("menu exit")) {
+                TerminalOutput.output("Exit Successfully!");
+                break;
             } else {
                 TerminalOutput.output("invalid command");
+                TerminalOutput.output("Please Try Again");
             }
         }
     }
