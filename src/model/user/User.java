@@ -6,7 +6,9 @@ import org.json.simple.JSONObject;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+
 import org.json.simple.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,6 +69,10 @@ public class User {
         return allUsers;
     }
 
+    public static void addToAllUsers(User user) {
+        allUsers.add(user);
+    }
+
 
     public void setCredit(int credit) {
         this.credit = credit;
@@ -113,9 +119,9 @@ public class User {
         return score;
     }
 
-    public void addCard(Card card){
+    public void addCard(Card card) {
         cards.add(card);
-        setCredit(this.credit- card.getPrice());
+        setCredit(this.credit - card.getPrice());
     }
 
     public void addDeck(String name, Deck deck){
