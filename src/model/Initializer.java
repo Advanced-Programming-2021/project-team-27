@@ -3,7 +3,10 @@ package model;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
+import model.user.User;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,9 +15,10 @@ import java.util.List;
 
 public class Initializer {
 
-    public static void initialize() {
+    public static void initialize() throws IOException, ParseException {
         initializeMonster();
         initializeSpellsAndTraps();
+        addUsers();
     }
 
     public static void initializeMonster() {
@@ -134,8 +138,33 @@ public class Initializer {
         }
     }
 
-    private static void addUsers(){
+    private static void addUsers() throws IOException, ParseException {
+        File directoryPath = new File("resources/users");
+        File[] filesList = directoryPath.listFiles();
+        assert filesList != null;
+        for (File file : filesList) {
+            Reader reader = new FileReader(file);
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(reader);
+            JSONObject user = (JSONObject) obj;
+            new User(user.get("username").toString(), user.get("nickname").toString(), user.get("password").toString());
+        }
+    }
 
+    private static void showAllUsers() throws IOException, ParseException {
+        File directoryPath = new File("resources/users");
+        File[] filesList = directoryPath.listFiles();
+        assert filesList != null;
+        for (File file : filesList) {
+            Reader reader = new FileReader(file);
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(reader);
+            JSONObject user = (JSONObject) obj;
+            System.out.println("username: " + user.get("username"));
+            System.out.println("password: " + user.get("password"));
+            System.out.println("nickname: " + user.get("nickname"));
+            System.out.println(" ");
+        }
     }
 
 }

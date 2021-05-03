@@ -69,6 +69,10 @@ public class User {
         return allUsers;
     }
 
+    public static void addToAllUsers(User user) {
+        allUsers.add(user);
+    }
+
 
     public void setCredit(int credit) {
         this.credit = credit;
