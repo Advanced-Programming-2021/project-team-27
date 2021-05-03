@@ -2,6 +2,8 @@ package view.menu;
 
 import controller.DeckMenu;
 import controller.ShopMenu;
+import model.user.Deck;
+import model.user.User;
 import view.ScanInput;
 
 import java.util.regex.Matcher;
@@ -9,7 +11,13 @@ import java.util.regex.Pattern;
 
 public class DeckMenuView {
 
-    private DeckMenu deckMenu = new DeckMenu();
+    private DeckMenu deckMenu;
+    private String loggedInUser;
+
+    public DeckMenuView(String loggedInUser){
+        this.loggedInUser = loggedInUser;
+        deckMenu = new DeckMenu(loggedInUser);
+    }
 
     public void deckMenuRun() {
         String input;
@@ -61,6 +69,12 @@ public class DeckMenuView {
 
             else if (input.matches("deck show --cards") || input.matches("deck show -c"))
                 showAllCards();
+
+            else if ((getMatcher(input, "menu enter [\\w]+")).matches())
+                System.out.println("menu navigation is not possible");
+
+            else if ((getMatcher(input, "menu exit")).matches())
+                break;
 
             else
                 System.out.println("invalid command");

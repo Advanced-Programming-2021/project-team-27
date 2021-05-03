@@ -19,7 +19,7 @@ public class User {
     private String password;
     private String nickname;
     private int score;
-    private Deck activeDeck;
+    private Deck activeDeck = null;
     private HashMap<String, Deck> decks;
     private ArrayList<Card> cards;
     private int credit;
@@ -122,6 +122,14 @@ public class User {
     public void addCard(Card card) {
         cards.add(card);
         setCredit(this.credit - card.getPrice());
+    }
+
+    public void addDeck(String name, Deck deck){
+        this.decks.put(name, deck);
+    }
+
+    public void deleteDeck(String name){
+        this.decks.remove(name);
     }
 
     public ArrayList<Card> getCards() {
