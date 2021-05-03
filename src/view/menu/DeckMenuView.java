@@ -59,7 +59,7 @@ public class DeckMenuView {
             else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| --s|)) --(deck|d) (?<deck>[\\w]+) --(card|c) (?<card>[\\w]+)")).matches())
                 removeCardFromDeck(matcher);
 
-            else if ((getMatcher(input, "deck show --all")).matches())
+            else if (input.matches("deck show --all") || input.matches("deck show -a"))
                 showAllDeck();
 
             else if ((matcher = getMatcher(input, "deck show --(deck-name|d) (?<deck-name>[\\w]+)(?<side> --side| --s|)")).matches())
@@ -67,7 +67,7 @@ public class DeckMenuView {
             else if ((matcher = getMatcher(input, "deck show(?<side> --side| --s|) --(deck-name|d) (?<deck-name>[\\w]+)")).matches())
                 showOneDeck(matcher);
 
-            else if ((getMatcher(input, "deck show --cards")).matches())
+            else if (input.matches("deck show --cards") || input.matches("deck show -c"))
                 showAllCards();
 
             else if ((getMatcher(input, "menu enter [\\w]+")).matches())

@@ -15,10 +15,7 @@ public class ShopMenu {
     }
 
     public ShopMenu (){
-    }
 
-    public String cardShow(String cardName){
-        return "k";
     }
 
     public void buyCard(String cardName){
@@ -43,7 +40,7 @@ public class ShopMenu {
         }
         sortCardByName(allCardForSort);
         for (Card card : allCardForSort) {
-            TerminalOutput.output(card.getName() + ":" + card.getDescription());
+            TerminalOutput.output(card.getName() + ":" + card.getPrice());
         }
     }
 
