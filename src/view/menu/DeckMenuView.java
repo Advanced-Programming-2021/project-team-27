@@ -123,7 +123,7 @@ public class DeckMenuView {
     }
 
     public void showOneDeck(Matcher matcher) {
-        String deckName = matcher.group("deck-name");
+        String deckName = matcher.group("deckName");
         String sideDeck = matcher.group("side");
         boolean isSideDeck = sideDeck.equals(" --side") || sideDeck.equals(" -s");
         deckMenu.showOneDeck(deckName, isSideDeck);
