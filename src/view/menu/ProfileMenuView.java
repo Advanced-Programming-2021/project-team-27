@@ -27,7 +27,10 @@ public class ProfileMenuView {
         String input;
         while (true) {
             input = ScanInput.getInput();
-            if (input.matches("profile change --nickname ([^ ]+)")) {
+            if (input.matches("menu exit")) {
+                TerminalOutput.output("exit successfully!");
+                break;
+            } else if (input.matches("profile change --nickname ([^ ]+)")) {
                 profileChangeNickname(input);
             } else if (isInputChangePasswordValid(input)) {
                 profileChangePassword(input);
