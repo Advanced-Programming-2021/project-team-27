@@ -2,6 +2,7 @@ package view.menu;
 
 import controller.DuelMenu;
 import view.ScanInput;
+import view.TerminalOutput;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -163,7 +164,7 @@ public class DuelMenuView {
             else
                 System.out.print("invalid command");
 
-            System.out.println(duelMenu.getTerminalOutput());
+            TerminalOutput.output(duelMenu.getTerminalOutput());
 
             if (hasGameEnded())
                 break;
