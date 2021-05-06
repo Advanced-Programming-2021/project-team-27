@@ -164,6 +164,9 @@ public class DuelMenuView {
                 System.out.print("invalid command");
 
             System.out.println(duelMenu.getTerminalOutput());
+
+            if (hasGameEnded())
+                break;
         }
     }
 
