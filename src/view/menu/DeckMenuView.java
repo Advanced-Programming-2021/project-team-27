@@ -5,6 +5,7 @@ import controller.ShopMenu;
 import model.user.Deck;
 import model.user.User;
 import view.ScanInput;
+import view.TerminalOutput;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,7 +80,7 @@ public class DeckMenuView {
             else
                 System.out.print("invalid command");
 
-            System.out.println(deckMenu.getTerminalOutput());
+            TerminalOutput.output(deckMenu.getTerminalOutput());
         }
     }
 
