@@ -12,7 +12,6 @@ public class ScoreboardMenuView {
     public void scoreboardMenuRun() {
         String input;
         while (true) {
-            Matcher matcher;
             input = ScanInput.getInput();
             if (input.matches("menu enter [\\w]+"))
                 TerminalOutput.output("menu navigation is not possible");

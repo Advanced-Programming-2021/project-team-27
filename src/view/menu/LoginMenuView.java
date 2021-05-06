@@ -57,6 +57,7 @@ public class LoginMenuView {
         } else {
             username = getUsernameFromInput(input);
             password = getPasswordFromInput(input);
+            setIsLoginInputCompressed(true);
         }
         LoginMenu loginMenu = new LoginMenu();
         loginMenu.loginUser(username, password);
