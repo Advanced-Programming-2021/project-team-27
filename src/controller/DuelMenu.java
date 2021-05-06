@@ -8,6 +8,7 @@ import view.TerminalOutput;
 import view.menu.MainMenuView;
 
 import java.net.PortUnreachableException;
+import java.util.regex.Matcher;
 
 public class DuelMenu {
     private User currentUser;
@@ -19,12 +20,13 @@ public class DuelMenu {
     private Phase phase;
     private Ai ai;
     private boolean isDuelIsOn;
+    private String terminalOutput = "";
 
-    public DuelMenu (String currentUser,String secondUser,int numberOfRounds){
+    public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
-        if (!isUsernameExist(secondUser)){
+        if (!isUsernameExist(secondUser)) {
             TerminalOutput.output("there is no player whit this username");
-            isDuelIsOn=false;
+            isDuelIsOn = false;
             return;
         }
         setSecondUser(User.getUserByUsername(secondUser));
@@ -43,8 +45,8 @@ public class DuelMenu {
         this.numberOfRounds = numberOfRounds;
     }
 
-    public String cardShow(String cardName) {
-        return "k";
+    public void cardShow() {
+
     }
 
     public boolean isPlayerHadActiveDeck() {
@@ -67,13 +69,26 @@ public class DuelMenu {
 
     }
 
-    public void selectCardByAddress(String address) {
+    public void selectSpellOrTrap(int number, boolean isOpponent) {
+
+    }
+
+    public void selectField(int number, boolean isOpponent) {
+
+    }
+
+    public void selectHand(int number) {
 
     }
 
     public void deSelectCard() {
 
     }
+
+    public void nextPhase() {
+
+    }
+
 
     public void summon() {
 
@@ -108,7 +123,11 @@ public class DuelMenu {
     }
 
     public void ritualSummon() {
+        //TODO
+    }
 
+    public void specialSummon() {
+        //TODO
     }
 
     public void showGraveyard() {
@@ -119,24 +138,34 @@ public class DuelMenu {
 
     }
 
-    public void surrender(){
+    public void surrender() {
 
     }
 
-    public void increaseMoney(int amount){
+    public void increaseMoney(int amount) {
 
     }
 
-    public void increaseLifePoint(int amount){
+    public void increaseLifePoint(int amount) {
 
     }
 
-    public void selectHand(String cardName){
+    public void selectForcedCard(String cardName) {
 
     }
 
-    public void setWinner(String nickname){
+    public void setWinner(String nickname) {
 
+    }
+
+    public boolean hasGameEnded() {
+        return true;
+    }
+
+    public String getTerminalOutput() {
+        String returnValue = terminalOutput;
+        terminalOutput = "";
+        return returnValue;
     }
 
 }
