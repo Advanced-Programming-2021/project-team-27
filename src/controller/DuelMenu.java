@@ -24,14 +24,45 @@ public class DuelMenu {
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
-        if (!isUsernameExist(secondUser)) {
-            TerminalOutput.output("there is no player whit this username");
-            isDuelIsOn = false;
+        if (!isAi) {
+            if (!isUsernameExist(secondUser)) {
+                terminalOutput = "there is no player with this username";
+                this.isDuelIsOn = false;
+                return;
+            }
+            setSecondUser(User.getUserByUsername(secondUser));
+        } else {
+            this.isDuelIsOn = true;
+        }
+        if (!isPlayerHadActiveDeck(this.currentUser)){
+            terminalOutput=currentUser+" has no active deck";
+            isDuelIsOn=false;
             return;
         }
-        setSecondUser(User.getUserByUsername(secondUser));
-        /*  Other Error Code  */
+        if (!isPlayerHadActiveDeck(this.secondUser)){
+            terminalOutput=secondUser+" has no active deck";
+            isDuelIsOn=false;
+            return;
+        }
+        if (!isActiveDeckValid(this.currentUser)){
+            terminalOutput=currentUser+"'s deck is invalid";
+            isDuelIsOn=false;
+            return;
+        }
+        if (!isActiveDeckValid(this.secondUser)){
+            terminalOutput=secondUser+"'s deck is invalid";
+            isDuelIsOn=false;
+            return;
+        }
+        if (numberOfRounds!=3 && numberOfRounds!=1) {
+            terminalOutput="number of rounds is not supported";
+            isDuelIsOn=false;
+            return;
+        }
+        setNumberOfRounds(numberOfRounds);
+        isDuelIsOn=true;
     }
+
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -49,16 +80,16 @@ public class DuelMenu {
 
     }
 
-    public boolean isPlayerHadActiveDeck() {
-        return true;
+    public boolean isPlayerHadActiveDeck(User user) {
+        return user.getActiveDeck() != null;
     }
 
     public boolean isUsernameExist(String username) {
         return User.getUserByUsername(username) != null;
     }
 
-    public boolean isActiveDeckValid() {
-        return true;
+    public boolean isActiveDeckValid(User user) {
+        return user.getActiveDeck().isValid();
     }
 
     public void showBoard() {
