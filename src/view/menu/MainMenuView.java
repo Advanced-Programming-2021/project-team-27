@@ -34,7 +34,7 @@ public class MainMenuView {
 
     public void userLogout() {
         Objects.requireNonNull(User.getUserByUsername(currentUserLoggedInUsername)).setUserLoggedIn(false);
-        TerminalOutput.output("user logged in successfully!");
+        TerminalOutput.output("user logged out successfully!");
     }
 
     private void enterMenu(String input) {
