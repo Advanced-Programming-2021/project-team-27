@@ -27,7 +27,7 @@ public class ScoreboardMenuView {
     }
 
     public void showBoard() {
-        ScoreboardMenu scoreboardMenu = null;
+        ScoreboardMenu scoreboardMenu = new ScoreboardMenu();
         scoreboardMenu.sortUsersByScore();
     }
 
