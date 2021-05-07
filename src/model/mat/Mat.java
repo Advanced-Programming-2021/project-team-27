@@ -11,16 +11,24 @@ public class Mat {
     private Card[] spellAndTrapZone = new Card[5];
     private Card fieldZone;
 
+    public Mat(){
+        for (int i = 0; i < 5; i++) {
+            monsterZone[i]=null;
+            spellAndTrapZone[i]=null;
+        }
+        fieldZone=null;
+    }
+
     public void setFieldZone(Card fieldZone) {
         this.fieldZone = fieldZone;
     }
 
-    public void setGraveyard(ArrayList<Card> graveyard) {
-        this.graveyard = graveyard;
+    public void addCardToGraveyard(Card card) {
+        graveyard.add(card);
     }
 
-    public void setMonsterZone(Monster[] monsterZone) {
-        this.monsterZone = monsterZone;
+    public void setMonsterZone(int number,Monster monster) {
+        this.monsterZone[number]=monster;
     }
 
     public void setSpellAndTrapZone(Card[] spellAndTrapZone) {
@@ -35,12 +43,12 @@ public class Mat {
         return fieldZone;
     }
 
-    public Card[] getSpellAndTrapZone() {
-        return spellAndTrapZone;
+    public Card getSpellAndTrapZone(int number) {
+        return spellAndTrapZone[number];
     }
 
-    public Monster[] getMonsterZone() {
-        return monsterZone;
+    public Monster getMonsterZone(int number) {
+        return this.monsterZone[number];
     }
 }
 
