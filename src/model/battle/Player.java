@@ -17,6 +17,7 @@ public class Player {
         setUser(user);
         this.lifePoint=8000;
         mat=new Mat();
+        currentSelectedCard=null;
     }
 
     public void changeLifePoint(int change){

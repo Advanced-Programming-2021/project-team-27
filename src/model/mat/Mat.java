@@ -10,13 +10,26 @@ public class Mat {
     private Monster[] monsterZone = new Monster[5];
     private Card[] spellAndTrapZone = new Card[5];
     private Card fieldZone;
+    private Card[] handCard = new Card[6];
 
     public Mat(){
         for (int i = 0; i < 5; i++) {
             monsterZone[i]=null;
             spellAndTrapZone[i]=null;
+            handCard[i]=null;
         }
+        handCard[5]=null;
         fieldZone=null;
+    }
+
+    public boolean setHandCard(Card card){
+        for (int i = 0; i < 6; i++) {
+            if (handCard[i]==null){
+                handCard[i]=card;
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setFieldZone(Card fieldZone) {
@@ -47,8 +60,21 @@ public class Mat {
         return spellAndTrapZone[number];
     }
 
+    public Card getHandCard(int number){
+        return this.handCard[number];
+    }
+
     public Monster getMonsterZone(int number) {
         return this.monsterZone[number];
+    }
+
+    public boolean isMonsterZoneIsFull(){
+        for (int i = 0; i < 5; i++) {
+            if (monsterZone[i] == null){
+                return false;
+            }
+        }
+        return true;
     }
 }
 
