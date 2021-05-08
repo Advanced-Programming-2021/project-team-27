@@ -15,6 +15,17 @@ public class Player {
 
     public Player (User user){
         setUser(user);
+        this.lifePoint=8000;
+        mat=new Mat();
+        currentSelectedCard=null;
+    }
+
+    public void changeLifePoint(int change){
+        this.lifePoint+=change;
+    }
+
+    public Mat getMat() {
+        return mat;
     }
 
     private void setUser(User user) {
@@ -28,6 +39,8 @@ public class Player {
     public Card getCurrentSelectedCard() {
         return currentSelectedCard;
     }
+
+
 
     public void changeCredit(int numberOfRounds,boolean isWin){
 
