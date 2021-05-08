@@ -15,7 +15,7 @@ public class DeckMenuView {
     private DeckMenu deckMenu;
     private String loggedInUser;
 
-    public DeckMenuView(String loggedInUser){
+    public DeckMenuView(String loggedInUser) {
         this.loggedInUser = loggedInUser;
         deckMenu = new DeckMenu(loggedInUser);
     }
@@ -74,8 +74,10 @@ public class DeckMenuView {
             else if ((getMatcher(input, "menu enter [\\w]+")).matches())
                 System.out.print("menu navigation is not possible");
 
-            else if ((getMatcher(input, "menu exit")).matches())
+            else if ((getMatcher(input, "menu exit")).matches()) {
+                TerminalOutput.output("exit successfully!");
                 break;
+            }
 
             else
                 System.out.print("invalid command");
