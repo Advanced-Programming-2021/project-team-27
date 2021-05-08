@@ -1,4 +1,6 @@
+import model.Finisher;
 import model.Initializer;
+import model.user.User;
 import org.json.simple.parser.ParseException;
 import view.menu.LoginMenuView;
 
@@ -11,6 +13,7 @@ public class Main {
         Initializer.initialize();
         LoginMenuView loginMenuView = new LoginMenuView();
         loginMenuView.run();
+        Finisher.finish();
     }
 
 }
