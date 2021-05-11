@@ -34,33 +34,33 @@ public class DuelMenu {
         } else {
             this.isDuelIsOn = true;
         }
-        if (!isPlayerHadActiveDeck(this.currentUser)){
-            terminalOutput=currentUser+" has no active deck";
-            isDuelIsOn=false;
+        if (!isPlayerHadActiveDeck(this.currentUser)) {
+            terminalOutput = currentUser + " has no active deck";
+            isDuelIsOn = false;
             return;
         }
-        if (!isPlayerHadActiveDeck(this.secondUser)){
-            terminalOutput=secondUser+" has no active deck";
-            isDuelIsOn=false;
+        if (!isPlayerHadActiveDeck(this.secondUser)) {
+            terminalOutput = secondUser + " has no active deck";
+            isDuelIsOn = false;
             return;
         }
-        if (!isActiveDeckValid(this.currentUser)){
-            terminalOutput=currentUser+"'s deck is invalid";
-            isDuelIsOn=false;
+        if (!isActiveDeckValid(this.currentUser)) {
+            terminalOutput = currentUser + "'s deck is invalid";
+            isDuelIsOn = false;
             return;
         }
-        if (!isActiveDeckValid(this.secondUser)){
-            terminalOutput=secondUser+"'s deck is invalid";
-            isDuelIsOn=false;
+        if (!isActiveDeckValid(this.secondUser)) {
+            terminalOutput = secondUser + "'s deck is invalid";
+            isDuelIsOn = false;
             return;
         }
-        if (numberOfRounds!=3 && numberOfRounds!=1) {
-            terminalOutput="number of rounds is not supported";
-            isDuelIsOn=false;
+        if (numberOfRounds != 3 && numberOfRounds != 1) {
+            terminalOutput = "number of rounds is not supported";
+            isDuelIsOn = false;
             return;
         }
         setNumberOfRounds(numberOfRounds);
-        isDuelIsOn=true;
+        isDuelIsOn = true;
     }
 
 
