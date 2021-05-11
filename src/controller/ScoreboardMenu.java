@@ -12,7 +12,7 @@ public class ScoreboardMenu {
         User[] allUsersForSort = allUsers.toArray(new User[0]);
         for (int i = 0; i < allUsersForSort.length; i++) {
             int flagForEnd = 0;
-            for (int j = i; j < allUsersForSort.length - 1; j++) {
+            for (int j = 0; j < allUsersForSort.length - 1; j++) {
                 if (allUsersForSort[j].getScore() < allUsersForSort[j + 1].getScore()
                         || (allUsersForSort[j].getScore() == allUsersForSort[j + 1].getScore() &&
                         allUsersForSort[j].getNickname().compareTo(allUsersForSort[j + 1].getNickname()) > 0)) {
