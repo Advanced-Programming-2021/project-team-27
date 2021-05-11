@@ -5,8 +5,14 @@ import model.user.Deck;
 import model.user.MainDeck;
 import model.user.SideDeck;
 import model.user.User;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import view.menu.MainMenuView;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +31,27 @@ public class DeckMenu {
         if (decks.containsKey(deckName))
             terminalOutput = "deck with name " + deckName + " already exists";
         else {
-            currentUser.addDeck(deckName, new Deck(deckName, currentUser.getUsername()));
+            Deck deck = new Deck(deckName, currentUser.getUsername());
+            currentUser.addDeck(deckName, deck);
+//            String fileAddress = "resources/users/" + currentUser.getUsername() + ".json";
+//            JSONParser jsonParser = new JSONParser();
+//            try (FileReader reader = new FileReader(fileAddress)) {
+//                Object obj = jsonParser.parse(reader);
+//                JSONObject userData = (JSONObject) obj;
+//                JSONObject userDecks = (JSONObject) userData.get("decks");
+//                JSONObject userDeckCards = new JSONObject();
+//                userDecks.put(deckName, userDeckCards);
+//                userData.put("decks", userDecks);
+//                try (FileWriter file = new FileWriter(fileAddress)) {
+//                    file.write(userData.toJSONString());
+//                    file.flush();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            } catch (IOException | ParseException e) {
+//                e.printStackTrace();
+//            }
             terminalOutput = "deck created successfully!";
         }
     }

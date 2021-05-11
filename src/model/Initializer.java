@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
@@ -19,6 +21,7 @@ public class Initializer {
         initializeMonster();
         initializeSpellsAndTraps();
         addUsers();
+        //showAllUsers();
     }
 
     public static void initializeMonster() {
@@ -138,16 +141,17 @@ public class Initializer {
         }
     }
 
-    private static void addUsers() throws IOException, ParseException {
+    private static void addUsers() throws IOException {
         File directoryPath = new File("resources/users");
         File[] filesList = directoryPath.listFiles();
         assert filesList != null;
         for (File file : filesList) {
+
+            Gson gson = new Gson();
             Reader reader = new FileReader(file);
-            JSONParser jsonParser = new JSONParser();
-            Object obj = jsonParser.parse(reader);
-            JSONObject user = (JSONObject) obj;
-            new User(user.get("username").toString(), user.get("nickname").toString(), user.get("password").toString());
+            User user = gson.fromJson(reader, User.class);
+            User.addToAllUsers(user);
+
         }
     }
 
@@ -159,10 +163,15 @@ public class Initializer {
             Reader reader = new FileReader(file);
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(reader);
-            JSONObject user = (JSONObject) obj;
-            System.out.println("username: " + user.get("username"));
-            System.out.println("password: " + user.get("password"));
-            System.out.println("nickname: " + user.get("nickname"));
+            JSONObject userJSON = (JSONObject) obj;
+            ObjectMapper objectMapper = new ObjectMapper();
+            User user1 = objectMapper.readValue(userJSON.toJSONString(), User.class);
+            System.out.println(user1);
+            System.out.println("username: " + userJSON.get("username"));
+            System.out.println("password: " + userJSON.get("password"));
+            System.out.println("nickname: " + userJSON.get("nickname"));
+            System.out.println(" ");
+            System.out.println(" ");
             System.out.println(" ");
         }
     }

@@ -3,10 +3,14 @@ package controller;
 import model.battle.Ai;
 import model.battle.Phase;
 import model.battle.Player;
+import model.card.Card;
+import model.card.Monster;
+import model.mat.Mat;
 import model.user.User;
 import view.TerminalOutput;
 import view.menu.MainMenuView;
 
+import javax.swing.*;
 import java.net.PortUnreachableException;
 import java.util.regex.Matcher;
 
@@ -16,6 +20,8 @@ public class DuelMenu {
     private Player firstPlayer;
     private Player secondPlayer;
     private int numberOfRounds;
+    private Player currentTurnPlayer;
+    private Player opponentTurnPlayer;
     private User currentTurnUser;
     private Phase phase;
     private Ai ai;
@@ -33,34 +39,38 @@ public class DuelMenu {
             setSecondUser(User.getUserByUsername(secondUser));
         } else {
             this.isDuelIsOn = true;
-        }
-        if (!isPlayerHadActiveDeck(this.currentUser)){
-            terminalOutput=currentUser+" has no active deck";
-            isDuelIsOn=false;
             return;
         }
-        if (!isPlayerHadActiveDeck(this.secondUser)){
-            terminalOutput=secondUser+" has no active deck";
-            isDuelIsOn=false;
+        if (!isPlayerHadActiveDeck(this.currentUser)) {
+            terminalOutput = currentUser + " has no active deck";
+            isDuelIsOn = false;
             return;
         }
-        if (!isActiveDeckValid(this.currentUser)){
-            terminalOutput=currentUser+"'s deck is invalid";
-            isDuelIsOn=false;
+        if (!isPlayerHadActiveDeck(this.secondUser)) {
+            terminalOutput = secondUser + " has no active deck";
+            isDuelIsOn = false;
             return;
         }
-        if (!isActiveDeckValid(this.secondUser)){
-            terminalOutput=secondUser+"'s deck is invalid";
-            isDuelIsOn=false;
+        if (!isActiveDeckValid(this.currentUser)) {
+            terminalOutput = currentUser + "'s deck is invalid";
+            isDuelIsOn = false;
             return;
         }
-        if (numberOfRounds!=3 && numberOfRounds!=1) {
-            terminalOutput="number of rounds is not supported";
-            isDuelIsOn=false;
+        if (!isActiveDeckValid(this.secondUser)) {
+            terminalOutput = secondUser + "'s deck is invalid";
+            isDuelIsOn = false;
+            return;
+        }
+        if (numberOfRounds != 3 && numberOfRounds != 1) {
+            terminalOutput = "number of rounds is not supported";
+            isDuelIsOn = false;
             return;
         }
         setNumberOfRounds(numberOfRounds);
-        isDuelIsOn=true;
+        isDuelIsOn = true;
+        firstPlayer = new Player(this.currentUser);
+        secondPlayer = new Player(this.secondUser);
+        this.phase=new Phase();
     }
 
 
@@ -97,32 +107,183 @@ public class DuelMenu {
     }
 
     public void selectMonster(int number, boolean isOpponent) {
+        Monster monster;
+        if (!isOpponent) {
+            selectMonsterCheck(number, currentTurnPlayer, 3, 1, 4, 0);
+            return;
+        }
+        selectMonsterCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
 
+    }
+
+    private void selectMonsterCheck(int number, Player opponentTurnPlayer, int i, int i2, int i3, int i4) {
+        Monster monster;
+        Mat mat = opponentTurnPlayer.getMat();
+        if (number == 1) {
+            monster = mat.getMonsterZone(2);
+            if (monster == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            terminalOutput = "card selected";
+        } else if (number == 2) {
+            monster = mat.getMonsterZone(i);
+            if (monster == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            terminalOutput = "card selected";
+        } else if (number == 3) {
+            monster = mat.getMonsterZone(i2);
+            if (monster == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            terminalOutput = "card selected";
+        } else if (number == 4) {
+            monster = mat.getMonsterZone(i3);
+            if (monster == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            terminalOutput = "card selected";
+        } else if (number == 5) {
+            monster = mat.getMonsterZone(i4);
+            if (monster == null) {
+                terminalOutput = "no card found in the given position";
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            terminalOutput = "card selected";
+        } else {
+            terminalOutput = "invalid selection";
+        }
     }
 
     public void selectSpellOrTrap(int number, boolean isOpponent) {
+        Card card;
+        if (!isOpponent) {
+            selectSpellOrTrapCheck(number, currentTurnPlayer, 3, 1, 4, 0);
+        }
+        selectSpellOrTrapCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
+        return;
+    }
 
+    private void selectSpellOrTrapCheck(int number, Player opponentTurnPlayer, int i, int i2, int i3, int i4) {
+        Card card;
+        Mat mat = opponentTurnPlayer.getMat();
+        if (number == 1) {
+            card = mat.getSpellAndTrapZone(2);
+            if (card == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(card);
+            terminalOutput = "card selected";
+        } else if (number == 2) {
+            card = mat.getSpellAndTrapZone(i);
+            if (card == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(card);
+            terminalOutput = "card selected";
+        } else if (number == 3) {
+            card = mat.getSpellAndTrapZone(i2);
+            if (card == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(card);
+            terminalOutput = "card selected";
+        } else if (number == 4) {
+            card = mat.getSpellAndTrapZone(i3);
+            if (card == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(card);
+            terminalOutput = "card selected";
+        } else if (number == 5) {
+            card = mat.getSpellAndTrapZone(i4);
+            if (card == null) {
+                terminalOutput = "no card found in the given position";
+            }
+            opponentTurnPlayer.setCurrentSelectedCard(card);
+            terminalOutput = "card selected";
+        } else {
+            terminalOutput = "invalid selection";
+        }
     }
 
     public void selectField(int number, boolean isOpponent) {
-
+        Mat mat;
+        if (isOpponent) {
+            mat = opponentTurnPlayer.getMat();
+            if (mat.getFieldZone() == null) {
+                terminalOutput = "no card found in the given position";
+            }
+            terminalOutput = "card selected";
+            opponentTurnPlayer.setCurrentSelectedCard(mat.getFieldZone());
+            return;
+        }
+        mat = currentTurnPlayer.getMat();
+        if (mat.getFieldZone() == null) {
+            terminalOutput = "no card found in the given position";
+        }
+        terminalOutput = "card selected";
+        currentTurnPlayer.setCurrentSelectedCard(mat.getFieldZone());
     }
 
     public void selectHand(int number) {
-
+        if (number > 6 || number < 1) {
+            terminalOutput = "invalid selection";
+            return;
+        }
+        Card card = currentTurnPlayer.getMat().getHandCard(number - 1);
+        if (card == null) {
+            terminalOutput = "no card found in the given position";
+            return;
+        }
+        terminalOutput = "card selected";
+        currentTurnPlayer.setCurrentSelectedCard(card);
     }
 
     public void deSelectCard() {
-
+        if (currentTurnPlayer.getCurrentSelectedCard()==null){
+            terminalOutput = "no card selected yet";
+            return;
+        }
+        terminalOutput = "card deselected";
+        currentTurnPlayer.setCurrentSelectedCard(null);
     }
 
     public void nextPhase() {
-
+        phase.nextPhase();
     }
 
 
     public void summon() {
-
+        Mat mat=currentTurnPlayer.getMat();
+        if (currentTurnPlayer.getCurrentSelectedCard() == null){
+            terminalOutput="no card selected yet";
+            return;
+        }
+        if (!(currentTurnPlayer.getCurrentSelectedCard() instanceof Monster)){
+            terminalOutput = "you can't summon this card";
+            return;
+        }
+        if (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase")){
+            terminalOutput = "action is not allowed in this phase";
+            return;
+        }
+        if (mat.isMonsterZoneIsFull()){
+            terminalOutput = "monster card zone is full";
+            return;
+        }
     }
 
     public void set() {
