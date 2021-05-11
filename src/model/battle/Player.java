@@ -10,6 +10,8 @@ public class Player {
     private User user;
     private Card currentSelectedCard;
     private Mat mat;
+    private String selectedName;
+    private boolean isSummoned = false;
     private int lifePoint;
 
 
@@ -28,6 +30,14 @@ public class Player {
         return mat;
     }
 
+    public void setSelectedName(String selectedName) {
+        this.selectedName = selectedName;
+    }
+
+    public String getSelectedName() {
+        return selectedName;
+    }
+
     private void setUser(User user) {
         this.user = user;
     }
@@ -40,9 +50,11 @@ public class Player {
         return currentSelectedCard;
     }
 
+    public boolean isSummoned() {
+        return isSummoned;
+    }
 
-
-    public void changeCredit(int numberOfRounds,boolean isWin){
+    public void changeCredit(int numberOfRounds, boolean isWin){
 
     }
 
