@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Monster extends Card{
     protected static ArrayList<Monster> allMonsters = new ArrayList<>();
-
     protected int level;
     protected int defence;
     protected int attack;
@@ -25,6 +24,11 @@ public class Monster extends Card{
         Card.addToCards(this);
     }
 
+    public boolean isAttack() {
+        return isAttack;
+    }
+
+
     public static Monster getMonsterByName(String name) {
         for (Monster monster : allMonsters) {
             if (monster.name.equals(name)){
@@ -33,6 +37,8 @@ public class Monster extends Card{
         }
         return null;
     }
+
+
 
 }
 

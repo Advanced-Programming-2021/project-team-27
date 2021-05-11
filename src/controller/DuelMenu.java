@@ -110,6 +110,22 @@ public class DuelMenu {
         if (!isOpponent) {
             selectMonsterCheck(number, currentTurnPlayer, 3, 1, 4, 0);
             currentTurnPlayer.setSelectedName("Monster");
+            switch (number){
+                case 1:
+                    currentTurnPlayer.setNumberOfMonsterZone(2);
+                    break;
+                case 2:
+                    currentTurnPlayer.setNumberOfMonsterZone(3);
+                    break;
+                case 3:
+                    currentTurnPlayer.setNumberOfMonsterZone(4);
+                    break;
+                case 4:
+                    currentTurnPlayer.setNumberOfMonsterZone(0);
+                    break;
+                default:
+                    break;
+            }
             return;
         }
         selectMonsterCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
@@ -319,7 +335,30 @@ public class DuelMenu {
     }
 
     public void changeCardPosition(boolean isOnAttack) {
-
+        Card card=currentTurnPlayer.getCurrentSelectedCard();
+        if (currentTurnPlayer.getCurrentSelectedCard()==null){
+            terminalOutput = "no card is selected yet";
+            return;
+        }
+        if (!currentTurnPlayer.getSelectedName().equals("Monster")){
+            terminalOutput = "you can;t change this card position";
+            return;
+        }
+        if ((!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase"))) {
+            terminalOutput = "you can't do this action phase";
+            return;
+        }
+        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())){
+            terminalOutput = "this card is already in the wanted position";
+            return;
+        }
+        if (currentTurnPlayer.getMat().isChangedCard(currentTurnPlayer.getNumberOfMonsterZone())){
+            terminalOutput = "you already changed this card position in this turn";
+            return;
+        }
+        terminalOutput = "monster card position changed successfully";
+        currentTurnPlayer.getMat().setIsChanged(true, currentTurnPlayer.getNumberOfMonsterZone());
+        card.setAttack(isOnAttack);
     }
 
     public void flipSummon() {

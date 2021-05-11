@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Player {
     private User user;
     private Card currentSelectedCard;
+    private int numberOfMonsterZone;
     private Mat mat;
     private String selectedName;
     private boolean isSummoned = false;
@@ -20,6 +21,14 @@ public class Player {
         this.lifePoint=8000;
         mat=new Mat();
         currentSelectedCard=null;
+    }
+
+    public void setNumberOfMonsterZone(int numberOfMonsterZone) {
+        this.numberOfMonsterZone = numberOfMonsterZone;
+    }
+
+    public int getNumberOfMonsterZone() {
+        return numberOfMonsterZone;
     }
 
     public void changeLifePoint(int change){
