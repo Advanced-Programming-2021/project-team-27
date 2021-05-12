@@ -20,6 +20,11 @@ public class DuelMenu {
     private Player firstPlayer;
     private Player secondPlayer;
     private int numberOfRounds;
+    private int wholeNumberOfRounds;
+    private int firstPlayerMaxLP = 0;
+    private int secondPlayerMaxLP = 0;
+    private int firstPlayerWins = 0;
+    private int secondPlayerWins = 0;
     private Player currentTurnPlayer;
     private Player opponentTurnPlayer;
     private User currentTurnUser;
@@ -67,6 +72,7 @@ public class DuelMenu {
             return;
         }
         setNumberOfRounds(numberOfRounds);
+        wholeNumberOfRounds = numberOfRounds;
         isDuelIsOn = true;
         firstPlayer = new Player(this.currentUser);
         secondPlayer = new Player(this.secondUser);
@@ -86,8 +92,8 @@ public class DuelMenu {
         this.numberOfRounds = numberOfRounds;
     }
 
-    public void cardShow() {
-
+    public void cardShow(String cardName) {
+        Card.showCard(cardName);
     }
 
     public boolean isPlayerHadActiveDeck(User user) {
@@ -327,37 +333,91 @@ public class DuelMenu {
     }
 
     public void selectedCardShow() {
-
+        Card card = currentTurnPlayer.getCurrentSelectedCard();
+        String cardName = card.getName();
+        Card.showCard(cardName);
     }
 
     public void surrender() {
-
+        currentTurnPlayer.setLifePoint(0);
     }
 
     public void increaseMoney(int amount) {
-
+        int currentMoney = currentTurnUser.getCredit();
+        currentTurnUser.setCredit(currentMoney + amount);
     }
 
     public void increaseLifePoint(int amount) {
-
+        int currentLP = currentTurnPlayer.getLifePoint();
+        currentTurnPlayer.setLifePoint(currentLP + amount);
     }
 
     public void selectForcedCard(String cardName) {
-
+        Card card = Card.getCardByName(cardName);
+        currentTurnPlayer.addSelectedCard(card);
     }
 
     public void setWinner(String nickname) {
-
+        String firstPlayerName = currentUser.getNickname();
+        String secondPlayerName = secondUser.getNickname();
+        if (firstPlayerName.equals(nickname))
+            secondPlayer.setLifePoint(0);
+        if (secondPlayerName.equals(nickname))
+            firstPlayer.setLifePoint(0);
     }
 
     public boolean hasGameEnded() {
-        return true;
+        int firstPlayerHealth = firstPlayer.getLifePoint();
+        int secondPlayerHealth = secondPlayer.getLifePoint();
+        if (firstPlayerHealth <= 0){
+            secondPlayerWins++;
+            secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
+            String username = secondUser.getUsername();
+            terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
+            if (numberOfRounds == 1) {
+                int firstPlayerCredit = 100;
+                int secondPlayerCredit = 1000 + secondPlayerMaxLP;
+                if (wholeNumberOfRounds == 3) {
+                    firstPlayerCredit = 300;
+                    secondPlayerCredit = 3000 + secondPlayerMaxLP;
+                }
+                currentUser.setCredit(currentUser.getCredit() + firstPlayerCredit);
+                secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
+                return true;
+            }
+            firstPlayer = new Player(this.currentUser);
+            secondPlayer = new Player(this.secondUser);
+            this.phase=new Phase();
+            numberOfRounds--;
+        }
+        if (secondPlayerHealth <= 0){
+            firstPlayerWins++;
+            firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
+            String username = currentUser.getUsername();
+            terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
+            if (numberOfRounds == 1) {
+                int secondPlayerCredit = 100;
+                int firstPlayerCredit = 1000 + firstPlayerMaxLP;
+                if (wholeNumberOfRounds == 3) {
+                    secondPlayerCredit = 300;
+                    firstPlayerCredit = 3000 + firstPlayerMaxLP;
+                }
+                currentUser.setCredit(currentUser.getCredit() + firstPlayerCredit);
+                secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
+                return true;
+            }
+            firstPlayer = new Player(this.currentUser);
+            secondPlayer = new Player(this.secondUser);
+            this.phase=new Phase();
+            numberOfRounds--;
+        }
+        return false;
     }
 
     public String getTerminalOutput() {
         String returnValue = terminalOutput;
         terminalOutput = "";
-        return returnValue;
+        return returnValue + "\n";
     }
 
 }

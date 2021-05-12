@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Player {
     private User user;
+    private ArrayList<Card> selectedCards = new ArrayList<>();
     private Card currentSelectedCard;
     private Mat mat;
     private int lifePoint;
@@ -34,17 +35,25 @@ public class Player {
 
     public void setCurrentSelectedCard(Card currentSelectedCard) {
         this.currentSelectedCard = currentSelectedCard;
+        selectedCards.add(currentSelectedCard);
+    }
+
+    public void addSelectedCard(Card card){
+        selectedCards.add(card);
     }
 
     public Card getCurrentSelectedCard() {
         return currentSelectedCard;
     }
 
-
-
-    public void changeCredit(int numberOfRounds,boolean isWin){
-
+    public void setLifePoint(int lifePoint) {
+        this.lifePoint = lifePoint;
     }
+
+    public int getLifePoint() {
+        return lifePoint;
+    }
+
 
     public void changeScore(){
 

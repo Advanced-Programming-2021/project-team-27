@@ -27,31 +27,16 @@ public class DeckMenu {
         decks = currentUser.getDecks();
     }
 
+    public void cardShow(String cardName) {
+        Card.showCard(cardName);
+    }
+
     public void createDeck(String deckName) {
         if (decks.containsKey(deckName))
             terminalOutput = "deck with name " + deckName + " already exists";
         else {
             Deck deck = new Deck(deckName, currentUser.getUsername());
             currentUser.addDeck(deckName, deck);
-//            String fileAddress = "resources/users/" + currentUser.getUsername() + ".json";
-//            JSONParser jsonParser = new JSONParser();
-//            try (FileReader reader = new FileReader(fileAddress)) {
-//                Object obj = jsonParser.parse(reader);
-//                JSONObject userData = (JSONObject) obj;
-//                JSONObject userDecks = (JSONObject) userData.get("decks");
-//                JSONObject userDeckCards = new JSONObject();
-//                userDecks.put(deckName, userDeckCards);
-//                userData.put("decks", userDecks);
-//                try (FileWriter file = new FileWriter(fileAddress)) {
-//                    file.write(userData.toJSONString());
-//                    file.flush();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            } catch (IOException | ParseException e) {
-//                e.printStackTrace();
-//            }
             terminalOutput = "deck created successfully!";
         }
     }

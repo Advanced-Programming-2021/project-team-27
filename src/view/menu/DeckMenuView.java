@@ -71,8 +71,14 @@ public class DeckMenuView {
             else if (input.matches("deck show --cards") || input.matches("deck show -c"))
                 showAllCards();
 
+            else if ((getMatcher(input, "card show ([\\w]+)")).matches())
+                cardShow(matcher);
+
             else if ((getMatcher(input, "menu enter [\\w]+")).matches())
-                System.out.print("menu navigation is not possible");
+                TerminalOutput.output("menu navigation is not possible");
+
+            else if ((getMatcher(input, "menu show-current")).matches())
+                TerminalOutput.output("deck menu");
 
             else if ((getMatcher(input, "menu exit")).matches()) {
                 TerminalOutput.output("exit successfully!");
@@ -80,14 +86,15 @@ public class DeckMenuView {
             }
 
             else
-                System.out.print("invalid command");
+                TerminalOutput.output("invalid command");
 
             TerminalOutput.output(deckMenu.getTerminalOutput());
         }
     }
 
     public void cardShow(Matcher matcher) {
-        ShopMenu shopMenu = new ShopMenu();
+        String cardName = matcher.group(1);
+        deckMenu.cardShow(cardName);
     }
 
     public void createDeck(Matcher matcher) {

@@ -1,6 +1,7 @@
 package view.menu;
 
 import controller.DuelMenu;
+import model.card.Card;
 import view.ScanInput;
 import view.TerminalOutput;
 
@@ -155,24 +156,34 @@ public class DuelMenuView {
             else if ((getMatcher(input, "duel set-winner ([\\w]+)")).matches())
                 setWinner(matcher);
 
+            else if ((getMatcher(input, "card show ([\\w]+)")).matches())
+                cardShow(matcher);
+
             else if ((getMatcher(input, "menu enter [\\w]+")).matches())
-                System.out.print("menu navigation is not possible");
+                TerminalOutput.output("menu navigation is not possible");
+
+            else if ((getMatcher(input, "menu enter [\\w]+")).matches())
+                TerminalOutput.output("duel menu");
 
             else if ((getMatcher(input, "menu exit")).matches())
                 break;
 
             else
-                System.out.print("invalid command");
+                TerminalOutput.output("invalid command");
 
             TerminalOutput.output(duelMenu.getTerminalOutput());
 
-            if (hasGameEnded())
+            if (hasGameEnded()) {
+                TerminalOutput.output(duelMenu.getTerminalOutput());
                 break;
+            }
         }
     }
 
 
-    public void cardShow() {
+    public void cardShow(Matcher matcher) {
+        String cardName = matcher.group(1);
+        duelMenu.cardShow(cardName);
     }
 
     public void newDuel(Matcher matcher) {

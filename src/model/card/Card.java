@@ -9,6 +9,7 @@ public class Card {
     protected String cardType;
     protected String description;
     protected String id;
+    protected String ownerUsername;
     protected int price;
 
     public String getDescription() {

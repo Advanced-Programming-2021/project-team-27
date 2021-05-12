@@ -76,5 +76,9 @@ public class Mat {
         }
         return true;
     }
+
+    public String printMat(){
+
+    }
 }
 
