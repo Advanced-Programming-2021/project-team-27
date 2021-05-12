@@ -9,7 +9,10 @@ import java.util.ArrayList;
 public class Player {
     private User user;
     private Card currentSelectedCard;
+    private int numberOfMonsterZone;
     private Mat mat;
+    private String selectedName;
+    private boolean isSummoned = false;
     private int lifePoint;
 
 
@@ -20,12 +23,28 @@ public class Player {
         currentSelectedCard=null;
     }
 
+    public void setNumberOfMonsterZone(int numberOfMonsterZone) {
+        this.numberOfMonsterZone = numberOfMonsterZone;
+    }
+
+    public int getNumberOfMonsterZone() {
+        return numberOfMonsterZone;
+    }
+
     public void changeLifePoint(int change){
         this.lifePoint+=change;
     }
 
     public Mat getMat() {
         return mat;
+    }
+
+    public void setSelectedName(String selectedName) {
+        this.selectedName = selectedName;
+    }
+
+    public String getSelectedName() {
+        return selectedName;
     }
 
     private void setUser(User user) {
@@ -40,9 +59,11 @@ public class Player {
         return currentSelectedCard;
     }
 
+    public boolean isSummoned() {
+        return isSummoned;
+    }
 
-
-    public void changeCredit(int numberOfRounds,boolean isWin){
+    public void changeCredit(int numberOfRounds, boolean isWin){
 
     }
 

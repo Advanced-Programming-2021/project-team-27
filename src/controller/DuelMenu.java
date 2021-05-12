@@ -70,7 +70,7 @@ public class DuelMenu {
         isDuelIsOn = true;
         firstPlayer = new Player(this.currentUser);
         secondPlayer = new Player(this.secondUser);
-        this.phase=new Phase();
+        this.phase = new Phase();
     }
 
 
@@ -107,12 +107,29 @@ public class DuelMenu {
     }
 
     public void selectMonster(int number, boolean isOpponent) {
-        Monster monster;
         if (!isOpponent) {
             selectMonsterCheck(number, currentTurnPlayer, 3, 1, 4, 0);
+            currentTurnPlayer.setSelectedName("Monster");
+            switch (number){
+                case 1:
+                    currentTurnPlayer.setNumberOfMonsterZone(2);
+                    break;
+                case 2:
+                    currentTurnPlayer.setNumberOfMonsterZone(3);
+                    break;
+                case 3:
+                    currentTurnPlayer.setNumberOfMonsterZone(4);
+                    break;
+                case 4:
+                    currentTurnPlayer.setNumberOfMonsterZone(0);
+                    break;
+                default:
+                    break;
+            }
             return;
         }
         selectMonsterCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
+        currentTurnPlayer.setSelectedName("MonsterOpponent");
 
     }
 
@@ -125,7 +142,7 @@ public class DuelMenu {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            currentTurnPlayer.setCurrentSelectedCard(monster);
             terminalOutput = "card selected";
         } else if (number == 2) {
             monster = mat.getMonsterZone(i);
@@ -133,7 +150,7 @@ public class DuelMenu {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            currentTurnPlayer.setCurrentSelectedCard(monster);
             terminalOutput = "card selected";
         } else if (number == 3) {
             monster = mat.getMonsterZone(i2);
@@ -141,7 +158,7 @@ public class DuelMenu {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            currentTurnPlayer.setCurrentSelectedCard(monster);
             terminalOutput = "card selected";
         } else if (number == 4) {
             monster = mat.getMonsterZone(i3);
@@ -149,14 +166,14 @@ public class DuelMenu {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            currentTurnPlayer.setCurrentSelectedCard(monster);
             terminalOutput = "card selected";
         } else if (number == 5) {
             monster = mat.getMonsterZone(i4);
             if (monster == null) {
                 terminalOutput = "no card found in the given position";
             }
-            opponentTurnPlayer.setCurrentSelectedCard(monster);
+            currentTurnPlayer.setCurrentSelectedCard(monster);
             terminalOutput = "card selected";
         } else {
             terminalOutput = "invalid selection";
@@ -167,12 +184,13 @@ public class DuelMenu {
         Card card;
         if (!isOpponent) {
             selectSpellOrTrapCheck(number, currentTurnPlayer, 3, 1, 4, 0);
+            currentTurnPlayer.setSelectedName("Spell");
         }
         selectSpellOrTrapCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
-        return;
+        currentTurnPlayer.setSelectedName("SpellOpponent");
     }
 
-    private void selectSpellOrTrapCheck(int number, Player opponentTurnPlayer, int i, int i2, int i3, int i4) {
+    private void selectSpellOrTrapCheck(int number, Player opponentTurnPlayer, int i, int i1, int i2, int i3) {
         Card card;
         Mat mat = opponentTurnPlayer.getMat();
         if (number == 1) {
@@ -181,7 +199,7 @@ public class DuelMenu {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(card);
+            currentTurnPlayer.setCurrentSelectedCard(card);
             terminalOutput = "card selected";
         } else if (number == 2) {
             card = mat.getSpellAndTrapZone(i);
@@ -189,30 +207,30 @@ public class DuelMenu {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(card);
+            currentTurnPlayer.setCurrentSelectedCard(card);
             terminalOutput = "card selected";
         } else if (number == 3) {
+            card = mat.getSpellAndTrapZone(i1);
+            if (card == null) {
+                terminalOutput = "no card found in the given position";
+                return;
+            }
+            currentTurnPlayer.setCurrentSelectedCard(card);
+            terminalOutput = "card selected";
+        } else if (number == 4) {
             card = mat.getSpellAndTrapZone(i2);
             if (card == null) {
                 terminalOutput = "no card found in the given position";
                 return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(card);
+            currentTurnPlayer.setCurrentSelectedCard(card);
             terminalOutput = "card selected";
-        } else if (number == 4) {
+        } else if (number == 5) {
             card = mat.getSpellAndTrapZone(i3);
             if (card == null) {
                 terminalOutput = "no card found in the given position";
-                return;
             }
-            opponentTurnPlayer.setCurrentSelectedCard(card);
-            terminalOutput = "card selected";
-        } else if (number == 5) {
-            card = mat.getSpellAndTrapZone(i4);
-            if (card == null) {
-                terminalOutput = "no card found in the given position";
-            }
-            opponentTurnPlayer.setCurrentSelectedCard(card);
+            currentTurnPlayer.setCurrentSelectedCard(card);
             terminalOutput = "card selected";
         } else {
             terminalOutput = "invalid selection";
@@ -235,6 +253,7 @@ public class DuelMenu {
             terminalOutput = "no card found in the given position";
         }
         terminalOutput = "card selected";
+        currentTurnPlayer.setSelectedName("Field");
         currentTurnPlayer.setCurrentSelectedCard(mat.getFieldZone());
     }
 
@@ -249,11 +268,12 @@ public class DuelMenu {
             return;
         }
         terminalOutput = "card selected";
+        currentTurnPlayer.setSelectedName("Hand");
         currentTurnPlayer.setCurrentSelectedCard(card);
     }
 
     public void deSelectCard() {
-        if (currentTurnPlayer.getCurrentSelectedCard()==null){
+        if (currentTurnPlayer.getCurrentSelectedCard() == null) {
             terminalOutput = "no card selected yet";
             return;
         }
@@ -267,31 +287,78 @@ public class DuelMenu {
 
 
     public void summon() {
-        Mat mat=currentTurnPlayer.getMat();
-        if (currentTurnPlayer.getCurrentSelectedCard() == null){
-            terminalOutput="no card selected yet";
+        Mat mat = currentTurnPlayer.getMat();
+        if (currentTurnPlayer.getCurrentSelectedCard() == null) {
+            terminalOutput = "no card selected yet";
             return;
         }
-        if (!(currentTurnPlayer.getCurrentSelectedCard() instanceof Monster)){
+        if (!(currentTurnPlayer.getCurrentSelectedCard() instanceof Monster)) {
             terminalOutput = "you can't summon this card";
             return;
         }
-        if (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase")){
+        if (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase")) {
             terminalOutput = "action is not allowed in this phase";
+            return;
+        }
+        if (mat.isMonsterZoneIsFull()) {
+            terminalOutput = "monster card zone is full";
+            return;
+        }
+        //Other;
+    }
+
+    public void set() {
+        Card card = currentTurnPlayer.getCurrentSelectedCard();
+        Mat mat = currentTurnPlayer.getMat();
+        if (card == null) {
+            terminalOutput = "no card selected yet";
+            return;
+        }
+        if (!currentTurnPlayer.getSelectedName().equals("Hand")) {
+            terminalOutput = "you can't set this card";
+            return;
+        }
+        if (card instanceof Monster && (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase"))) {
+            terminalOutput = "you can't do this action phase";
             return;
         }
         if (mat.isMonsterZoneIsFull()){
             terminalOutput = "monster card zone is full";
             return;
         }
-    }
-
-    public void set() {
-
+        if (currentTurnPlayer.isSummoned()){
+            terminalOutput = "you already summoned/set on this turn";
+            return;
+        }
+        //set
+        terminalOutput="set successfully";
     }
 
     public void changeCardPosition(boolean isOnAttack) {
-
+        Card card=currentTurnPlayer.getCurrentSelectedCard();
+        if (currentTurnPlayer.getCurrentSelectedCard()==null){
+            terminalOutput = "no card is selected yet";
+            return;
+        }
+        if (!currentTurnPlayer.getSelectedName().equals("Monster")){
+            terminalOutput = "you can;t change this card position";
+            return;
+        }
+        if ((!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase"))) {
+            terminalOutput = "you can't do this action phase";
+            return;
+        }
+        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())){
+            terminalOutput = "this card is already in the wanted position";
+            return;
+        }
+        if (currentTurnPlayer.getMat().isChangedCard(currentTurnPlayer.getNumberOfMonsterZone())){
+            terminalOutput = "you already changed this card position in this turn";
+            return;
+        }
+        terminalOutput = "monster card position changed successfully";
+        currentTurnPlayer.getMat().setIsChanged(true, currentTurnPlayer.getNumberOfMonsterZone());
+        card.setAttack(isOnAttack);
     }
 
     public void flipSummon() {

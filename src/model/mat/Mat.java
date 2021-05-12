@@ -11,15 +11,25 @@ public class Mat {
     private Card[] spellAndTrapZone = new Card[5];
     private Card fieldZone;
     private Card[] handCard = new Card[6];
+    private boolean[] isChanged = new boolean[5];
 
     public Mat(){
         for (int i = 0; i < 5; i++) {
             monsterZone[i]=null;
             spellAndTrapZone[i]=null;
             handCard[i]=null;
+            isChanged[i]=false;
         }
         handCard[5]=null;
         fieldZone=null;
+    }
+
+    public void setIsChanged(boolean isChanged,int number) {
+        this.isChanged[number] = isChanged;
+    }
+
+    public boolean isChangedCard(int number){
+        return isChanged[number];
     }
 
     public boolean setHandCard(Card card){

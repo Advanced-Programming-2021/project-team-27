@@ -10,6 +10,16 @@ public class Card {
     protected String description;
     protected String id;
     protected int price;
+    protected boolean isAttack = false;
+    protected boolean isOn;
+
+    public boolean isAttack() {
+        return isAttack;
+    }
+
+    public void setAttack(boolean attack) {
+        isAttack = attack;
+    }
 
     public String getDescription() {
         return description;
