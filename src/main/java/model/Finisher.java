@@ -1,6 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import model.user.User;
 
@@ -16,7 +15,7 @@ public class Finisher {
         for (User user : allUsers) {
 
             Gson gson = new Gson();
-            String fileAddress = "resources/users/" + user.getUsername() + ".json";
+            String fileAddress = "src/main/resources/users/" + user.getUsername() + ".json";
 
             try (FileWriter writer = new FileWriter(fileAddress)) {
                 gson.toJson(user, writer);

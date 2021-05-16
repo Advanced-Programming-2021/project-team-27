@@ -1,6 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import model.card.Monster;
 import model.card.Spell;
@@ -82,7 +81,7 @@ public class Initializer {
         for (int i = 1; i < monsterTexts.size(); i++) {
             List<String> monsterText = monsterTexts.get(i);
             JSONObject monster = new JSONObject();
-            String fileAddress = "resources/cards/monsters/" + monsterText.get(0) + ".json";
+            String fileAddress = "src/main/resources/cards/monsters/" + monsterText.get(0) + ".json";
             monster.put("name", monsterText.get(0));
             monster.put("level", monsterText.get(1));
             monster.put("attribute", monsterText.get(2));
@@ -106,7 +105,7 @@ public class Initializer {
             List<String> spellAndTrapText = spellAndTrapTexts.get(i);
 
             if (spellAndTrapText.get(1).equals("Trap")) {
-                String fileAddress = "resources/cards/traps/" + spellAndTrapText.get(0) + ".json";
+                String fileAddress = "src/main/resources/cards/traps/" + spellAndTrapText.get(0) + ".json";
                 JSONObject trap = new JSONObject();
                 trap.put("name", spellAndTrapText.get(0));
                 trap.put("type", spellAndTrapText.get(1));
@@ -121,7 +120,7 @@ public class Initializer {
                     e.printStackTrace();
                 }
             } else {
-                String fileAddress = "resources/cards/spells/" + spellAndTrapText.get(0) + ".json";
+                String fileAddress = "src/main/resources/cards/spells/" + spellAndTrapText.get(0) + ".json";
                 JSONObject spell = new JSONObject();
                 spell.put("name", spellAndTrapText.get(0));
                 spell.put("type", spellAndTrapText.get(1));
@@ -142,7 +141,7 @@ public class Initializer {
     }
 
     private static void addUsers() throws IOException {
-        File directoryPath = new File("resources/users");
+        File directoryPath = new File("src/main/resources/users");
         File[] filesList = directoryPath.listFiles();
         assert filesList != null;
         for (File file : filesList) {
@@ -155,25 +154,25 @@ public class Initializer {
         }
     }
 
-    private static void showAllUsers() throws IOException, ParseException {
-        File directoryPath = new File("resources/users");
-        File[] filesList = directoryPath.listFiles();
-        assert filesList != null;
-        for (File file : filesList) {
-            Reader reader = new FileReader(file);
-            JSONParser jsonParser = new JSONParser();
-            Object obj = jsonParser.parse(reader);
-            JSONObject userJSON = (JSONObject) obj;
-            ObjectMapper objectMapper = new ObjectMapper();
-            User user1 = objectMapper.readValue(userJSON.toJSONString(), User.class);
-            System.out.println(user1);
-            System.out.println("username: " + userJSON.get("username"));
-            System.out.println("password: " + userJSON.get("password"));
-            System.out.println("nickname: " + userJSON.get("nickname"));
-            System.out.println(" ");
-            System.out.println(" ");
-            System.out.println(" ");
-        }
-    }
+//    private static void showAllUsers() throws IOException, ParseException {
+//        File directoryPath = new File("src/main/resources/users");
+//        File[] filesList = directoryPath.listFiles();
+//        assert filesList != null;
+//        for (File file : filesList) {
+//            Reader reader = new FileReader(file);
+//            JSONParser jsonParser = new JSONParser();
+//            Object obj = jsonParser.parse(reader);
+//            JSONObject userJSON = (JSONObject) obj;
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            User user1 = objectMapper.readValue(userJSON.toJSONString(), User.class);
+//            System.out.println(user1);
+//            System.out.println("username: " + userJSON.get("username"));
+//            System.out.println("password: " + userJSON.get("password"));
+//            System.out.println("nickname: " + userJSON.get("nickname"));
+//            System.out.println(" ");
+//            System.out.println(" ");
+//            System.out.println(" ");
+//        }
+//    }
 
 }

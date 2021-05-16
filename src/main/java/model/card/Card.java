@@ -11,6 +11,51 @@ public class Card {
     protected String id;
     protected String ownerUsername;
     protected int price;
+    protected boolean isField = false;
+    protected boolean isAttack = false;
+    protected boolean isOn;
+    protected int attack;
+    protected int defence;
+
+    public boolean isAttack() {
+        return isAttack;
+    }
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setOn(boolean isOn) {
+        this.isOn = isOn;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
+
+    public boolean isField() {
+        return isField;
+    }
+
+    public void setField(boolean field) {
+        isField = field;
+    }
+
+    public void setAttack(boolean attack) {
+        isAttack = attack;
+    }
 
     public String getDescription() {
         return description;
@@ -55,7 +100,7 @@ public class Card {
             cardInfo += spell.getName() + "\n" + "Spell" + "\n";
             cardInfo += "Type : " + spell.icon + "\n";
             cardInfo += "Description : " + spell.getDescription() + "\n";
-        } else if (card.cardType.equals("Trap")){
+        } else if (card.cardType.equals("Trap")) {
             Trap trap = Trap.getTrapByName(name);
             cardInfo += trap.getName() + "\n" + "Trap" + "\n";
             cardInfo += "Type : " + trap.icon + "\n";

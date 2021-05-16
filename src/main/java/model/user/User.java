@@ -29,7 +29,7 @@ public class User {
         setUsername(username);
         setPassword(password);
         setNickname(nickname);
-        setScore(score);
+        setScore(0);
         cards = new ArrayList<>();
         decks = new HashMap<>();
         setCredit(0);
@@ -40,7 +40,7 @@ public class User {
         newUser.put("nickname", nickname);
         JSONObject userDecks = new JSONObject();
         newUser.put("decks", userDecks);
-        String fileAddress = "resources/users/" + username + ".json";
+        String fileAddress = "src/main/resources/users/" + username + ".json";
         try (FileWriter file = new FileWriter(fileAddress)) {
             file.write(newUser.toJSONString());
             file.flush();
@@ -147,11 +147,6 @@ public class User {
     }
 
 
-    public boolean isDeckNameIdentical(String deckName) {
-
-        //To Do
-        return true;
-    }
 
     public boolean isUserLoggedIn() {
         return isUserLoggedIn;

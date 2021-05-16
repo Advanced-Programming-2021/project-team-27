@@ -10,7 +10,10 @@ public class Player {
     private User user;
     private ArrayList<Card> selectedCards = new ArrayList<>();
     private Card currentSelectedCard;
+    private int numberOfMonsterZone;
     private Mat mat;
+    private String selectedName;
+    private boolean isSummoned = false;
     private int lifePoint;
 
 
@@ -21,12 +24,32 @@ public class Player {
         currentSelectedCard=null;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setNumberOfMonsterZone(int numberOfMonsterZone) {
+        this.numberOfMonsterZone = numberOfMonsterZone;
+    }
+
+    public int getNumberOfMonsterZone() {
+        return numberOfMonsterZone;
+    }
+
     public void changeLifePoint(int change){
         this.lifePoint+=change;
     }
 
     public Mat getMat() {
         return mat;
+    }
+
+    public void setSelectedName(String selectedName) {
+        this.selectedName = selectedName;
+    }
+
+    public String getSelectedName() {
+        return selectedName;
     }
 
     private void setUser(User user) {
@@ -53,6 +76,12 @@ public class Player {
     public int getLifePoint() {
         return lifePoint;
     }
+
+    public boolean isSummoned() {
+        return isSummoned;
+    }
+
+
 
 
     public void changeScore(){
