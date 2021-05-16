@@ -98,6 +98,15 @@ public class Mat {
         return true;
     }
 
+    public boolean isHandFull(){
+        for (int i = 0; i < 6; i++) {
+            if (handCard[i] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String printMat(Deck deck, boolean isReversed){
         MainDeck mainDeck = deck.getMainDeck();
         String ret = "";
@@ -145,6 +154,15 @@ public class Mat {
                 ret += "H    ";
         }
         return ret;
+    }
+
+    public void addToHand(Card card){
+        for (int i = 0; i < 6; i++) {
+            if (handCard[i]==null){
+                handCard[i]=card;
+                return;
+            }
+        }
     }
 }
 
