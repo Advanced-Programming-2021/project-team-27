@@ -32,14 +32,13 @@ public class Mat {
         return isChanged[number];
     }
 
-    public boolean setHandCard(Card card){
+    public boolean isHandFull(){
         for (int i = 0; i < 6; i++) {
-            if (handCard[i]==null){
-                handCard[i]=card;
-                return true;
+            if (handCard[i] == null) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public void setFieldZone(Card fieldZone) {
@@ -94,6 +93,15 @@ public class Mat {
             }
         }
         return true;
+    }
+
+    public void addToHand(Card card){
+        for (int i = 0; i < 6; i++) {
+            if (handCard[i]==null){
+                handCard[i]=card;
+                return;
+            }
+        }
     }
 
     public String printMat(){
