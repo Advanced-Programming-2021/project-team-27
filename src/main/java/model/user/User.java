@@ -147,11 +147,6 @@ public class User {
     }
 
 
-    public boolean isDeckNameIdentical(String deckName) {
-
-        //To Do
-        return true;
-    }
 
     public boolean isUserLoggedIn() {
         return isUserLoggedIn;

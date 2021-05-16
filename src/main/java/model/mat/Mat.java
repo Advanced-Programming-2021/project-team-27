@@ -2,6 +2,8 @@ package model.mat;
 
 import model.card.Card;
 import model.card.Monster;
+import model.user.Deck;
+import model.user.MainDeck;
 
 import java.util.ArrayList;
 
@@ -96,8 +98,53 @@ public class Mat {
         return true;
     }
 
-    public String printMat(){
-        return "k";
+    public String printMat(Deck deck, boolean isReversed){
+        MainDeck mainDeck = deck.getMainDeck();
+        String ret = "";
+        if (isReversed){
+            for (int i=0; i<6; i++) if (handCard[i] != null)
+                ret += "c   ";
+            ret += "\n" + mainDeck.getMainDeckSize();
+            ret += "\n" + printSpellZone();
+            ret += "\n" + printMonsterZone() + "\n";
+            ret += graveyard.size() + "                  " + ((fieldZone == null) ? "E" : "O");
+        } else {
+            ret += ((fieldZone == null) ? "E" : "O") + "                  " + graveyard.size();
+            ret += "\n" + printMonsterZone();
+            ret += "\n" + printSpellZone();
+            ret += "\n                  " + mainDeck.getMainDeckSize() + "\n";
+            for (int i=0; i<6; i++) if (handCard[i] != null)
+                ret += "c   ";
+        }
+        return  ret + "\n";
+    }
+
+    private String printMonsterZone(){
+        String ret = "";
+        for (int i=0; i<5; i++){
+            if (monsterZone[i] == null)
+                ret += "E    ";
+            else if (!monsterZone[i].isAttack() && monsterZone[i].isOn())
+                ret += "DO   ";
+            else if (!monsterZone[i].isAttack() && !monsterZone[i].isOn())
+                ret += "DH   ";
+            else if (monsterZone[i].isAttack())
+                ret += "OO   ";
+        }
+        return ret;
+    }
+
+    private String printSpellZone(){
+        String ret = "";
+        for (int i=0; i<5; i++){
+            if (spellAndTrapZone[i] == null)
+                ret += "E    ";
+            else if (spellAndTrapZone[i].isOn())
+                ret += "O    ";
+            else
+                ret += "H    ";
+        }
+        return ret;
     }
 }
 

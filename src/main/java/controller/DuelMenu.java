@@ -110,14 +110,22 @@ public class DuelMenu {
     }
 
     public void showBoard() {
-
+        String opponentMat = opponentTurnPlayer.getMat().printMat(opponentTurnPlayer.getUser().getActiveDeck(), true);
+        String currentMat = currentTurnPlayer.getMat().printMat(currentTurnPlayer.getUser().getActiveDeck(), false);
+        User currentTurnUser = currentTurnPlayer.getUser();
+        User opponentTurnUser = opponentTurnPlayer.getUser();
+        terminalOutput = opponentTurnUser.getNickname() + " : " + opponentTurnPlayer.getLifePoint();
+        terminalOutput += opponentMat;
+        terminalOutput += "--------------------------------";
+        terminalOutput += currentMat;
+        terminalOutput = currentTurnUser.getNickname() + " : " + currentTurnPlayer.getLifePoint();
     }
 
     public void selectMonster(int number, boolean isOpponent) {
         if (!isOpponent) {
             selectMonsterCheck(number, currentTurnPlayer, 3, 1, 4, 0);
             currentTurnPlayer.setSelectedName("Monster");
-            switch (number){
+            switch (number) {
                 case 1:
                     currentTurnPlayer.setNumberOfMonsterZone(2);
                     break;
@@ -329,25 +337,25 @@ public class DuelMenu {
             terminalOutput = "you can't do this action phase";
             return;
         }
-        if (mat.isMonsterZoneIsFull()){
+        if (mat.isMonsterZoneIsFull()) {
             terminalOutput = "monster card zone is full";
             return;
         }
-        if (currentTurnPlayer.isSummoned()){
+        if (currentTurnPlayer.isSummoned()) {
             terminalOutput = "you already summoned/set on this turn";
             return;
         }
         //set
-        terminalOutput="set successfully";
+        terminalOutput = "set successfully";
     }
 
     public void changeCardPosition(boolean isOnAttack) {
-        Card card=currentTurnPlayer.getCurrentSelectedCard();
-        if (currentTurnPlayer.getCurrentSelectedCard()==null){
+        Card card = currentTurnPlayer.getCurrentSelectedCard();
+        if (currentTurnPlayer.getCurrentSelectedCard() == null) {
             terminalOutput = "no card is selected yet";
             return;
         }
-        if (!currentTurnPlayer.getSelectedName().equals("Monster")){
+        if (!currentTurnPlayer.getSelectedName().equals("Monster")) {
             terminalOutput = "you can;t change this card position";
             return;
         }
@@ -355,11 +363,11 @@ public class DuelMenu {
             terminalOutput = "you can't do this action phase";
             return;
         }
-        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())){
+        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())) {
             terminalOutput = "this card is already in the wanted position";
             return;
         }
-        if (currentTurnPlayer.getMat().isChangedCard(currentTurnPlayer.getNumberOfMonsterZone())){
+        if (currentTurnPlayer.getMat().isChangedCard(currentTurnPlayer.getNumberOfMonsterZone())) {
             terminalOutput = "you already changed this card position in this turn";
             return;
         }
@@ -369,16 +377,126 @@ public class DuelMenu {
     }
 
     public void flipSummon() {
-
+        Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
+        if (selectedCard == null) {
+            terminalOutput = "no card is selected yet";
+            return;
+        }
+        Mat mat = currentTurnPlayer.getMat();
+        boolean isInMonsters = false;
+        for (int i = 0; i < 5; i++) {
+            if (mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+                isInMonsters = true;
+        }
+        if (!isInMonsters) {
+            terminalOutput = "you can’t change this card position";
+            return;
+        }
+        if (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase")) {
+            terminalOutput = "you can’t do this action in this phase";
+            return;
+        }
+        if (!(!selectedCard.isOn() && !selectedCard.isAttack())){
+            terminalOutput = "you can’t flip summon this card";
+            return;
+        }
+        terminalOutput = "flip summoned successfully";
+        selectedCard.setAttack(true);
+        selectedCard.setOn(true);
     }
 
     public void attack(int number) {
-
-
+        Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
+        if (selectedCard == null) {
+            terminalOutput = "no card is selected yet";
+            return;
+        }
+        Mat mat = currentTurnPlayer.getMat();
+        boolean isInMonsters = false;
+        for (int i = 0; i < 5; i++) {
+            if (mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+                isInMonsters = true;
+        }
+        if (!isInMonsters) {
+            terminalOutput = "you can’t attack with this card";
+            return;
+        }
+        if (!phase.getCurrentPhase().equals("Battle Phase")) {
+            terminalOutput = "you can’t do this action in this phase";
+            return;
+        }
+        Mat opponentMat = opponentTurnPlayer.getMat();
+        if (opponentMat.getMonsterZone(number) == null) {
+            terminalOutput = "there is no card to attack here";
+            return;
+        }
+        Card attackedCard = opponentMat.getMonsterZone(number);
+        if (attackedCard.isAttack()) {
+            int attackDifference = selectedCard.getAttack() - attackedCard.getAttack();
+            if (attackDifference > 0) {
+                opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - attackDifference);
+                terminalOutput = "your opponent’s monster is destroyed and your opponent receives " +
+                        attackDifference + " battle damage";
+                opponentMat.addCardToGraveyard(attackedCard);
+                opponentMat.setMonsterZone(number, null);
+            } else if (attackDifference == 0) {
+                terminalOutput = "both you and your opponent monster cards are destroyed and no one receives damage";
+                opponentMat.setMonsterZone(number, null);
+                for (int i = 0; i < 5; i++) {
+                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())){
+                        mat.setMonsterZone(i, null);
+                        break;
+                    }
+                }
+            } else {
+                terminalOutput = "Your monster card is destroyed and you received <damage> battle damage";
+                for (int i = 0; i < 5; i++) {
+                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())){
+                        mat.addCardToGraveyard(mat.getMonsterZone(i));
+                        mat.setMonsterZone(i, null);
+                        break;
+                    }
+                }
+            }
+        } else {
+            String prefix = "";
+            if (attackedCard.isOn())
+                prefix = "opponent’s monster card was " + attackedCard.getName() + " and ";
+            int differenceOfAttackAndDefence = selectedCard.getAttack() - attackedCard.getDefence();
+            if (differenceOfAttackAndDefence > 0){
+                terminalOutput = prefix + "the defense position monster is destroyed";
+                opponentMat.setMonsterZone(number, null);
+            } else if (differenceOfAttackAndDefence == 0) {
+                terminalOutput = prefix + "no card is destroyed";
+            } else {
+                terminalOutput = prefix + "no card is destroyed and you received " + (-differenceOfAttackAndDefence) + " battle damage";
+                currentTurnPlayer.setLifePoint(currentTurnPlayer.getLifePoint() + differenceOfAttackAndDefence);
+            }
+        }
     }
 
     public void directAttack() {
         Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
+        if (selectedCard == null) {
+            terminalOutput = "no card is selected yet";
+            return;
+        }
+        Mat mat = currentTurnPlayer.getMat();
+        boolean isInMonsters = false;
+        for (int i = 0; i < 5; i++) {
+            if (mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+                isInMonsters = true;
+        }
+        if (!isInMonsters) {
+            terminalOutput = "you can’t attack with this card";
+            return;
+        }
+        if (!phase.getCurrentPhase().equals("Battle Phase")) {
+            terminalOutput = "you can’t do this action in this phase";
+            return;
+        }
+        terminalOutput = "you opponent receives " + selectedCard.getAttack() + " battle damage";
+        opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - selectedCard.getAttack());
     }
 
     public void activeEffect() {
@@ -396,13 +514,13 @@ public class DuelMenu {
             return;
         }
         Mat mat = currentTurnPlayer.getMat();
-        for (int i = 0; i < 5; i++){
-            if (mat.getSpellAndTrapZone(i).getName().equals(selectedCard.getName())){
+        for (int i = 0; i < 5; i++) {
+            if (mat.getSpellAndTrapZone(i).getName().equals(selectedCard.getName())) {
                 terminalOutput = "you have already activated this card";
                 return;
             }
         }
-        if (mat.isSpellAndTrapZoneIsFull() && !selectedCard.isField()){
+        if (mat.isSpellAndTrapZoneIsFull() && !selectedCard.isField()) {
             terminalOutput = "spell card zone is full";
             return;
         }
@@ -423,8 +541,8 @@ public class DuelMenu {
     }
 
     public void showGraveyard() {
-        ArrayList <Card> graveyard = currentTurnPlayer.getMat().getGraveyard();
-        if (graveyard.size() == 0){
+        ArrayList<Card> graveyard = currentTurnPlayer.getMat().getGraveyard();
+        if (graveyard.size() == 0) {
             terminalOutput += "graveyard empty";
         }
         for (Card card : graveyard)
@@ -468,7 +586,7 @@ public class DuelMenu {
     public boolean hasGameEnded() {
         int firstPlayerHealth = firstPlayer.getLifePoint();
         int secondPlayerHealth = secondPlayer.getLifePoint();
-        if (firstPlayerHealth <= 0){
+        if (firstPlayerHealth <= 0) {
             secondPlayerWins++;
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
@@ -486,10 +604,10 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase=new Phase();
+            this.phase = new Phase();
             numberOfRounds--;
         }
-        if (secondPlayerHealth <= 0){
+        if (secondPlayerHealth <= 0) {
             firstPlayerWins++;
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
@@ -507,7 +625,7 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase=new Phase();
+            this.phase = new Phase();
             numberOfRounds--;
         }
         return false;
