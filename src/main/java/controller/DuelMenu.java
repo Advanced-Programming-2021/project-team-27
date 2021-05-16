@@ -33,6 +33,7 @@ public class DuelMenu {
     private Ai ai;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
+    private boolean isFirstRound;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -586,7 +587,8 @@ public class DuelMenu {
     public boolean hasGameEnded() {
         int firstPlayerHealth = firstPlayer.getLifePoint();
         int secondPlayerHealth = secondPlayer.getLifePoint();
-        if (firstPlayerHealth <= 0) {
+        if (firstPlayerHealth <= 0 ||
+                (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             secondPlayerWins++;
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
@@ -607,7 +609,8 @@ public class DuelMenu {
             this.phase = new Phase();
             numberOfRounds--;
         }
-        if (secondPlayerHealth <= 0) {
+        if (secondPlayerHealth <= 0 ||
+                (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             firstPlayerWins++;
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
@@ -629,6 +632,19 @@ public class DuelMenu {
             numberOfRounds--;
         }
         return false;
+    }
+
+    public void changeTurn() {
+        Player player = currentTurnPlayer;
+        opponentTurnPlayer = currentTurnPlayer;
+        currentTurnPlayer = player;
+        if (isFirstRound) {
+            isFirstRound = false;
+        }
+    }
+
+    public boolean isEndCard() {
+        return currentTurnPlayer.getMainDeckCard().size() == 0;
     }
 
     public String getTerminalOutput() {
