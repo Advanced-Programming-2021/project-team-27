@@ -396,7 +396,7 @@ public class DuelMenu {
             terminalOutput = "you can’t do this action in this phase";
             return;
         }
-        if (!(!selectedCard.isOn() && !selectedCard.isAttack())){
+        if (!(!selectedCard.isOn() && !selectedCard.isAttack())) {
             terminalOutput = "you can’t flip summon this card";
             return;
         }
@@ -443,7 +443,7 @@ public class DuelMenu {
                 terminalOutput = "both you and your opponent monster cards are destroyed and no one receives damage";
                 opponentMat.setMonsterZone(number, null);
                 for (int i = 0; i < 5; i++) {
-                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())){
+                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())) {
                         mat.setMonsterZone(i, null);
                         break;
                     }
@@ -451,7 +451,7 @@ public class DuelMenu {
             } else {
                 terminalOutput = "Your monster card is destroyed and you received <damage> battle damage";
                 for (int i = 0; i < 5; i++) {
-                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())){
+                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())) {
                         mat.addCardToGraveyard(mat.getMonsterZone(i));
                         mat.setMonsterZone(i, null);
                         break;
@@ -463,7 +463,7 @@ public class DuelMenu {
             if (attackedCard.isOn())
                 prefix = "opponent’s monster card was " + attackedCard.getName() + " and ";
             int differenceOfAttackAndDefence = selectedCard.getAttack() - attackedCard.getDefence();
-            if (differenceOfAttackAndDefence > 0){
+            if (differenceOfAttackAndDefence > 0) {
                 terminalOutput = prefix + "the defense position monster is destroyed";
                 opponentMat.setMonsterZone(number, null);
             } else if (differenceOfAttackAndDefence == 0) {
