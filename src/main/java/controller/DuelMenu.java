@@ -33,6 +33,7 @@ public class DuelMenu {
     private Ai ai;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
+    private boolean isFirstRound;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -78,6 +79,7 @@ public class DuelMenu {
         firstPlayer = new Player(this.currentUser);
         secondPlayer = new Player(this.secondUser);
         this.phase = new Phase();
+        isFirstRound = true;
     }
 
 
@@ -117,7 +119,7 @@ public class DuelMenu {
         if (!isOpponent) {
             selectMonsterCheck(number, currentTurnPlayer, 3, 1, 4, 0);
             currentTurnPlayer.setSelectedName("Monster");
-            switch (number){
+            switch (number) {
                 case 1:
                     currentTurnPlayer.setNumberOfMonsterZone(2);
                     break;
@@ -329,25 +331,25 @@ public class DuelMenu {
             terminalOutput = "you can't do this action phase";
             return;
         }
-        if (mat.isMonsterZoneIsFull()){
+        if (mat.isMonsterZoneIsFull()) {
             terminalOutput = "monster card zone is full";
             return;
         }
-        if (currentTurnPlayer.isSummoned()){
+        if (currentTurnPlayer.isSummoned()) {
             terminalOutput = "you already summoned/set on this turn";
             return;
         }
         //set
-        terminalOutput="set successfully";
+        terminalOutput = "set successfully";
     }
 
     public void changeCardPosition(boolean isOnAttack) {
-        Card card=currentTurnPlayer.getCurrentSelectedCard();
-        if (currentTurnPlayer.getCurrentSelectedCard()==null){
+        Card card = currentTurnPlayer.getCurrentSelectedCard();
+        if (currentTurnPlayer.getCurrentSelectedCard() == null) {
             terminalOutput = "no card is selected yet";
             return;
         }
-        if (!currentTurnPlayer.getSelectedName().equals("Monster")){
+        if (!currentTurnPlayer.getSelectedName().equals("Monster")) {
             terminalOutput = "you can;t change this card position";
             return;
         }
@@ -355,11 +357,11 @@ public class DuelMenu {
             terminalOutput = "you can't do this action phase";
             return;
         }
-        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())){
+        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())) {
             terminalOutput = "this card is already in the wanted position";
             return;
         }
-        if (currentTurnPlayer.getMat().isChangedCard(currentTurnPlayer.getNumberOfMonsterZone())){
+        if (currentTurnPlayer.getMat().isChangedCard(currentTurnPlayer.getNumberOfMonsterZone())) {
             terminalOutput = "you already changed this card position in this turn";
             return;
         }
@@ -396,13 +398,13 @@ public class DuelMenu {
             return;
         }
         Mat mat = currentTurnPlayer.getMat();
-        for (int i = 0; i < 5; i++){
-            if (mat.getSpellAndTrapZone(i).getName().equals(selectedCard.getName())){
+        for (int i = 0; i < 5; i++) {
+            if (mat.getSpellAndTrapZone(i).getName().equals(selectedCard.getName())) {
                 terminalOutput = "you have already activated this card";
                 return;
             }
         }
-        if (mat.isSpellAndTrapZoneIsFull() && !selectedCard.isField()){
+        if (mat.isSpellAndTrapZoneIsFull() && !selectedCard.isField()) {
             terminalOutput = "spell card zone is full";
             return;
         }
@@ -423,8 +425,8 @@ public class DuelMenu {
     }
 
     public void showGraveyard() {
-        ArrayList <Card> graveyard = currentTurnPlayer.getMat().getGraveyard();
-        if (graveyard.size() == 0){
+        ArrayList<Card> graveyard = currentTurnPlayer.getMat().getGraveyard();
+        if (graveyard.size() == 0) {
             terminalOutput += "graveyard empty";
         }
         for (Card card : graveyard)
@@ -468,7 +470,8 @@ public class DuelMenu {
     public boolean hasGameEnded() {
         int firstPlayerHealth = firstPlayer.getLifePoint();
         int secondPlayerHealth = secondPlayer.getLifePoint();
-        if (firstPlayerHealth <= 0){
+        if (firstPlayerHealth <= 0 ||
+                (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             secondPlayerWins++;
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
@@ -486,10 +489,11 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase=new Phase();
+            this.phase = new Phase();
             numberOfRounds--;
         }
-        if (secondPlayerHealth <= 0){
+        if (secondPlayerHealth <= 0 ||
+                (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             firstPlayerWins++;
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
@@ -507,10 +511,23 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase=new Phase();
+            this.phase = new Phase();
             numberOfRounds--;
         }
         return false;
+    }
+
+    public void changeTurn() {
+        Player player = currentTurnPlayer;
+        opponentTurnPlayer = currentTurnPlayer;
+        currentTurnPlayer = player;
+        if (isFirstRound) {
+            isFirstRound = false;
+        }
+    }
+
+    public boolean isEndCard() {
+        return currentTurnPlayer.getMainDeckCard().size() == 0;
     }
 
     public String getTerminalOutput() {
