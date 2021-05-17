@@ -80,6 +80,16 @@ public class Mat {
         return this.monsterZone[number];
     }
 
+    public int getNumberOfCardMonsterZone(){
+        int number = 0;
+        for (int i = 0; i < 5; i++) {
+            if (monsterZone[i] != null){
+                number+=1;
+            }
+        }
+        return number;
+    }
+
     public boolean isMonsterZoneIsFull(){
         for (int i = 0; i < 5; i++) {
             if (monsterZone[i] == null){
@@ -92,6 +102,15 @@ public class Mat {
     public boolean isSpellAndTrapZoneIsFull(){
         for (int i = 0; i < 5; i++) {
             if (spellAndTrapZone[i] == null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isHandFull(){
+        for (int i = 0; i < 6; i++) {
+            if (handCard[i] == null) {
                 return false;
             }
         }
@@ -145,6 +164,15 @@ public class Mat {
                 ret += "H    ";
         }
         return ret;
+    }
+
+    public void addToHand(Card card){
+        for (int i = 0; i < 6; i++) {
+            if (handCard[i]==null){
+                handCard[i]=card;
+                return;
+            }
+        }
     }
 }
 

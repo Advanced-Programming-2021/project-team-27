@@ -33,6 +33,7 @@ public class DuelMenu {
     private Ai ai;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
+    private boolean isFirstRound;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -77,7 +78,7 @@ public class DuelMenu {
         isDuelIsOn = true;
         firstPlayer = new Player(this.currentUser);
         secondPlayer = new Player(this.secondUser);
-        this.phase = new Phase();
+        this.phase = new Phase(this);
     }
 
 
@@ -319,7 +320,29 @@ public class DuelMenu {
             terminalOutput = "monster card zone is full";
             return;
         }
-        //Other;
+        if (currentTurnPlayer.isSummoned()) {
+            terminalOutput = "you already summoned/set on this turn";
+            return;
+        }
+        if (!isEnoughCardForTribute()){
+            terminalOutput = "there are not enough cards for tribute";
+        }
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        if (monster.getLevel()>4){
+            //summon with tribute
+        }
+        //normal summon or special
+
+    }
+
+    public boolean isEnoughCardForTribute(){
+        Mat mat = currentTurnPlayer.getMat();
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        if (monster.getLevel()<=4)
+            return true;
+        if (monster.getLevel()<=6)
+            return mat.getNumberOfCardMonsterZone() >= 1;
+        return mat.getNumberOfCardMonsterZone() >= 2;
     }
 
     public void set() {
@@ -586,7 +609,8 @@ public class DuelMenu {
     public boolean hasGameEnded() {
         int firstPlayerHealth = firstPlayer.getLifePoint();
         int secondPlayerHealth = secondPlayer.getLifePoint();
-        if (firstPlayerHealth <= 0) {
+        if (firstPlayerHealth <= 0 ||
+                (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             secondPlayerWins++;
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
@@ -604,10 +628,11 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase = new Phase();
+            this.phase = new Phase(this);
             numberOfRounds--;
         }
-        if (secondPlayerHealth <= 0) {
+        if (secondPlayerHealth <= 0 ||
+                (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             firstPlayerWins++;
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
@@ -625,10 +650,23 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase = new Phase();
+            this.phase = new Phase(this);
             numberOfRounds--;
         }
         return false;
+    }
+
+    public void changeTurn() {
+        Player player = currentTurnPlayer;
+        opponentTurnPlayer = currentTurnPlayer;
+        currentTurnPlayer = player;
+        if (isFirstRound) {
+            isFirstRound = false;
+        }
+    }
+
+    public boolean isEndCard() {
+        return currentTurnPlayer.getMainDeckCard().size() == 0;
     }
 
     public String getTerminalOutput() {
