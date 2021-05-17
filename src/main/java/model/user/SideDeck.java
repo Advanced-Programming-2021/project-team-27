@@ -5,7 +5,7 @@ import model.card.Card;
 import java.util.ArrayList;
 
 public class SideDeck {
-    private ArrayList<Card> sideDeckCards;
+    private ArrayList<Card> sideDeckCards = new ArrayList<>();
 
     public ArrayList<Card> getSideDeckCards() {
         return sideDeckCards;
@@ -13,10 +13,6 @@ public class SideDeck {
 
     public int getSideDeckSize(){
         return sideDeckCards.size();
-    }
-
-    public ArrayList<Card> sortDeckCardByName() {
-        return sideDeckCards;
     }
 
     public void addCard(Card card){
@@ -27,11 +23,4 @@ public class SideDeck {
         sideDeckCards.remove(card);
     }
 
-    public String toStringsSpellAndTrap(){
-        return "mame";
-    }
-
-    public String toStringMonsters() {
-        return "do";
-    }
 }

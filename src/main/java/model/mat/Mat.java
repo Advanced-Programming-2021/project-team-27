@@ -8,7 +8,7 @@ import model.user.MainDeck;
 import java.util.ArrayList;
 
 public class Mat {
-    private ArrayList<Card> graveyard;
+    private ArrayList<Card> graveyard = new ArrayList<>();
     private Monster[] monsterZone = new Monster[5];
     private Card[] spellAndTrapZone = new Card[5];
     private Card fieldZone;
@@ -56,8 +56,8 @@ public class Mat {
         this.monsterZone[number]=monster;
     }
 
-    public void setSpellAndTrapZone(Card[] spellAndTrapZone) {
-        this.spellAndTrapZone = spellAndTrapZone;
+    public void setSpellAndTrapZone(int number, Card card) {
+        this.spellAndTrapZone[number] = card;
     }
 
     public ArrayList<Card> getGraveyard() {
