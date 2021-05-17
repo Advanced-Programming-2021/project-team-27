@@ -1,5 +1,6 @@
 package model.battle;
 
+import controller.DuelMenu;
 import model.card.Card;
 import model.user.Deck;
 
@@ -9,10 +10,15 @@ public class Phase {
 
     private String currentPhase;
     private String terminalOutput;
+    private DuelMenu duelMenu;
 
-
-    public Phase() {
+    public Phase(DuelMenu duelMenu) {
         currentPhase = "Draw Phase";
+        setDuelMenu(duelMenu);
+    }
+
+    public void setDuelMenu(DuelMenu duelMenu) {
+        this.duelMenu = duelMenu;
     }
 
     public void nextPhase() {
@@ -67,7 +73,8 @@ public class Phase {
     }
 
     public void endPhase(Player player) {
-
+        terminalOutput = "its "+player.getUser().getNickname()+"'s turn";
+        duelMenu.changeTurn();
     }
 
 

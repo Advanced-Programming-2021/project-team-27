@@ -78,7 +78,7 @@ public class DuelMenu {
         isDuelIsOn = true;
         firstPlayer = new Player(this.currentUser);
         secondPlayer = new Player(this.secondUser);
-        this.phase = new Phase();
+        this.phase = new Phase(this);
     }
 
 
@@ -320,7 +320,29 @@ public class DuelMenu {
             terminalOutput = "monster card zone is full";
             return;
         }
-        //Other;
+        if (currentTurnPlayer.isSummoned()) {
+            terminalOutput = "you already summoned/set on this turn";
+            return;
+        }
+        if (!isEnoughCardForTribute()){
+            terminalOutput = "there are not enough cards for tribute";
+        }
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        if (monster.getLevel()>4){
+            //summon with tribute
+        }
+        //normal summon or special
+
+    }
+
+    public boolean isEnoughCardForTribute(){
+        Mat mat = currentTurnPlayer.getMat();
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        if (monster.getLevel()<=4)
+            return true;
+        if (monster.getLevel()<=6)
+            return mat.getNumberOfCardMonsterZone() >= 1;
+        return mat.getNumberOfCardMonsterZone() >= 2;
     }
 
     public void set() {
@@ -606,7 +628,7 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase = new Phase();
+            this.phase = new Phase(this);
             numberOfRounds--;
         }
         if (secondPlayerHealth <= 0 ||
@@ -628,7 +650,7 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase = new Phase();
+            this.phase = new Phase(this);
             numberOfRounds--;
         }
         return false;

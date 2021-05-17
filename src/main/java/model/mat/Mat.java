@@ -80,6 +80,16 @@ public class Mat {
         return this.monsterZone[number];
     }
 
+    public int getNumberOfCardMonsterZone(){
+        int number = 0;
+        for (int i = 0; i < 5; i++) {
+            if (monsterZone[i] != null){
+                number+=1;
+            }
+        }
+        return number;
+    }
+
     public boolean isMonsterZoneIsFull(){
         for (int i = 0; i < 5; i++) {
             if (monsterZone[i] == null){

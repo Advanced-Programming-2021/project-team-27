@@ -28,6 +28,9 @@ public class Monster extends Card{
         return isAttack;
     }
 
+    public int getLevel(){
+        return level;
+    }
 
     public static Monster getMonsterByName(String name) {
         for (Monster monster : allMonsters) {
