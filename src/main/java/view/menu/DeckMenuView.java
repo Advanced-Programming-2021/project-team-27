@@ -71,8 +71,9 @@ public class DeckMenuView {
             else if (input.matches("deck show --cards") || input.matches("deck show -c"))
                 showAllCards();
 
-            else if ((getMatcher(input, "card show ([\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "card show ([\\w]+)")).matches()) {
                 cardShow(matcher);
+            }
 
             else if ((getMatcher(input, "menu enter [\\w]+")).matches())
                 TerminalOutput.output("menu navigation is not possible");
