@@ -1,11 +1,24 @@
 package model.battle;
 
+import controller.DuelMenu;
+import model.card.Card;
+import model.user.Deck;
+
+import java.util.ArrayList;
+
 public class Phase {
 
     private String currentPhase;
+    private String terminalOutput;
+    private DuelMenu duelMenu;
 
-    public Phase() {
+    public Phase(DuelMenu duelMenu) {
         currentPhase = "Draw Phase";
+        setDuelMenu(duelMenu);
+    }
+
+    public void setDuelMenu(DuelMenu duelMenu) {
+        this.duelMenu = duelMenu;
     }
 
     public void nextPhase() {
@@ -32,28 +45,36 @@ public class Phase {
         return currentPhase;
     }
 
-    public void drawPhase() {
+    public void drawPhase(Player player) {
+        ArrayList<Card> cards=player.getMainDeckCard();
+        if (player.getMat().isHandFull()){
+            terminalOutput = "Hand is full";
+            return;
+        }
+        player.getMat().addToHand(cards.get(cards.size()-1));
+        terminalOutput = "new card added to hand: "+cards.get(cards.size()-1).getName();
+        player.deleteCard();
+    }
+
+    public void standbyPhase(Player player) {
 
     }
 
-    public void standbyPhase() {
+    public void firstMainPhase(Player player) {
 
     }
 
-    public void firstMainPhase() {
+    public void battlePhase(Player player) {
 
     }
 
-    public void battlePhase() {
+    public void secondMainPhase(Player player) {
 
     }
 
-    public void secondMainPhase() {
-
-    }
-
-    public void endPhase() {
-
+    public void endPhase(Player player) {
+        terminalOutput = "its "+player.getUser().getNickname()+"'s turn";
+        duelMenu.changeTurn();
     }
 
 
