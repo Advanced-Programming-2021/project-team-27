@@ -54,7 +54,7 @@ public class DeckMenu {
         if (!decks.containsKey(deckName))
             terminalOutput = "deck with name " + deckName + " does not exist";
         else {
-            Deck deck = Deck.getDeckByName(deckName);
+            Deck deck = Deck.getDeckByName(deckName, currentUser.getUsername());
             currentUser.setActiveDeck(deck);
             terminalOutput = "deck activated successfully";
         }
@@ -180,12 +180,12 @@ public class DeckMenu {
         ArrayList <Card> cards = new ArrayList<>();
         if (!isSideDeck){
             terminalOutput += "Main deck:\nMonsters:\n";
-            MainDeck mainDeck = Deck.getDeckByName(deckName).getMainDeck();
+            MainDeck mainDeck = Deck.getDeckByName(deckName, currentUser.getUsername()).getMainDeck();
             cards = mainDeck.getMainDeckCards();
         }
         if (isSideDeck){
             terminalOutput += "Side deck:\nMonsters:\n";
-            SideDeck sideDeck = Deck.getDeckByName(deckName).getSideDeck();
+            SideDeck sideDeck = Deck.getDeckByName(deckName, currentUser.getUsername()).getSideDeck();
             cards = sideDeck.getSideDeckCards();
         }
         for (Card card : cards){
