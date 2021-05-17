@@ -5,7 +5,7 @@ import model.card.Card;
 import java.util.ArrayList;
 
 public class MainDeck {
-    private ArrayList<Card> mainDeckCards;
+    private ArrayList<Card> mainDeckCards = new ArrayList<>();
 
     public ArrayList<Card> getMainDeckCards() {
         return mainDeckCards;
@@ -13,10 +13,6 @@ public class MainDeck {
 
     public int getMainDeckSize(){
         return mainDeckCards.size();
-    }
-
-    public ArrayList<Card> sortDeckCardByName(){
-        return mainDeckCards;
     }
 
     public void addCard(Card card){
@@ -27,11 +23,4 @@ public class MainDeck {
         mainDeckCards.remove(card);
     }
 
-    public String toStringsSpellAndTrap(){
-        return "mame";
-    }
-
-    public String toStringMonsters() {
-        return "do";
-    }
 }
