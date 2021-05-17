@@ -78,7 +78,7 @@ public class DuelMenu {
         isDuelIsOn = true;
         firstPlayer = new Player(this.currentUser);
         secondPlayer = new Player(this.secondUser);
-        this.phase = new Phase();
+        this.phase = new Phase(this);
     }
 
 
@@ -606,7 +606,7 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase = new Phase();
+            this.phase = new Phase(this);
             numberOfRounds--;
         }
         if (secondPlayerHealth <= 0 ||
@@ -628,7 +628,7 @@ public class DuelMenu {
             }
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
-            this.phase = new Phase();
+            this.phase = new Phase(this);
             numberOfRounds--;
         }
         return false;
