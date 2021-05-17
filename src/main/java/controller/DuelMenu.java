@@ -320,7 +320,29 @@ public class DuelMenu {
             terminalOutput = "monster card zone is full";
             return;
         }
-        //Other;
+        if (currentTurnPlayer.isSummoned()) {
+            terminalOutput = "you already summoned/set on this turn";
+            return;
+        }
+        if (!isEnoughCardForTribute()){
+            terminalOutput = "there are not enough cards for tribute";
+        }
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        if (monster.getLevel()>4){
+            //summon with tribute
+        }
+        //normal summon or special
+
+    }
+
+    public boolean isEnoughCardForTribute(){
+        Mat mat = currentTurnPlayer.getMat();
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        if (monster.getLevel()<=4)
+            return true;
+        if (monster.getLevel()<=6)
+            return mat.getNumberOfCardMonsterZone() >= 1;
+        return mat.getNumberOfCardMonsterZone() >= 2;
     }
 
     public void set() {
