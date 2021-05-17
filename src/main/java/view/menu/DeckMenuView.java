@@ -34,30 +34,30 @@ public class DeckMenuView {
             else if ((matcher = getMatcher(input, "deck set-activate ([\\w]+)")).matches())
                 setActive(matcher);
 
-            else if ((matcher = getMatcher(input, "deck add-card (--card|-c) (?<card>[\\w]+) (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|))")).matches())
+            else if ((matcher = getMatcher(input, "deck add-card (--card|-c) (?<card>[\\w ]+) (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|))")).matches())
                 addCardToDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck add-card (--card|-c) (?<card>[\\w]+)(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck add-card (--card|-c) (?<card>[\\w ]+)(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+)")).matches())
                 addCardToDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck add-card (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w]+)(?<side>( --side| -s|))")).matches())
+            else if ((matcher = getMatcher(input, "deck add-card (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w ]+)(?<side>( --side| -s|))")).matches())
                 addCardToDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck add-card (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|)) (--card|-c) (?<card>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck add-card (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|)) (--card|-c) (?<card>[\\w ]+)")).matches())
                 addCardToDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck add-card(?<side>( --side| -s|))(--card|-c) (?<card>[\\w]+) (--deck|-d) (?<deck>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck add-card(?<side>( --side| -s|))(--card|-c) (?<card>[\\w ]+) (--deck|-d) (?<deck>[\\w]+)")).matches())
                 addCardToDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck add-card(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck add-card(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w ]+)")).matches())
                 addCardToDeck(matcher);
 
-            else if ((matcher = getMatcher(input, "deck rm-card (--card|-c) (?<card>[\\w]+) (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|))")).matches())
+            else if ((matcher = getMatcher(input, "deck rm-card (--card|-c) (?<card>[\\w ]+) (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|))")).matches())
                 removeCardFromDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck rm-card (--card|-c) (?<card>[\\w]+)(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck rm-card (--card|-c) (?<card>[\\w ]+)(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+)")).matches())
                 removeCardFromDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck rm-card (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w]+)(?<side>( --side| -s|))")).matches())
+            else if ((matcher = getMatcher(input, "deck rm-card (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w ]+)(?<side>( --side| -s|))")).matches())
                 removeCardFromDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck rm-card (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|)) (--card|-c) (?<card>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck rm-card (--deck|-d) (?<deck>[\\w]+)(?<side>( --side| -s|)) (--card|-c) (?<card>[\\w ]+)")).matches())
                 removeCardFromDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| -s|)) (--card|-c) (?<card>[\\w]+) (--deck|-d) (?<deck>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| -s|)) (--card|-c) (?<card>[\\w ]+) (--deck|-d) (?<deck>[\\w]+)")).matches())
                 removeCardFromDeck(matcher);
-            else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w]+)")).matches())
+            else if ((matcher = getMatcher(input, "deck rm-card(?<side>( --side| -s|)) (--deck|-d) (?<deck>[\\w]+) (--card|-c) (?<card>[\\w ]+)")).matches())
                 removeCardFromDeck(matcher);
 
             else if (input.matches("deck show --all") || input.matches("deck show -a"))
