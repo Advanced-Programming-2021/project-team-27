@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class Monster extends Card{
     protected static ArrayList<Monster> allMonsters = new ArrayList<>();
     protected int level;
-    protected int defence;
-    protected int attack;
     protected String attribute;
     protected String monsterType;
 
@@ -40,8 +38,6 @@ public class Monster extends Card{
         }
         return null;
     }
-
-
 
 }
 

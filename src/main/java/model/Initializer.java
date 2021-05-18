@@ -154,25 +154,4 @@ public class Initializer {
         }
     }
 
-//    private static void showAllUsers() throws IOException, ParseException {
-//        File directoryPath = new File("src/main/resources/users");
-//        File[] filesList = directoryPath.listFiles();
-//        assert filesList != null;
-//        for (File file : filesList) {
-//            Reader reader = new FileReader(file);
-//            JSONParser jsonParser = new JSONParser();
-//            Object obj = jsonParser.parse(reader);
-//            JSONObject userJSON = (JSONObject) obj;
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            User user1 = objectMapper.readValue(userJSON.toJSONString(), User.class);
-//            System.out.println(user1);
-//            System.out.println("username: " + userJSON.get("username"));
-//            System.out.println("password: " + userJSON.get("password"));
-//            System.out.println("nickname: " + userJSON.get("nickname"));
-//            System.out.println(" ");
-//            System.out.println(" ");
-//            System.out.println(" ");
-//        }
-//    }
-
 }
