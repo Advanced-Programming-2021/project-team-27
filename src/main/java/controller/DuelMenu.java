@@ -6,6 +6,8 @@ import model.battle.Player;
 import model.card.Card;
 import model.card.Monster;
 import model.mat.Mat;
+import model.user.Deck;
+import model.user.MainDeck;
 import model.user.User;
 import view.TerminalOutput;
 import view.menu.MainMenuView;
@@ -34,6 +36,8 @@ public class DuelMenu {
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
+    private User firstRoundWinner;
+    private User secondRoundWinner;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -615,7 +619,8 @@ public class DuelMenu {
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
             terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
-            if (numberOfRounds == 1) {
+            if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == secondPlayer.getUser())) {
+                refresh();
                 int firstPlayerCredit = 100;
                 int secondPlayerCredit = 1000 + secondPlayerMaxLP;
                 if (wholeNumberOfRounds == 3) {
@@ -626,6 +631,7 @@ public class DuelMenu {
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
                 return true;
             }
+            refresh();
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
             this.phase = new Phase(this);
@@ -637,7 +643,8 @@ public class DuelMenu {
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
             terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
-            if (numberOfRounds == 1) {
+            if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == firstPlayer.getUser())) {
+                refresh();
                 int secondPlayerCredit = 100;
                 int firstPlayerCredit = 1000 + firstPlayerMaxLP;
                 if (wholeNumberOfRounds == 3) {
@@ -648,6 +655,7 @@ public class DuelMenu {
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
                 return true;
             }
+            refresh();
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
             this.phase = new Phase(this);
@@ -673,6 +681,21 @@ public class DuelMenu {
         String returnValue = terminalOutput;
         terminalOutput = "";
         return returnValue + "\n";
+    }
+
+    private void refresh() {
+        MainDeck firstDeck = firstPlayer.getUser().getActiveDeck().getMainDeck();
+        MainDeck secondDeck = secondPlayer.getUser().getActiveDeck().getMainDeck();
+        for (Card card : firstDeck.getMainDeckCards()){
+            card.setOn(false);
+            card.setAttack(false);
+            card.setField(false);
+        }
+        for (Card card : secondDeck.getMainDeckCards()){
+            card.setOn(false);
+            card.setAttack(false);
+            card.setField(false);
+        }
     }
 
 }

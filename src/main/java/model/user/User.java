@@ -32,7 +32,7 @@ public class User {
         setScore(0);
         cards = new ArrayList<>();
         decks = new HashMap<>();
-        setCredit(0);
+        setCredit(100000);
         allUsers.add(this);
         JSONObject newUser = new JSONObject();
         newUser.put("username", username);

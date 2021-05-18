@@ -28,7 +28,7 @@ public class ShopMenuView {
             if (input.matches("menu exit")) {
                 TerminalOutput.output("exit successfully!");
                 break;
-            } else if (input.matches("shop buy [\\w]+")) {
+            } else if (input.matches("shop buy [\\w ]+")) {
                 buyCard(input);
             } else if (input.matches("shop show --all") || input.matches("shop show -a"))
                 showAll();
@@ -53,7 +53,7 @@ public class ShopMenuView {
     }
 
     public void buyCard(String input) {
-        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w]+)");
+        Matcher matcher = CommandMatcher.getCommandMatcher(input, "shop buy ([\\w ]+)");
         String cardName = matcher.group(1);
         ShopMenu shopMenu = new ShopMenu(currentUserLoggedInUsername);
         shopMenu.buyCard(cardName);
