@@ -9,6 +9,7 @@ import model.mat.Mat;
 import model.user.Deck;
 import model.user.MainDeck;
 import model.user.User;
+import view.ScanInput;
 import view.TerminalOutput;
 import view.menu.MainMenuView;
 
@@ -290,6 +291,7 @@ public class DuelMenu {
         terminalOutput = "card selected";
         currentTurnPlayer.setSelectedName("Hand");
         currentTurnPlayer.setCurrentSelectedCard(card);
+        currentTurnPlayer.setHandNumber(number);
     }
 
     public void deSelectCard() {
@@ -303,6 +305,9 @@ public class DuelMenu {
 
     public void nextPhase() {
         phase.nextPhase();
+        if (phase.getCurrentPhase().equals("End Phase")){
+            terminalOutput = phase.endPhase(opponentTurnPlayer)+"\n"+phase.drawPhase(currentTurnPlayer);
+        }
     }
 
 
@@ -330,13 +335,54 @@ public class DuelMenu {
         }
         if (!isEnoughCardForTribute()){
             terminalOutput = "there are not enough cards for tribute";
+            return;
         }
         Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
         if (monster.getLevel()>4){
             //summon with tribute
+            return;
         }
-        //normal summon or special
+        terminalOutput = "summon successfully";
+        monster.setAttack(true);
+        monster.setOn(true);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
+    }
 
+    public void summonWithTribute(Monster monster){
+        int counter = 0;
+        String input;
+        Mat mat = currentTurnPlayer.getMat();
+        while (true){
+            input = ScanInput.getInput();
+            int address = Integer.parseInt(input);
+            if (mat.getMonsterZone(address) == null){
+                TerminalOutput.output("there no  monster one this address");
+                continue;
+            }
+            if (mat.getMonsterZone(address) != null){
+                counter+=1;
+                mat.deleteMonsterZone(address);
+            }
+            if (monster.getLevel()<=6 && counter==1)
+                break;
+            if (monster.getLevel()>6 && counter==2){
+                break;
+            }
+        }
+        terminalOutput = "summon successfully";
+        monster.setAttack(true);
+        monster.setOn(true);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
     }
 
     public boolean isEnoughCardForTribute(){
@@ -372,7 +418,15 @@ public class DuelMenu {
             terminalOutput = "you already summoned/set on this turn";
             return;
         }
-        //set
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        monster.setAttack(false);
+        monster.setOn(false);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
         terminalOutput = "set successfully";
     }
 

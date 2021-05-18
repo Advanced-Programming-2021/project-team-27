@@ -21,6 +21,14 @@ public class Trap extends Card{
         Card.addToCards(this);
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public static Trap getTrapByName(String name) {
         for (Trap trap : allTraps) {
             if (trap.name.equals(name)){
