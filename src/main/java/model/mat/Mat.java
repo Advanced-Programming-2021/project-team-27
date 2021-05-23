@@ -15,29 +15,29 @@ public class Mat {
     private Card[] handCard = new Card[6];
     private boolean[] isChanged = new boolean[5];
 
-    public Mat(){
+    public Mat() {
         for (int i = 0; i < 5; i++) {
-            monsterZone[i]=null;
-            spellAndTrapZone[i]=null;
-            handCard[i]=null;
-            isChanged[i]=false;
+            monsterZone[i] = null;
+            spellAndTrapZone[i] = null;
+            handCard[i] = null;
+            isChanged[i] = false;
         }
-        handCard[5]=null;
-        fieldZone=null;
+        handCard[5] = null;
+        fieldZone = null;
     }
 
-    public void setIsChanged(boolean isChanged,int number) {
+    public void setIsChanged(boolean isChanged, int number) {
         this.isChanged[number] = isChanged;
     }
 
-    public boolean isChangedCard(int number){
+    public boolean isChangedCard(int number) {
         return isChanged[number];
     }
 
-    public boolean setHandCard(Card card){
+    public boolean setHandCard(Card card) {
         for (int i = 0; i < 6; i++) {
-            if (handCard[i]==null){
-                handCard[i]=card;
+            if (handCard[i] == null) {
+                handCard[i] = card;
                 return true;
             }
         }
@@ -52,8 +52,8 @@ public class Mat {
         graveyard.add(card);
     }
 
-    public void setMonsterZone(int number,Monster monster) {
-        this.monsterZone[number]=monster;
+    public void setMonsterZone(int number, Monster monster) {
+        this.monsterZone[number] = monster;
     }
 
     public void setSpellAndTrapZone(int number, Card card) {
@@ -72,43 +72,74 @@ public class Mat {
         return spellAndTrapZone[number];
     }
 
-    public Card getHandCard(int number){
+    public Card getHandCard(int number) {
         return this.handCard[number];
+    }
+
+    public void deleteHandCard(int number){
+        handCard[number-1] = null;
+    }
+
+    public void deleteMonsterZone(int address){
+        monsterZone[address] = null;
     }
 
     public Monster getMonsterZone(int number) {
         return this.monsterZone[number];
     }
 
-    public int getNumberOfCardMonsterZone(){
+    public void addMonster(Monster monster) {
+        if (monsterZone[2] == null) {
+            monsterZone[2] = monster;
+            return;
+        }
+        if (monsterZone[3] == null) {
+            monsterZone[3] = monster;
+            return;
+        }
+        if (monsterZone[1] == null) {
+            monsterZone[1] = monster;
+            return;
+        }
+        if (monsterZone[4] == null) {
+            monsterZone[4] = monster;
+            return;
+        }
+        if (monsterZone[0] == null) {
+            monsterZone[0] = monster;
+        }
+
+    }
+
+    public int getNumberOfCardMonsterZone() {
         int number = 0;
         for (int i = 0; i < 5; i++) {
-            if (monsterZone[i] != null){
-                number+=1;
+            if (monsterZone[i] != null) {
+                number += 1;
             }
         }
         return number;
     }
 
-    public boolean isMonsterZoneIsFull(){
+    public boolean isMonsterZoneIsFull() {
         for (int i = 0; i < 5; i++) {
-            if (monsterZone[i] == null){
+            if (monsterZone[i] == null) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isSpellAndTrapZoneIsFull(){
+    public boolean isSpellAndTrapZoneIsFull() {
         for (int i = 0; i < 5; i++) {
-            if (spellAndTrapZone[i] == null){
+            if (spellAndTrapZone[i] == null) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isHandFull(){
+    public boolean isHandFull() {
         for (int i = 0; i < 6; i++) {
             if (handCard[i] == null) {
                 return false;
@@ -117,12 +148,13 @@ public class Mat {
         return true;
     }
 
-    public String printMat(Deck deck, boolean isReversed){
+    public String printMat(Deck deck, boolean isReversed) {
         MainDeck mainDeck = deck.getMainDeck();
         String ret = "";
-        if (isReversed){
-            for (int i=0; i<6; i++) if (handCard[i] != null)
-                ret += "c   ";
+        if (isReversed) {
+            for (int i = 0; i < 6; i++)
+                if (handCard[i] != null)
+                    ret += "c   ";
             ret += "\n" + mainDeck.getMainDeckSize();
             ret += "\n" + printSpellZone();
             ret += "\n" + printMonsterZone() + "\n";
@@ -132,15 +164,16 @@ public class Mat {
             ret += "\n" + printMonsterZone();
             ret += "\n" + printSpellZone();
             ret += "\n                  " + mainDeck.getMainDeckSize() + "\n";
-            for (int i=0; i<6; i++) if (handCard[i] != null)
-                ret += "c   ";
+            for (int i = 0; i < 6; i++)
+                if (handCard[i] != null)
+                    ret += "c   ";
         }
-        return  ret + "\n";
+        return ret + "\n";
     }
 
-    private String printMonsterZone(){
+    private String printMonsterZone() {
         String ret = "";
-        for (int i=0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             if (monsterZone[i] == null)
                 ret += "E    ";
             else if (!monsterZone[i].isAttack() && monsterZone[i].isOn())
@@ -153,9 +186,9 @@ public class Mat {
         return ret;
     }
 
-    private String printSpellZone(){
+    private String printSpellZone() {
         String ret = "";
-        for (int i=0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             if (spellAndTrapZone[i] == null)
                 ret += "E    ";
             else if (spellAndTrapZone[i].isOn())
@@ -166,10 +199,10 @@ public class Mat {
         return ret;
     }
 
-    public void addToHand(Card card){
+    public void addToHand(Card card) {
         for (int i = 0; i < 6; i++) {
-            if (handCard[i]==null){
-                handCard[i]=card;
+            if (handCard[i] == null) {
+                handCard[i] = card;
                 return;
             }
         }

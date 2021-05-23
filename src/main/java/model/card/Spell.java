@@ -21,6 +21,14 @@ public class Spell extends Card{
         Card.addToCards(this);
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public static Spell getSpellByName(String name) {
         for (Spell spell : allSpells) {
             if (spell.name.equals(name)){

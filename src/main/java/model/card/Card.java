@@ -29,6 +29,12 @@ public class Card {
         return attack;
     }
 
+    public String getCardType() {
+        return cardType;
+    }
+
+
+
     public void setOn(boolean isOn) {
         this.isOn = isOn;
     }
