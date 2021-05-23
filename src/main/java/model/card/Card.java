@@ -16,6 +16,7 @@ public class Card {
     protected boolean isOn;
     protected int attack;
     protected int defence;
+    protected boolean isFirstEffectUse = true;
 
     public boolean isAttack() {
         return isAttack;
@@ -27,6 +28,18 @@ public class Card {
 
     public int getAttack() {
         return attack;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public boolean isFirstEffectUse() {
+        return isFirstEffectUse;
+    }
+
+    public void setFirstEffectUse(boolean firstEffectUse) {
+        isFirstEffectUse = firstEffectUse;
     }
 
     public void setOn(boolean isOn) {

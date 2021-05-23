@@ -1,5 +1,6 @@
 import model.Finisher;
 import model.Initializer;
+import model.card.Monster;
 import org.json.simple.parser.ParseException;
 import view.menu.LoginMenuView;
 import java.io.IOException;

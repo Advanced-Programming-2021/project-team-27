@@ -26,6 +26,14 @@ public class Monster extends Card{
         return isAttack;
     }
 
+    public String getMonsterType() {
+        return monsterType;
+    }
+
+    public String getAttribute() {
+        return attribute;
+    }
+
     public int getLevel(){
         return level;
     }

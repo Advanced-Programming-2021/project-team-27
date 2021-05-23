@@ -5,10 +5,13 @@ import model.battle.Phase;
 import model.battle.Player;
 import model.card.Card;
 import model.card.Monster;
+import model.card.Spell;
+import model.card.Trap;
 import model.mat.Mat;
 import model.user.Deck;
 import model.user.MainDeck;
 import model.user.User;
+import view.ScanInput;
 import view.TerminalOutput;
 import view.menu.MainMenuView;
 
@@ -290,6 +293,7 @@ public class DuelMenu {
         terminalOutput = "card selected";
         currentTurnPlayer.setSelectedName("Hand");
         currentTurnPlayer.setCurrentSelectedCard(card);
+        currentTurnPlayer.setHandNumber(number);
     }
 
     public void deSelectCard() {
@@ -303,6 +307,9 @@ public class DuelMenu {
 
     public void nextPhase() {
         phase.nextPhase();
+        if (phase.getCurrentPhase().equals("End Phase")){
+            terminalOutput = phase.endPhase(opponentTurnPlayer)+"\n"+phase.drawPhase(currentTurnPlayer);
+        }
     }
 
 
@@ -330,13 +337,108 @@ public class DuelMenu {
         }
         if (!isEnoughCardForTribute()){
             terminalOutput = "there are not enough cards for tribute";
+            return;
         }
         Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
-        if (monster.getLevel()>4){
-            //summon with tribute
-        }
-        //normal summon or special
 
+        if (monster.getCardType().equals("Normal")) {
+            if (monster.getLevel() > 4) {
+                summonWithTribute(monster);
+                return;
+            }
+        }
+        terminalOutput = "summon successfully";
+        monster.setAttack(true);
+        monster.setOn(true);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
+        effectChecker(mat, monster);
+    }
+
+    private void effectChecker(Mat mat, Monster monster) {
+        if (monster.getName().equals("Command Knight")) {
+            if (monster.isOn()  && monster.isFirstEffectUse()) {
+                for (int i = 0; i < 5; i++) {
+                    Monster monsterInMat = mat.getMonsterZone(i);
+                    if (monsterInMat != null) {
+                        monsterInMat.setAttack(monsterInMat.getAttack() + 400);
+                    }
+                }
+                monster.setFirstEffectUse(false);
+            }
+        } else if (monster.getName().equals("Yomi Ship")) {
+
+        } else if (monster.getName().equals("Suijin")) {
+
+        } else if (monster.getName().equals("Beast-Warrior")) {
+
+        } else if (monster.getName().equals("Skull Guardian")) {
+
+        } else if (monster.getName().equals("Man-Eater Bug")) {
+
+        } else if (monster.getName().equals("Gate Guardian")) {
+
+        } else if (monster.getName().equals("Scanner")) {
+
+        } else if (monster.getName().equals("Marshmallon")) {
+
+        } else if (monster.getName().equals("Beast King Barbaros")) {
+
+        } else if (monster.getName().equals("Texchanger")) {
+
+        } else if (monster.getName().equals("The Calculator")) {
+
+        } else if (monster.getName().equals("Mirage Dragon")) {
+
+        } else if (monster.getName().equals("Herald of Creation")) {
+
+        } else if (monster.getName().equals("Exploder Dragon")) {
+
+        } else if (monster.getName().equals("Terratiger, the Empowered Warrior")) {
+
+        } else if (monster.getName().equals("The Tricky")) {
+
+        }
+    }
+
+    public void summonWithTribute(Monster monster){
+        int counter = 0;
+        String input;
+        Mat mat = currentTurnPlayer.getMat();
+        while (true){
+            input = ScanInput.getInput();
+            int address = Integer.parseInt(input);
+            if (mat.getMonsterZone(address) == null){
+                TerminalOutput.output("there no  monster one this address");
+                continue;
+            }
+            if (mat.getMonsterZone(address) != null){
+                counter+=1;
+                mat.deleteMonsterZone(address);
+            }
+            if (monster.getLevel()<=6 && counter==1)
+                break;
+            if (monster.getLevel()>6 && counter==2){
+                break;
+            }
+        }
+        summonSuccessful(monster, mat);
+    }
+
+    private void summonSuccessful(Monster monster, Mat mat) {
+        terminalOutput = "summon successfully";
+        monster.setAttack(true);
+        monster.setOn(true);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
     }
 
     public boolean isEnoughCardForTribute(){
@@ -352,29 +454,102 @@ public class DuelMenu {
     public void set() {
         Card card = currentTurnPlayer.getCurrentSelectedCard();
         Mat mat = currentTurnPlayer.getMat();
-        if (card == null) {
-            terminalOutput = "no card selected yet";
-            return;
+        if (card instanceof Monster || card == null) {
+            if (card == null) {
+                terminalOutput = "no card selected yet";
+                return;
+            }
+            if (!currentTurnPlayer.getSelectedName().equals("Hand")) {
+                terminalOutput = "you can't set this card";
+                return;
+            }
+            if (card instanceof Monster && (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase"))) {
+                terminalOutput = "you can't do this action phase";
+                return;
+            }
+            if (mat.isMonsterZoneIsFull()) {
+                terminalOutput = "monster card zone is full";
+                return;
+            }
+            if (currentTurnPlayer.isSummoned()) {
+                terminalOutput = "you already summoned/set on this turn";
+                return;
+            }
+            if (!isEnoughCardForTribute()){
+                terminalOutput = "there are not enough cards for tribute";
+                return;
+            }
+            Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+            if (monster.getLevel()>4){
+                summonWithTribute(monster);
+                return;
+            }
+            monster.setAttack(false);
+            monster.setOn(false);
+            mat.addMonster(monster);
+            currentTurnPlayer.setCurrentSelectedCard(null);
+            currentTurnPlayer.setSelectedName(null);
+            currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+            currentTurnPlayer.setHandNumber(-1);
+            currentTurnPlayer.setSummoned(true);
+            terminalOutput = "set successfully";
         }
-        if (!currentTurnPlayer.getSelectedName().equals("Hand")) {
-            terminalOutput = "you can't set this card";
-            return;
+        else if (card instanceof Spell || card instanceof Trap){
+            if (!currentTurnPlayer.getSelectedName().equals("Hand")) {
+                terminalOutput = "you can't set this card";
+                return;
+            }
+            if ((!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase"))) {
+                terminalOutput = "you can't do this action phase";
+                return;
+            }
+            if (mat.isSpellAndTrapZoneIsFull()) {
+                terminalOutput = "spell card zone is full";
+                return;
+            }
+            card.setOn(false);
+            mat.addSpellOrTrap(card);
+            currentTurnPlayer.setCurrentSelectedCard(null);
+            currentTurnPlayer.setSelectedName(null);
+            currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+            currentTurnPlayer.setHandNumber(-1);
+            currentTurnPlayer.setSummoned(true);
+            terminalOutput = "set successfully";
         }
-        if (card instanceof Monster && (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Second Main Phase"))) {
-            terminalOutput = "you can't do this action phase";
-            return;
+    }
+
+    public void setWithTribute(Monster monster){
+        int counter = 0;
+        String input;
+        Mat mat = currentTurnPlayer.getMat();
+        while (true){
+            input = ScanInput.getInput();
+            int address = Integer.parseInt(input);
+            if (mat.getMonsterZone(address) == null){
+                TerminalOutput.output("there no  monster one this address");
+                continue;
+            }
+            if (mat.getMonsterZone(address) != null){
+                counter+=1;
+                mat.deleteMonsterZone(address);
+            }
+            if (monster.getLevel()<=6 && counter==1)
+                break;
+            if (monster.getLevel()>6 && counter==2){
+                break;
+            }
         }
-        if (mat.isMonsterZoneIsFull()) {
-            terminalOutput = "monster card zone is full";
-            return;
-        }
-        if (currentTurnPlayer.isSummoned()) {
-            terminalOutput = "you already summoned/set on this turn";
-            return;
-        }
-        //set
+        monster.setAttack(false);
+        monster.setOn(false);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
         terminalOutput = "set successfully";
     }
+
 
     public void changeCardPosition(boolean isOnAttack) {
         Card card = currentTurnPlayer.getCurrentSelectedCard();
