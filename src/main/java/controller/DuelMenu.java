@@ -338,9 +338,11 @@ public class DuelMenu {
             return;
         }
         Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
-        if (monster.getLevel()>4){
-            //summon with tribute
-            return;
+        if (monster.getCardType().equals("Normal")) {
+            if (monster.getLevel() > 4) {
+                summonWithTribute(monster);
+                return;
+            }
         }
         terminalOutput = "summon successfully";
         monster.setAttack(true);
@@ -351,6 +353,53 @@ public class DuelMenu {
         currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
         currentTurnPlayer.setHandNumber(-1);
         currentTurnPlayer.setSummoned(true);
+        effectChecker(mat, monster);
+    }
+
+    private void effectChecker(Mat mat, Monster monster) {
+        if (monster.getName().equals("Command Knight")) {
+            if (monster.isOn()  && monster.isFirstEffectUse()) {
+                for (int i = 0; i < 5; i++) {
+                    Monster monsterInMat = mat.getMonsterZone(i);
+                    if (monsterInMat != null) {
+                        monsterInMat.setAttack(monsterInMat.getAttack() + 400);
+                    }
+                }
+                monster.setFirstEffectUse(false);
+            }
+        } else if (monster.getName().equals("Yomi Ship")) {
+
+        } else if (monster.getName().equals("Suijin")) {
+
+        } else if (monster.getName().equals("Beast-Warrior")) {
+
+        } else if (monster.getName().equals("Skull Guardian")) {
+
+        } else if (monster.getName().equals("Man-Eater Bug")) {
+
+        } else if (monster.getName().equals("Gate Guardian")) {
+
+        } else if (monster.getName().equals("Scanner")) {
+
+        } else if (monster.getName().equals("Marshmallon")) {
+
+        } else if (monster.getName().equals("Beast King Barbaros")) {
+
+        } else if (monster.getName().equals("Texchanger")) {
+
+        } else if (monster.getName().equals("The Calculator")) {
+
+        } else if (monster.getName().equals("Mirage Dragon")) {
+
+        } else if (monster.getName().equals("Herald of Creation")) {
+
+        } else if (monster.getName().equals("Exploder Dragon")) {
+
+        } else if (monster.getName().equals("Terratiger, the Empowered Warrior")) {
+
+        } else if (monster.getName().equals("The Tricky")) {
+
+        }
     }
 
     public void summonWithTribute(Monster monster){
