@@ -6,7 +6,10 @@ import model.battle.Player;
 import model.card.Card;
 import model.card.Monster;
 import model.mat.Mat;
+import model.user.Deck;
+import model.user.MainDeck;
 import model.user.User;
+import view.ScanInput;
 import view.TerminalOutput;
 import view.menu.MainMenuView;
 
@@ -34,6 +37,8 @@ public class DuelMenu {
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
+    private User firstRoundWinner;
+    private User secondRoundWinner;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -286,6 +291,7 @@ public class DuelMenu {
         terminalOutput = "card selected";
         currentTurnPlayer.setSelectedName("Hand");
         currentTurnPlayer.setCurrentSelectedCard(card);
+        currentTurnPlayer.setHandNumber(number);
     }
 
     public void deSelectCard() {
@@ -299,6 +305,9 @@ public class DuelMenu {
 
     public void nextPhase() {
         phase.nextPhase();
+        if (phase.getCurrentPhase().equals("End Phase")){
+            terminalOutput = phase.endPhase(opponentTurnPlayer)+"\n"+phase.drawPhase(currentTurnPlayer);
+        }
     }
 
 
@@ -326,13 +335,54 @@ public class DuelMenu {
         }
         if (!isEnoughCardForTribute()){
             terminalOutput = "there are not enough cards for tribute";
+            return;
         }
         Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
         if (monster.getLevel()>4){
             //summon with tribute
+            return;
         }
-        //normal summon or special
+        terminalOutput = "summon successfully";
+        monster.setAttack(true);
+        monster.setOn(true);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
+    }
 
+    public void summonWithTribute(Monster monster){
+        int counter = 0;
+        String input;
+        Mat mat = currentTurnPlayer.getMat();
+        while (true){
+            input = ScanInput.getInput();
+            int address = Integer.parseInt(input);
+            if (mat.getMonsterZone(address) == null){
+                TerminalOutput.output("there no  monster one this address");
+                continue;
+            }
+            if (mat.getMonsterZone(address) != null){
+                counter+=1;
+                mat.deleteMonsterZone(address);
+            }
+            if (monster.getLevel()<=6 && counter==1)
+                break;
+            if (monster.getLevel()>6 && counter==2){
+                break;
+            }
+        }
+        terminalOutput = "summon successfully";
+        monster.setAttack(true);
+        monster.setOn(true);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
     }
 
     public boolean isEnoughCardForTribute(){
@@ -368,7 +418,15 @@ public class DuelMenu {
             terminalOutput = "you already summoned/set on this turn";
             return;
         }
-        //set
+        Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
+        monster.setAttack(false);
+        monster.setOn(false);
+        mat.addMonster(monster);
+        currentTurnPlayer.setCurrentSelectedCard(null);
+        currentTurnPlayer.setSelectedName(null);
+        currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
+        currentTurnPlayer.setHandNumber(-1);
+        currentTurnPlayer.setSummoned(true);
         terminalOutput = "set successfully";
     }
 
@@ -615,7 +673,8 @@ public class DuelMenu {
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
             terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
-            if (numberOfRounds == 1) {
+            if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == secondPlayer.getUser())) {
+                refresh();
                 int firstPlayerCredit = 100;
                 int secondPlayerCredit = 1000 + secondPlayerMaxLP;
                 if (wholeNumberOfRounds == 3) {
@@ -626,6 +685,7 @@ public class DuelMenu {
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
                 return true;
             }
+            refresh();
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
             this.phase = new Phase(this);
@@ -637,7 +697,8 @@ public class DuelMenu {
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
             terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
-            if (numberOfRounds == 1) {
+            if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == firstPlayer.getUser())) {
+                refresh();
                 int secondPlayerCredit = 100;
                 int firstPlayerCredit = 1000 + firstPlayerMaxLP;
                 if (wholeNumberOfRounds == 3) {
@@ -648,6 +709,7 @@ public class DuelMenu {
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
                 return true;
             }
+            refresh();
             firstPlayer = new Player(this.currentUser);
             secondPlayer = new Player(this.secondUser);
             this.phase = new Phase(this);
@@ -673,6 +735,21 @@ public class DuelMenu {
         String returnValue = terminalOutput;
         terminalOutput = "";
         return returnValue + "\n";
+    }
+
+    private void refresh() {
+        MainDeck firstDeck = firstPlayer.getUser().getActiveDeck().getMainDeck();
+        MainDeck secondDeck = secondPlayer.getUser().getActiveDeck().getMainDeck();
+        for (Card card : firstDeck.getMainDeckCards()){
+            card.setOn(false);
+            card.setAttack(false);
+            card.setField(false);
+        }
+        for (Card card : secondDeck.getMainDeckCards()){
+            card.setOn(false);
+            card.setAttack(false);
+            card.setField(false);
+        }
     }
 
 }

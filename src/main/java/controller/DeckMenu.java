@@ -22,13 +22,13 @@ public class DeckMenu {
     private User currentUser;
     private HashMap<String, Deck> decks;
 
-    public DeckMenu(String currentUserName){
+    public DeckMenu(String currentUserName) {
         this.currentUser = User.getUserByUsername(currentUserName);
         decks = currentUser.getDecks();
     }
 
     public void cardShow(String cardName) {
-        Card.showCard(cardName);
+        terminalOutput = Card.showCard(cardName);
     }
 
     public void createDeck(String deckName) {
@@ -61,24 +61,30 @@ public class DeckMenu {
     }
 
     public void addCardToDeck(String deckName, String cardName, boolean isSideDeck) {
-        Card card = Card.getCardByName(cardName);
-        ArrayList <Card> cards = currentUser.getCards();
+        boolean doesCardExist = false;
+        Card card = new Card();
+        ArrayList<Card> cards = currentUser.getCards();
         HashMap<String, Deck> decks = currentUser.getDecks();
-        if (!cards.contains(card)){
+        for (Card card1 : cards)
+            if (card1.getName().equals(cardName)) {
+                card = card1;
+                doesCardExist = true;
+            }
+        if (!doesCardExist) {
             terminalOutput = "card with name " + cardName + " does not exist";
             return;
         }
-        if (!decks.containsKey(deckName)){
+        if (!decks.containsKey(deckName)) {
             terminalOutput = "deck with name " + deckName + " does not exist";
             return;
         }
         card = cards.get(cards.indexOf(card));
         Deck deck = decks.get(deckName);
-        if  (!isSideDeck && deck.getMainDeck().getMainDeckSize() == 40){
+        if (!isSideDeck && deck.getMainDeck().getMainDeckSize() == 40) {
             terminalOutput = "main deck is full";
             return;
         }
-        if  (isSideDeck && deck.getSideDeck().getSideDeckSize() == 15){
+        if (isSideDeck && deck.getSideDeck().getSideDeckSize() == 15) {
             terminalOutput = "side deck is full";
             return;
         }
@@ -91,7 +97,7 @@ public class DeckMenu {
             if (card1.getName().equals(cardName))
                 countCardsInDeck++;
         }
-        if (countCardsInDeck == 3){
+        if (countCardsInDeck == 3) {
             terminalOutput = "there are already three cards with name " + cardName + " in deck " + deckName;
             return;
         }
@@ -107,16 +113,16 @@ public class DeckMenu {
 
     public void removeCardFromDeck(String deckName, String cardName, boolean isSideDeck) {
         HashMap<String, Deck> decks = currentUser.getDecks();
-        if (!decks.containsKey(deckName)){
+        if (!decks.containsKey(deckName)) {
             terminalOutput = "deck with name " + deckName + " does not exist";
             return;
         }
         Deck deck = decks.get(deckName);
         if (!isSideDeck) {
-            ArrayList <Card> cards = deck.getMainDeck().getMainDeckCards();
+            ArrayList<Card> cards = deck.getMainDeck().getMainDeckCards();
             Card wantedCard = null;
             boolean isCardInDeck = false;
-            for (Card card : cards){
+            for (Card card : cards) {
                 if (card.getName().equals(cardName)) {
                     isCardInDeck = true;
                     wantedCard = card;
@@ -131,11 +137,11 @@ public class DeckMenu {
                 terminalOutput = "card removed form deck successfully";
             }
         }
-        if (isSideDeck){
-            ArrayList <Card> cards = deck.getSideDeck().getSideDeckCards();
+        if (isSideDeck) {
+            ArrayList<Card> cards = deck.getSideDeck().getSideDeckCards();
             Card wantedCard = null;
             boolean isCardInDeck = false;
-            for (Card card : cards){
+            for (Card card : cards) {
                 if (card.getName().equals(cardName)) {
                     isCardInDeck = true;
                     wantedCard = card;
@@ -157,14 +163,14 @@ public class DeckMenu {
         if (activeDeck != null)
             printDeckForAllDeck(activeDeck);
         terminalOutput += "Other decks:\n";
-        for (Map.Entry<String, Deck> entry : decks.entrySet()){
+        for (Map.Entry<String, Deck> entry : decks.entrySet()) {
             Deck deck = entry.getValue();
             if (!deck.isActiveDeck())
                 printDeckForAllDeck(deck);
         }
     }
 
-    private void printDeckForAllDeck(Deck deck){
+    private void printDeckForAllDeck(Deck deck) {
         terminalOutput += deck.getName() + ": main deck " + deck.getMainDeck().getMainDeckSize() +
                 ", side deck " + deck.getSideDeck().getSideDeckSize() + ", ";
         if (deck.isValid())
@@ -175,20 +181,20 @@ public class DeckMenu {
 
     public void showOneDeck(String deckName, boolean isSideDeck) {
         terminalOutput = "Deck: " + deckName + "\n";
-        ArrayList <Card> monsters = new ArrayList<>();
-        ArrayList <Card> spellsAndTraps = new ArrayList<>();
-        ArrayList <Card> cards = new ArrayList<>();
-        if (!isSideDeck){
+        ArrayList<Card> monsters = new ArrayList<>();
+        ArrayList<Card> spellsAndTraps = new ArrayList<>();
+        ArrayList<Card> cards = new ArrayList<>();
+        if (!isSideDeck) {
             terminalOutput += "Main deck:\nMonsters:\n";
             MainDeck mainDeck = Deck.getDeckByName(deckName, currentUser.getUsername()).getMainDeck();
             cards = mainDeck.getMainDeckCards();
         }
-        if (isSideDeck){
+        if (isSideDeck) {
             terminalOutput += "Side deck:\nMonsters:\n";
             SideDeck sideDeck = Deck.getDeckByName(deckName, currentUser.getUsername()).getSideDeck();
             cards = sideDeck.getSideDeckCards();
         }
-        for (Card card : cards){
+        for (Card card : cards) {
             if (card.getType().equals("monster"))
                 monsters.add(card);
             else
@@ -210,7 +216,7 @@ public class DeckMenu {
             terminalOutput += card.getName() + ": " + card.getDescription() + "\n";
     }
 
-    public String getTerminalOutput(){
+    public String getTerminalOutput() {
         String returnValue = terminalOutput;
         terminalOutput = "";
         return returnValue;

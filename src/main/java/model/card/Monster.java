@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class Monster extends Card{
     protected static ArrayList<Monster> allMonsters = new ArrayList<>();
     protected int level;
-    protected int defence;
-    protected int attack;
     protected String attribute;
     protected String monsterType;
 
@@ -28,6 +26,14 @@ public class Monster extends Card{
         return isAttack;
     }
 
+    public String getMonsterType() {
+        return monsterType;
+    }
+
+    public String getAttribute() {
+        return attribute;
+    }
+
     public int getLevel(){
         return level;
     }
@@ -40,8 +46,6 @@ public class Monster extends Card{
         }
         return null;
     }
-
-
 
 }
 
