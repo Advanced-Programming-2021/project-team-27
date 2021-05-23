@@ -111,6 +111,29 @@ public class Mat {
 
     }
 
+    public void addSpellOrTrap(Card card) {
+        if (spellAndTrapZone[2] == null) {
+            spellAndTrapZone[2] = card;
+            return;
+        }
+        if (spellAndTrapZone[3] == null) {
+            spellAndTrapZone[3] = card;
+            return;
+        }
+        if (spellAndTrapZone[1] == null) {
+            spellAndTrapZone[1] = card;
+            return;
+        }
+        if (spellAndTrapZone[4] == null) {
+            spellAndTrapZone[4] = card;
+            return;
+        }
+        if (spellAndTrapZone[0] == null) {
+            spellAndTrapZone[0] = card;
+        }
+
+    }
+
     public int getNumberOfCardMonsterZone() {
         int number = 0;
         for (int i = 0; i < 5; i++) {
