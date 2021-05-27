@@ -18,6 +18,7 @@ import view.menu.MainMenuView;
 import javax.swing.*;
 import java.net.PortUnreachableException;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.regex.Matcher;
 
 public class DuelMenu {
@@ -335,7 +336,7 @@ public class DuelMenu {
             terminalOutput = "you already summoned/set on this turn";
             return;
         }
-        if (!isEnoughCardForTribute()){
+        if (!isEnoughCardForTribute() && ((Monster) currentTurnPlayer.getCurrentSelectedCard()).getCardType().equals("Normal")){
             terminalOutput = "there are not enough cards for tribute";
             return;
         }
@@ -373,20 +374,51 @@ public class DuelMenu {
         } else if (monster.getName().equals("Yomi Ship")) {
 
         } else if (monster.getName().equals("Suijin")) {
+            if (monster.isOn() && monster.isFirstEffectUse()){
+                //set opponent monster att 0
+                monster.setFirstEffectUse(false);
+            }
 
         } else if (monster.getName().equals("Beast-Warrior")) {
 
         } else if (monster.getName().equals("Skull Guardian")) {
 
         } else if (monster.getName().equals("Man-Eater Bug")) {
-
+            //when flip summon
         } else if (monster.getName().equals("Gate Guardian")) {
 
         } else if (monster.getName().equals("Scanner")) {
+            ArrayList<Card> cards = opponentTurnPlayer.getMat().getGraveyard();
+            String cardName = ScanInput.getInput();
+            for (Card card : cards) {
+                if (card.equals(cardName)){
+                    Monster monster1 = (Monster) card;
+                    Monster monster2 = new Monster(monster1.getName(),monster1.getLevel(),monster1.getAttribute()
+                            ,monster1.getMonsterType(),monster1.getCardType(),monster1.getAttack(),monster1.getDefence(),monster1.getDescription(),monster1.getPrice());
+                    monster = monster2;
+                }
+            }
 
         } else if (monster.getName().equals("Marshmallon")) {
+            if (!monster.isOn()){
+                opponentTurnPlayer.changeLifePoint(-1000);
+            }
 
         } else if (monster.getName().equals("Beast King Barbaros")) {
+            TerminalOutput.output("You want tribute or not\n1.Yes\n2.No");
+            String input = ScanInput.getInput();
+            if (input.equals("2")){
+                monster.setAttack(1900);
+            }
+            else {
+                if (isEnoughCardForTribute()) {
+                    summonWithTribute(monster);
+                }
+                else {
+                    TerminalOutput.output("there are not enough cards for tribute");
+                    monster.setAttack(1900);
+                }
+            }
 
         } else if (monster.getName().equals("Texchanger")) {
 
