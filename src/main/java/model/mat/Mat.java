@@ -44,6 +44,10 @@ public class Mat {
         return false;
     }
 
+    public void setHandCard(Card card, int index) {
+        handCard[index] = card;
+    }
+
     public void setFieldZone(Card fieldZone) {
         this.fieldZone = fieldZone;
     }
