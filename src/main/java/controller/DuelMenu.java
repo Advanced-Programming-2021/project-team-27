@@ -505,8 +505,8 @@ public class DuelMenu {
 
         } else if (attacker.getName().equals("Suijin")) {
             if (attacker.isOn() && attacker.isFirstEffectUse()) {
-                //set opponent monster att 0
-                attacker.setFirstEffectUse(false);
+                defender.setAttack(0);
+                attacker.setFirstEffectUse(true);
             }
 
         } else if (attacker.getName().equals("Beast-Warrior")) {
