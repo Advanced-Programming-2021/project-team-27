@@ -17,6 +17,15 @@ public class Card {
     protected int attack;
     protected int defence;
     protected boolean isFirstEffectUse = true;
+    protected boolean isFirstTimeFlipping = false;
+
+    public boolean isFirstTimeFlipping() {
+        return isFirstTimeFlipping;
+    }
+
+    public void setFirstTimeFlipping(boolean firstTimeFlipping) {
+        isFirstTimeFlipping = firstTimeFlipping;
+    }
 
     public boolean isAttack() {
         return isAttack;
