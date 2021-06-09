@@ -370,7 +370,7 @@ public class DuelMenu {
                 monster.setFirstEffectUse(false);
             }
         } else if (monster.getName().equals("Yomi Ship")) {
-            
+
         } else if (monster.getName().equals("Suijin")) {
             if (monster.isOn() && monster.isFirstEffectUse()) {
                 //set opponent monster att 0
@@ -553,7 +553,7 @@ public class DuelMenu {
         } else if (attacker.getName().equals("The Calculator")) {
 
         } else if (attacker.getName().equals("Mirage Dragon")) {
-           //fot
+            //fot
         } else if (attacker.getName().equals("Herald of Creation")) {
 
         } else if (attacker.getName().equals("Exploder Dragon")) {
@@ -633,11 +633,12 @@ public class DuelMenu {
                 break;
             if (monster.getLevel() > 6 && counter == 2) {
                 break;
-            if (monster.getLevel() > 6 && counter == 2 && !monster.getName().equals("Gate Guardian")) {
-                break;
-            }
-            if (monster.getLevel() > 6 && counter == 3 && monster.getName().equals("Gate Guardian")) {
-                break;
+                if (monster.getLevel() > 6 && counter == 2 && !monster.getName().equals("Gate Guardian")) {
+                    break;
+                }
+                if (monster.getLevel() > 6 && counter == 3 && monster.getName().equals("Gate Guardian")) {
+                    break;
+                }
             }
         }
         summonSuccessful(monster, mat);
@@ -965,13 +966,13 @@ public class DuelMenu {
     }
 
     public void checkForQuickChangeTurn() {
-      // if(kossher){
+        // if(kossher){
 
-      // }
+        // }
         Player player = currentTurnPlayer;
         currentTurnPlayer = opponentTurnPlayer;
         opponentTurnPlayer = player;
-        TerminalOutput.output("now it will be "+opponentTurnPlayer.getUser().getUsername()+"'s turn");
+        TerminalOutput.output("now it will be " + opponentTurnPlayer.getUser().getUsername() + "'s turn");
         showBoard();
         TerminalOutput.output("do you want to active your trap and spell?");
         String input = ScanInput.getInput();
@@ -982,11 +983,10 @@ public class DuelMenu {
         while (true) {
             Matcher matcher;
             input = ScanInput.getInput();
-            if (!(input.matches("activate effect"))){
+            if (!(input.matches("activate effect"))) {
                 activeEffect();
                 break;
-            }
-            else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches())
+            } else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches())
                 selectSpellOrTrap(matcher);
             else if ((matcher = getMatcher(input, "select (--spell|-s)(?<opponent> --opponent| -o|) (?<number>[\\d]+)")).matches())
                 selectSpellOrTrap(matcher);
