@@ -43,6 +43,7 @@ public class DuelMenu {
     private boolean isFirstRound;
     private User firstRoundWinner;
     private User secondRoundWinner;
+    private boolean canCardBeSetAfterTerratiger = true;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -373,8 +374,7 @@ public class DuelMenu {
                 monster.setFirstEffectUse(false);
             }
         } else if (monster.getName().equals("Yomi Ship")) {
-            int attack1 = getAttack(monster);
-
+            
         } else if (monster.getName().equals("Suijin")) {
             if (monster.isOn() && monster.isFirstEffectUse()) {
                 //set opponent monster att 0
@@ -437,15 +437,47 @@ public class DuelMenu {
         } else if (monster.getName().equals("The Calculator")) {
             //FOT
         } else if (monster.getName().equals("Mirage Dragon")) {
-
+            //FOT
         } else if (monster.getName().equals("Herald of Creation")) {
+            TerminalOutput.output("You want to bring card from graveyard or not\n1.Yes\n2.No");
+            String input = ScanInput.getInput();
+            if (input.equals("1")) {
+                TerminalOutput.output("Select number of card from hand");
+                int number = Integer.parseInt(ScanInput.getInput());
+                TerminalOutput.output("Enter name of card from graveyard");
+                String graveyardCard = ScanInput.getInput();
+                if (number < 1 || number > 6) {
+                    return;
+                }
+                for (Card card : mat.getGraveyard()) {
+                    if (card.getName().equals(graveyardCard)) {
+                        mat.setHandCard(card);
+                        mat.getGraveyard().remove(card);
+                        return;
+                    }
+                }
+            }
 
         } else if (monster.getName().equals("Exploder Dragon")) {
-
+            //FOT
         } else if (monster.getName().equals("Terratiger, the Empowered Warrior")) {
-
+            Card card = currentTurnPlayer.getCurrentSelectedCard();
+            if (!(card instanceof Monster))
+                return;
+            if (((Monster) card).getLevel() > 4) {
+                canCardBeSetAfterTerratiger = false;
+            }
         } else if (monster.getName().equals("The Tricky")) {
-
+            TerminalOutput.output("You want to summon card or not\n1.Yes\n2.No");
+            int input = Integer.parseInt(ScanInput.getInput());
+            if (input == 1) {
+                TerminalOutput.output("Select number of card from hand");
+                int number = Integer.parseInt(ScanInput.getInput());
+                if (number < 1 || number > 6) {
+                    return;
+                }
+                mat.setHandCard(monster, number);
+            }
         }
     }
 
@@ -510,6 +542,10 @@ public class DuelMenu {
     public void set() {
         Card card = currentTurnPlayer.getCurrentSelectedCard();
         Mat mat = currentTurnPlayer.getMat();
+        if (!canCardBeSetAfterTerratiger) {
+            canCardBeSetAfterTerratiger = true;
+            return;
+        }
         if (card instanceof Monster || card == null) {
             if (card == null) {
                 terminalOutput = "no card selected yet";
@@ -778,6 +814,14 @@ public class DuelMenu {
         if (!phase.getCurrentPhase().equals("Main Phase")) {
             terminalOutput = "you can’t activate an effect on this turn";
             return;
+        }
+        Mat opponentMat = opponentTurnPlayer.getMat();
+        for (int i = 0; i < 5; i++) {
+            Monster monster = opponentMat.getMonsterZone(i);
+            if (monster.getName().equals("Mirage Dragon")) {
+                terminalOutput = "opponent has mirage dragon";
+                return;
+            }
         }
         Mat mat = currentTurnPlayer.getMat();
         for (int i = 0; i < 5; i++) {
