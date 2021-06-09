@@ -309,8 +309,8 @@ public class DuelMenu {
 
     public void nextPhase() {
         phase.nextPhase();
-        if (phase.getCurrentPhase().equals("End Phase")){
-            terminalOutput = phase.endPhase(opponentTurnPlayer)+"\n"+phase.drawPhase(currentTurnPlayer);
+        if (phase.getCurrentPhase().equals("End Phase")) {
+            terminalOutput = phase.endPhase(opponentTurnPlayer) + "\n" + phase.drawPhase(currentTurnPlayer);
         }
     }
 
@@ -337,7 +337,7 @@ public class DuelMenu {
             terminalOutput = "you already summoned/set on this turn";
             return;
         }
-        if (!isEnoughCardForTribute() && ((Monster) currentTurnPlayer.getCurrentSelectedCard()).getCardType().equals("Normal")){
+        if (!isEnoughCardForTribute() && ((Monster) currentTurnPlayer.getCurrentSelectedCard()).getCardType().equals("Normal")) {
             terminalOutput = "there are not enough cards for tribute";
             return;
         }
@@ -358,24 +358,25 @@ public class DuelMenu {
         currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
         currentTurnPlayer.setHandNumber(-1);
         currentTurnPlayer.setSummoned(true);
-        effectChecker(mat, monster);
+        effectCheckerInSummon(mat, monster);
     }
 
-    private void effectChecker(Mat mat, Monster monster) {
+    private void effectCheckerInSummon(Mat mat, Monster monster) {
         if (monster.getName().equals("Command Knight")) {
-            if (monster.isOn()  && monster.isFirstEffectUse()) {
+            if (monster.isOn() && monster.isFirstEffectUse()) {
                 for (int i = 0; i < 5; i++) {
                     Monster monsterInMat = mat.getMonsterZone(i);
                     if (monsterInMat != null) {
-                        monsterInMat.setAttack(monsterInMat.getAttack() + 400);
+                        monsterInMat.setAttack(getAttack(monsterInMat) + 400);
                     }
                 }
                 monster.setFirstEffectUse(false);
             }
         } else if (monster.getName().equals("Yomi Ship")) {
+            int attack1 = getAttack(monster);
 
         } else if (monster.getName().equals("Suijin")) {
-            if (monster.isOn() && monster.isFirstEffectUse()){
+            if (monster.isOn() && monster.isFirstEffectUse()) {
                 //set opponent monster att 0
                 monster.setFirstEffectUse(false);
             }
@@ -386,36 +387,46 @@ public class DuelMenu {
 
         } else if (monster.getName().equals("Man-Eater Bug")) {
             //when flip summon
+            if (monster.isOn() && monster.isFirstTimeFlipping()) {
+                monster.setFirstTimeFlipping(false);
+                Mat mat1 = opponentTurnPlayer.getMat();
+                for (int i = 0; i < 5; i++) {
+                    Monster monster1 = mat1.getMonsterZone(i);
+                    if (monster1 != null) {
+                        Card card = monster1;
+                        mat1.addCardToGraveyard(card);
+                        monster1 = null;
+                    }
+                }
+            }
         } else if (monster.getName().equals("Gate Guardian")) {
-
+            //FOT
         } else if (monster.getName().equals("Scanner")) {
             ArrayList<Card> cards = opponentTurnPlayer.getMat().getGraveyard();
             String cardName = ScanInput.getInput();
             for (Card card : cards) {
-                if (card.equals(cardName)){
+                if (card.equals(cardName)) {
                     Monster monster1 = (Monster) card;
-                    Monster monster2 = new Monster(monster1.getName(),monster1.getLevel(),monster1.getAttribute()
-                            ,monster1.getMonsterType(),monster1.getCardType(),monster1.getAttack(),monster1.getDefence(),monster1.getDescription(),monster1.getPrice());
+                    Monster monster2 = new Monster(monster1.getName(), monster1.getLevel(), monster1.getAttribute()
+                            , monster1.getMonsterType(), monster1.getCardType(), getAttack(monster1), monster1.getDefence(), monster1.getDescription(), monster1.getPrice());
                     monster = monster2;
                 }
             }
 
         } else if (monster.getName().equals("Marshmallon")) {
-            if (!monster.isOn()){
+            if (!monster.isOn()) {
                 opponentTurnPlayer.changeLifePoint(-1000);
             }
 
         } else if (monster.getName().equals("Beast King Barbaros")) {
             TerminalOutput.output("You want tribute or not\n1.Yes\n2.No");
             String input = ScanInput.getInput();
-            if (input.equals("2")){
+            if (input.equals("2")) {
                 monster.setAttack(1900);
-            }
-            else {
+            } else {
                 if (isEnoughCardForTribute()) {
                     summonWithTribute(monster);
-                }
-                else {
+                } else {
                     TerminalOutput.output("there are not enough cards for tribute");
                     monster.setAttack(1900);
                 }
@@ -424,7 +435,7 @@ public class DuelMenu {
         } else if (monster.getName().equals("Texchanger")) {
 
         } else if (monster.getName().equals("The Calculator")) {
-
+            //FOT
         } else if (monster.getName().equals("Mirage Dragon")) {
 
         } else if (monster.getName().equals("Herald of Creation")) {
@@ -438,24 +449,36 @@ public class DuelMenu {
         }
     }
 
-    public void summonWithTribute(Monster monster){
+    public void setCalculator(Card card, Mat mat) {
+        int level = 0;
+        for (int i = 0; i < 5; i++) {
+            if (mat.getMonsterZone(i) != null && mat.getMonsterZone(i).isOn())
+                level += mat.getMonsterZone(i).getLevel();
+        }
+        card.setAttack(level * 300);
+    }
+
+    public void summonWithTribute(Monster monster) {
         int counter = 0;
         String input;
         Mat mat = currentTurnPlayer.getMat();
-        while (true){
+        while (true) {
             input = ScanInput.getInput();
             int address = Integer.parseInt(input);
-            if (mat.getMonsterZone(address) == null){
+            if (mat.getMonsterZone(address) == null) {
                 TerminalOutput.output("there no  monster one this address");
                 continue;
             }
-            if (mat.getMonsterZone(address) != null){
-                counter+=1;
+            if (mat.getMonsterZone(address) != null) {
+                counter += 1;
                 mat.deleteMonsterZone(address);
             }
-            if (monster.getLevel()<=6 && counter==1)
+            if (monster.getLevel() <= 6 && counter == 1)
                 break;
-            if (monster.getLevel()>6 && counter==2){
+            if (monster.getLevel() > 6 && counter == 2 && !monster.getName().equals("Gate Guardian")) {
+                break;
+            }
+            if (monster.getLevel() > 6 && counter == 3 && monster.getName().equals("Gate Guardian")) {
                 break;
             }
         }
@@ -474,12 +497,12 @@ public class DuelMenu {
         currentTurnPlayer.setSummoned(true);
     }
 
-    public boolean isEnoughCardForTribute(){
+    public boolean isEnoughCardForTribute() {
         Mat mat = currentTurnPlayer.getMat();
         Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
-        if (monster.getLevel()<=4)
+        if (monster.getLevel() <= 4)
             return true;
-        if (monster.getLevel()<=6)
+        if (monster.getLevel() <= 6)
             return mat.getNumberOfCardMonsterZone() >= 1;
         return mat.getNumberOfCardMonsterZone() >= 2;
     }
@@ -508,12 +531,12 @@ public class DuelMenu {
                 terminalOutput = "you already summoned/set on this turn";
                 return;
             }
-            if (!isEnoughCardForTribute()){
+            if (!isEnoughCardForTribute()) {
                 terminalOutput = "there are not enough cards for tribute";
                 return;
             }
             Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
-            if (monster.getLevel()>4){
+            if (monster.getLevel() > 4) {
                 summonWithTribute(monster);
                 return;
             }
@@ -526,8 +549,7 @@ public class DuelMenu {
             currentTurnPlayer.setHandNumber(-1);
             currentTurnPlayer.setSummoned(true);
             terminalOutput = "set successfully";
-        }
-        else if (card instanceof Spell || card instanceof Trap){
+        } else if (card instanceof Spell || card instanceof Trap) {
             if (!currentTurnPlayer.getSelectedName().equals("Hand")) {
                 terminalOutput = "you can't set this card";
                 return;
@@ -551,24 +573,24 @@ public class DuelMenu {
         }
     }
 
-    public void setWithTribute(Monster monster){
+    public void setWithTribute(Monster monster) {
         int counter = 0;
         String input;
         Mat mat = currentTurnPlayer.getMat();
-        while (true){
+        while (true) {
             input = ScanInput.getInput();
             int address = Integer.parseInt(input);
-            if (mat.getMonsterZone(address) == null){
+            if (mat.getMonsterZone(address) == null) {
                 TerminalOutput.output("there no  monster one this address");
                 continue;
             }
-            if (mat.getMonsterZone(address) != null){
-                counter+=1;
+            if (mat.getMonsterZone(address) != null) {
+                counter += 1;
                 mat.deleteMonsterZone(address);
             }
-            if (monster.getLevel()<=6 && counter==1)
+            if (monster.getLevel() <= 6 && counter == 1)
                 break;
-            if (monster.getLevel()>6 && counter==2){
+            if (monster.getLevel() > 6 && counter == 2) {
                 break;
             }
         }
@@ -638,6 +660,7 @@ public class DuelMenu {
         terminalOutput = "flip summoned successfully";
         selectedCard.setAttack(true);
         selectedCard.setOn(true);
+        selectedCard.setFirstTimeFlipping(true);
     }
 
     public void attack(int number) {
@@ -667,7 +690,7 @@ public class DuelMenu {
         }
         Card attackedCard = opponentMat.getMonsterZone(number);
         if (attackedCard.isAttack()) {
-            int attackDifference = selectedCard.getAttack() - attackedCard.getAttack();
+            int attackDifference = getAttack(selectedCard) - getAttack(attackedCard);
             if (attackDifference > 0) {
                 opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - attackDifference);
                 terminalOutput = "your opponent’s monster is destroyed and your opponent receives " +
@@ -697,7 +720,7 @@ public class DuelMenu {
             String prefix = "";
             if (attackedCard.isOn())
                 prefix = "opponent’s monster card was " + attackedCard.getName() + " and ";
-            int differenceOfAttackAndDefence = selectedCard.getAttack() - attackedCard.getDefence();
+            int differenceOfAttackAndDefence = getAttack(selectedCard) - attackedCard.getDefence();
             if (differenceOfAttackAndDefence > 0) {
                 terminalOutput = prefix + "the defense position monster is destroyed";
                 opponentMat.setMonsterZone(number, null);
@@ -730,8 +753,16 @@ public class DuelMenu {
             terminalOutput = "you can’t do this action in this phase";
             return;
         }
-        terminalOutput = "you opponent receives " + selectedCard.getAttack() + " battle damage";
-        opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - selectedCard.getAttack());
+        terminalOutput = "you opponent receives " + getAttack(selectedCard) + " battle damage";
+        opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - getAttack(selectedCard));
+    }
+
+    private int getAttack(Card card) {
+        if (!card.getName().equals("The Calculator")) {
+            return card.getAttack();
+        }
+        setCalculator(card, currentTurnPlayer.getMat());
+        return card.getAttack();
     }
 
     public void activeEffect() {
@@ -942,12 +973,12 @@ public class DuelMenu {
     private void refresh() {
         MainDeck firstDeck = firstPlayer.getUser().getActiveDeck().getMainDeck();
         MainDeck secondDeck = secondPlayer.getUser().getActiveDeck().getMainDeck();
-        for (Card card : firstDeck.getMainDeckCards()){
+        for (Card card : firstDeck.getMainDeckCards()) {
             card.setOn(false);
             card.setAttack(false);
             card.setField(false);
         }
-        for (Card card : secondDeck.getMainDeckCards()){
+        for (Card card : secondDeck.getMainDeckCards()) {
             card.setOn(false);
             card.setAttack(false);
             card.setField(false);
