@@ -631,8 +631,7 @@ public class DuelMenu {
             }
             if (monster.getLevel() <= 6 && counter == 1)
                 break;
-            if (monster.getLevel() > 6 && counter == 2) {
-                break;
+            if (monster.getLevel() > 6) {
                 if (monster.getLevel() > 6 && counter == 2 && !monster.getName().equals("Gate Guardian")) {
                     break;
                 }
