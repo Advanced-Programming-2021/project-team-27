@@ -14,6 +14,9 @@ import view.ScanInput;
 import view.TerminalOutput;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DuelMenu {
     private User currentUser;
@@ -36,6 +39,7 @@ public class DuelMenu {
     private boolean isFirstRound;
     private User firstRoundWinner;
     private User secondRoundWinner;
+    private boolean canCardBeSetAfterTerratiger = true;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         setCurrentUser(User.getUserByUsername(currentUser));
@@ -360,13 +364,13 @@ public class DuelMenu {
                 for (int i = 0; i < 5; i++) {
                     Monster monsterInMat = mat.getMonsterZone(i);
                     if (monsterInMat != null) {
-                        monsterInMat.setAttack(monsterInMat.getAttack() + 400);
+                        monsterInMat.setAttack(getAttack(monsterInMat) + 400);
                     }
                 }
                 monster.setFirstEffectUse(false);
             }
         } else if (monster.getName().equals("Yomi Ship")) {
-
+            
         } else if (monster.getName().equals("Suijin")) {
             if (monster.isOn() && monster.isFirstEffectUse()) {
                 //set opponent monster att 0
@@ -379,8 +383,20 @@ public class DuelMenu {
 
         } else if (monster.getName().equals("Man-Eater Bug")) {
             //when flip summon
+            if (monster.isOn() && monster.isFirstTimeFlipping()) {
+                monster.setFirstTimeFlipping(false);
+                Mat mat1 = opponentTurnPlayer.getMat();
+                for (int i = 0; i < 5; i++) {
+                    Monster monster1 = mat1.getMonsterZone(i);
+                    if (monster1 != null) {
+                        Card card = monster1;
+                        mat1.addCardToGraveyard(card);
+                        monster1 = null;
+                    }
+                }
+            }
         } else if (monster.getName().equals("Gate Guardian")) {
-
+            //FOT
         } else if (monster.getName().equals("Scanner")) {
             ArrayList<Card> cards = opponentTurnPlayer.getMat().getGraveyard();
             String cardName = ScanInput.getInput();
@@ -388,7 +404,9 @@ public class DuelMenu {
                 if (card.equals(cardName)) {
                     Monster monster1 = (Monster) card;
                     Monster monster2 = new Monster(monster1.getName(), monster1.getLevel(), monster1.getAttribute()
+
                             , monster1.getMonsterType(), monster1.getCardType(), monster1.getAttack(), monster1.getDefence(), monster1.getDescription(), monster1.getPrice());
+
                     monster = monster2;
                 }
             }
@@ -415,18 +433,61 @@ public class DuelMenu {
         } else if (monster.getName().equals("Texchanger")) {
 
         } else if (monster.getName().equals("The Calculator")) {
-
+            //FOT
         } else if (monster.getName().equals("Mirage Dragon")) {
-            //fot
+
+            //FOT
+
         } else if (monster.getName().equals("Herald of Creation")) {
+            TerminalOutput.output("You want to bring card from graveyard or not\n1.Yes\n2.No");
+            String input = ScanInput.getInput();
+            if (input.equals("1")) {
+                TerminalOutput.output("Select number of card from hand");
+                int number = Integer.parseInt(ScanInput.getInput());
+                TerminalOutput.output("Enter name of card from graveyard");
+                String graveyardCard = ScanInput.getInput();
+                if (number < 1 || number > 6) {
+                    return;
+                }
+                for (Card card : mat.getGraveyard()) {
+                    if (card.getName().equals(graveyardCard)) {
+                        mat.setHandCard(card);
+                        mat.getGraveyard().remove(card);
+                        return;
+                    }
+                }
+            }
 
         } else if (monster.getName().equals("Exploder Dragon")) {
-
+            //FOT
         } else if (monster.getName().equals("Terratiger, the Empowered Warrior")) {
-
+            Card card = currentTurnPlayer.getCurrentSelectedCard();
+            if (!(card instanceof Monster))
+                return;
+            if (((Monster) card).getLevel() > 4) {
+                canCardBeSetAfterTerratiger = false;
+            }
         } else if (monster.getName().equals("The Tricky")) {
-
+            TerminalOutput.output("You want to summon card or not\n1.Yes\n2.No");
+            int input = Integer.parseInt(ScanInput.getInput());
+            if (input == 1) {
+                TerminalOutput.output("Select number of card from hand");
+                int number = Integer.parseInt(ScanInput.getInput());
+                if (number < 1 || number > 6) {
+                    return;
+                }
+                mat.setHandCard(monster, number);
+            }
         }
+    }
+
+    public void setCalculator(Card card, Mat mat) {
+        int level = 0;
+        for (int i = 0; i < 5; i++) {
+            if (mat.getMonsterZone(i) != null && mat.getMonsterZone(i).isOn())
+                level += mat.getMonsterZone(i).getLevel();
+        }
+        card.setAttack(level * 300);
     }
 
     private void effectCheckerInAttack(Mat attackerMat, Mat defenderMat, Monster attacker, Monster defender) {
@@ -552,6 +613,7 @@ public class DuelMenu {
         }
     }
 
+
     public void summonWithTribute(Monster monster) {
         int counter = 0;
         String input;
@@ -570,6 +632,11 @@ public class DuelMenu {
             if (monster.getLevel() <= 6 && counter == 1)
                 break;
             if (monster.getLevel() > 6 && counter == 2) {
+                break;
+            if (monster.getLevel() > 6 && counter == 2 && !monster.getName().equals("Gate Guardian")) {
+                break;
+            }
+            if (monster.getLevel() > 6 && counter == 3 && monster.getName().equals("Gate Guardian")) {
                 break;
             }
         }
@@ -601,6 +668,10 @@ public class DuelMenu {
     public void set() {
         Card card = currentTurnPlayer.getCurrentSelectedCard();
         Mat mat = currentTurnPlayer.getMat();
+        if (!canCardBeSetAfterTerratiger) {
+            canCardBeSetAfterTerratiger = true;
+            return;
+        }
         if (card instanceof Monster || card == null) {
             if (card == null) {
                 terminalOutput = "no card selected yet";
@@ -751,6 +822,7 @@ public class DuelMenu {
         terminalOutput = "flip summoned successfully";
         selectedCard.setAttack(true);
         selectedCard.setOn(true);
+        selectedCard.setFirstTimeFlipping(true);
     }
 
     public void attack(int number) {
@@ -780,7 +852,7 @@ public class DuelMenu {
         }
         Card attackedCard = opponentMat.getMonsterZone(number);
         if (attackedCard.isAttack()) {
-            int attackDifference = selectedCard.getAttack() - attackedCard.getAttack();
+            int attackDifference = getAttack(selectedCard) - getAttack(attackedCard);
             if (attackDifference > 0) {
                 opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - attackDifference);
                 terminalOutput = "your opponent’s monster is destroyed and your opponent receives " +
@@ -810,7 +882,7 @@ public class DuelMenu {
             String prefix = "";
             if (attackedCard.isOn())
                 prefix = "opponent’s monster card was " + attackedCard.getName() + " and ";
-            int differenceOfAttackAndDefence = selectedCard.getAttack() - attackedCard.getDefence();
+            int differenceOfAttackAndDefence = getAttack(selectedCard) - attackedCard.getDefence();
             if (differenceOfAttackAndDefence > 0) {
                 terminalOutput = prefix + "the defense position monster is destroyed";
                 opponentMat.setMonsterZone(number, null);
@@ -843,8 +915,16 @@ public class DuelMenu {
             terminalOutput = "you can’t do this action in this phase";
             return;
         }
-        terminalOutput = "you opponent receives " + selectedCard.getAttack() + " battle damage";
-        opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - selectedCard.getAttack());
+        terminalOutput = "you opponent receives " + getAttack(selectedCard) + " battle damage";
+        opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - getAttack(selectedCard));
+    }
+
+    private int getAttack(Card card) {
+        if (!card.getName().equals("The Calculator")) {
+            return card.getAttack();
+        }
+        setCalculator(card, currentTurnPlayer.getMat());
+        return card.getAttack();
     }
 
     public void activeEffect() {
@@ -860,6 +940,14 @@ public class DuelMenu {
         if (!phase.getCurrentPhase().equals("Main Phase")) {
             terminalOutput = "you can’t activate an effect on this turn";
             return;
+        }
+        Mat opponentMat = opponentTurnPlayer.getMat();
+        for (int i = 0; i < 5; i++) {
+            Monster monster = opponentMat.getMonsterZone(i);
+            if (monster.getName().equals("Mirage Dragon")) {
+                terminalOutput = "opponent has mirage dragon";
+                return;
+            }
         }
         Mat mat = currentTurnPlayer.getMat();
         for (int i = 0; i < 5; i++) {
@@ -877,7 +965,55 @@ public class DuelMenu {
     }
 
     public void checkForQuickChangeTurn() {
-        //TODO
+      // if(kossher){
+
+      // }
+        Player player = currentTurnPlayer;
+        currentTurnPlayer = opponentTurnPlayer;
+        opponentTurnPlayer = player;
+        TerminalOutput.output("now it will be "+opponentTurnPlayer.getUser().getUsername()+"'s turn");
+        showBoard();
+        TerminalOutput.output("do you want to active your trap and spell?");
+        String input = ScanInput.getInput();
+        if (input.equals("no")) {
+            TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
+            showBoard();
+        }
+        while (true) {
+            Matcher matcher;
+            input = ScanInput.getInput();
+            if (!(input.matches("activate effect"))){
+                activeEffect();
+                break;
+            }
+            else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select (--spell|-s)(?<opponent> --opponent| -o|) (?<number>[\\d]+)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select (?<number>[\\d]+) (--spell|-s)(?<opponent> --opponent| -o|)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select (?<number>[\\d]+)(?<opponent> --opponent| -o|) (--spell|-s)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (--spell|-s) (?<number>[\\d]+)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (?<number>[\\d]+) (--spell|-s)")).matches())
+                selectSpellOrTrap(matcher);
+            else {
+                TerminalOutput.output("it's noy your turn to play this kind of moves");
+            }
+            player = currentTurnPlayer;
+            currentTurnPlayer = opponentTurnPlayer;
+            opponentTurnPlayer = player;
+            TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
+            showBoard();
+        }
+    }
+
+    public void selectSpellOrTrap(Matcher matcher) {
+        int number = Integer.parseInt(matcher.group("number"));
+        String opponent = matcher.group("opponent");
+        boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+        selectSpellOrTrap(number, isOpponent);
     }
 
     public void ritualSummon() {
@@ -1017,6 +1153,11 @@ public class DuelMenu {
             card.setAttack(false);
             card.setField(false);
         }
+    }
+
+    private Matcher getMatcher(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input);
     }
 
 }
