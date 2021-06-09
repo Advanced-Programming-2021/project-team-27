@@ -20,6 +20,7 @@ import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DuelMenu {
     private User currentUser;
@@ -794,7 +795,55 @@ public class DuelMenu {
     }
 
     public void checkForQuickChangeTurn() {
-        //TODO
+      // if(kossher){
+
+      // }
+        Player player = currentTurnPlayer;
+        currentTurnPlayer = opponentTurnPlayer;
+        opponentTurnPlayer = player;
+        TerminalOutput.output("now it will be "+opponentTurnPlayer.getUser().getUsername()+"'s turn");
+        showBoard();
+        TerminalOutput.output("do you want to active your trap and spell?");
+        String input = ScanInput.getInput();
+        if (input.equals("no")) {
+            TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
+            showBoard();
+        }
+        while (true) {
+            Matcher matcher;
+            input = ScanInput.getInput();
+            if (!(input.matches("activate effect"))){
+                activeEffect();
+                break;
+            }
+            else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select (--spell|-s)(?<opponent> --opponent| -o|) (?<number>[\\d]+)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select (?<number>[\\d]+) (--spell|-s)(?<opponent> --opponent| -o|)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select (?<number>[\\d]+)(?<opponent> --opponent| -o|) (--spell|-s)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (--spell|-s) (?<number>[\\d]+)")).matches())
+                selectSpellOrTrap(matcher);
+            else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (?<number>[\\d]+) (--spell|-s)")).matches())
+                selectSpellOrTrap(matcher);
+            else {
+                TerminalOutput.output("it's noy your turn to play this kind of moves");
+            }
+            player = currentTurnPlayer;
+            currentTurnPlayer = opponentTurnPlayer;
+            opponentTurnPlayer = player;
+            TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
+            showBoard();
+        }
+    }
+
+    public void selectSpellOrTrap(Matcher matcher) {
+        int number = Integer.parseInt(matcher.group("number"));
+        String opponent = matcher.group("opponent");
+        boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+        selectSpellOrTrap(number, isOpponent);
     }
 
     public void ritualSummon() {
@@ -934,6 +983,11 @@ public class DuelMenu {
             card.setAttack(false);
             card.setField(false);
         }
+    }
+
+    private Matcher getMatcher(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input);
     }
 
 }
