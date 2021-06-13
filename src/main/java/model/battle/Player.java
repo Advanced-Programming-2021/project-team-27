@@ -22,6 +22,7 @@ public class Player {
     private Mat mat;
     private String selectedName;
     private boolean isSummoned = false;
+    public boolean booleanIsSpell = false;
     private int lifePoint;
     private int handNumber;
     protected ArrayList<Card> mainDeckCard = new ArrayList<>();
@@ -143,6 +144,9 @@ public class Player {
         return false;
     }
 
+    public ArrayList<Card> getSelectedCards() {
+        return selectedCards;
+    }
 
     public void changeScore(){
 

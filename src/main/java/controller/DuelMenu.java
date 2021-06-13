@@ -625,13 +625,14 @@ public class DuelMenu {
         } else if (card.getName().equals("Raigeki")) {
             for (int i = 0; i < 5; i++) {
                 if (opponentMat.getMonsterZone(i) != null) {
-                    opponentMat.addCardToGraveyard(opponentMat.getHandCard(i));
+                    opponentMat.addCardToGraveyard(opponentMat.getMonsterZone(i));
                 }
                 opponentMat.deleteMonsterZone(i);
             }
             for (int i = 0; i < 5; i++) {
                 if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
                 }
             }
         } else if (card.getName().equals("Change of Heart")) {
@@ -646,7 +647,17 @@ public class DuelMenu {
                     break;
                 }
             }
-            input -= 1;
+            if (input == 1) {
+                input = 2;
+            }else if (input == 2){
+                input = 1;
+            }else if (input == 3){
+                input = 4;
+            }else if (input == 4){
+                input = 0;
+            }else {
+                input = 4;
+            }
             monster = opponentMat.getMonsterZone(input);
             if (monster == null) {
                 TerminalOutput.output("No Monster");
@@ -654,16 +665,49 @@ public class DuelMenu {
             }
             opponentMat.deleteHandCard(input);
             currentMat.addMonster(monster);
-        } else if (card.getName().equals("Harpie's Feather Duster")) {
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                }
+            }
 
+        } else if (card.getName().equals("Harpie's Feather Duster")) {
+            for (int i = 0; i < 5; i++) {
+                if (opponentMat.getSpellAndTrapZone(i) != null) {
+                    opponentMat.addCardToGraveyard(opponentMat.getSpellAndTrapZone(i));
+                }
+                opponentMat.deleteSpellZone(i);
+            }
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Harpie's Feather Duster")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                }
+            }
         } else if (card.getName().equals("Swords of Revealing Light")) {
 
         } else if (card.getName().equals("Dark Hole")) {
-
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getMonsterZone(i) != null) {
+                    currentMat.addCardToGraveyard(currentMat.getMonsterZone(i));
+                }
+                currentMat.deleteMonsterZone(i);
+                if (opponentMat.getMonsterZone(i) != null) {
+                    opponentMat.addCardToGraveyard(opponentMat.getMonsterZone(i));
+                }
+                opponentMat.deleteMonsterZone(i);
+            }
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Harpie's Feather Duster")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                }
+            }
         } else if (card.getName().equals("Supply Squad")) {
 
         } else if (card.getName().equals("Spell Absorption")) {
-
+            currentTurnPlayer.changeLifePoint(+500);
         } else if (card.getName().equals("Messenger of peace")) {
 
         } else if (card.getName().equals("Twin Twisters")) {
