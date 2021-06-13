@@ -88,6 +88,10 @@ public class Mat {
         monsterZone[address] = null;
     }
 
+    public void deleteSpellZone(int address){
+        spellAndTrapZone[address] = null;
+    }
+
     public Monster getMonsterZone(int number) {
         return this.monsterZone[number];
     }
