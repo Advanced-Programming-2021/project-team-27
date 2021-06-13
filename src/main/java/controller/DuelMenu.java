@@ -34,6 +34,7 @@ public class DuelMenu {
     private User currentTurnUser;
     private Phase phase;
     private Ai ai;
+    public Monster onAttack;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
@@ -635,6 +636,9 @@ public class DuelMenu {
                     currentMat.deleteSpellZone(i);
                 }
             }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Change of Heart")) {
             int input;
             Monster monster;
@@ -671,7 +675,9 @@ public class DuelMenu {
                     currentMat.deleteSpellZone(i);
                 }
             }
-
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Harpie's Feather Duster")) {
             for (int i = 0; i < 5; i++) {
                 if (opponentMat.getSpellAndTrapZone(i) != null) {
@@ -685,8 +691,13 @@ public class DuelMenu {
                     currentMat.deleteSpellZone(i);
                 }
             }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Swords of Revealing Light")) {
-
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Dark Hole")) {
             for (int i = 0; i < 5; i++) {
                 if (currentMat.getMonsterZone(i) != null) {
@@ -704,12 +715,19 @@ public class DuelMenu {
                     currentMat.deleteSpellZone(i);
                 }
             }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Supply Squad")) {
-
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Spell Absorption")) {
-            currentTurnPlayer.changeLifePoint(+500);
+            currentTurnPlayer.setSpell(true);
         } else if (card.getName().equals("Messenger of peace")) {
-
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Twin Twisters")) {
             TerminalOutput.output("Select Spell or trap");
             int input = Integer.parseInt(ScanInput.getInput());
@@ -741,6 +759,9 @@ public class DuelMenu {
                 opponentMat.getGraveyard().add(card1);
                 opponentMat.deleteSpellZone(input);
             }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Mystical space typhoon")) {
             TerminalOutput.output("Select Spell or trap");
             int input = Integer.parseInt(ScanInput.getInput());
@@ -762,8 +783,13 @@ public class DuelMenu {
             Card card1 = opponentMat.getSpellAndTrapZone(input);
             opponentMat.getGraveyard().add(card1);
             opponentMat.deleteSpellZone(input);
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Ring of Defense")) {
-            
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Yami")) {
             for (int i = 0; i < 5; i++) {
                 Monster monster = currentTurnPlayer.getMat().getMonsterZone(i);
@@ -776,6 +802,9 @@ public class DuelMenu {
                     else
                         monster.setDefence(monster.getDefence() + 200);
                 }
+            }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
             }
         } else if (card.getName().equals("Forest")) {
             for (int i = 0; i < 5; i++) {
@@ -790,6 +819,9 @@ public class DuelMenu {
                         monster.setDefence(monster.getDefence() + 200);
                 }
             }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Closed Forest")) {
             for (int i = 0; i < 5; i++) {
                 Monster monster = currentTurnPlayer.getMat().getMonsterZone(i);
@@ -799,6 +831,9 @@ public class DuelMenu {
                 if (monster.getType().equals("Beast-Type")) {
                     monster.setAttack(monster.getAttack() + 100 * currentTurnPlayer.getMat().getGraveyard().size());
                 }
+            }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
             }
         } else if (card.getName().equals("UMIIRUKA")) {
             TerminalOutput.output("Enter monster number");
@@ -829,6 +864,9 @@ public class DuelMenu {
             }
             monster.setAttack(monster.getAttack() + 500);
             monster.setDefence(monster.getDefence() - 400);
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Sword of Dark Destruction")) {
             TerminalOutput.output("Enter monster number");
             int input = Integer.parseInt(ScanInput.getInput());
@@ -862,6 +900,9 @@ public class DuelMenu {
             }
             monster.setAttack(monster.getAttack() + 400);
             monster.setDefence(monster.getDefence() - 200);
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Black Pendant")) {
             TerminalOutput.output("Enter monster number");
             int input = Integer.parseInt(ScanInput.getInput());
@@ -890,6 +931,9 @@ public class DuelMenu {
                 return;
             }
             monster.setAttack(monster.getAttack() + 500);
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("United We Stand")) {
             TerminalOutput.output("Enter monster number");
             int input = Integer.parseInt(ScanInput.getInput());
@@ -927,6 +971,9 @@ public class DuelMenu {
             } else {
                 monster.setDefence(monster.getDefence() + cnt * 800);
             }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Magnum Shield")) {
             TerminalOutput.output("Enter monster number");
             int input = Integer.parseInt(ScanInput.getInput());
@@ -960,6 +1007,9 @@ public class DuelMenu {
                 } else {
                     monster.setDefence(monster.getAttack() + monster.getDefence());
                 }
+            }
+            if (currentTurnPlayer.isSpell){
+                currentTurnPlayer.changeLifePoint(500);
             }
         } else if (card.getName().equals("Advanced Ritual Art")) {
 
@@ -1200,6 +1250,7 @@ public class DuelMenu {
 
     public void attack(int number) {
         Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
+        onAttack = (Monster) currentTurnPlayer.getCurrentSelectedCard();
         if (selectedCard == null) {
             terminalOutput = "no card is selected yet";
             return;
@@ -1356,6 +1407,7 @@ public class DuelMenu {
             Matcher matcher;
             input = ScanInput.getInput();
             if (!(input.matches("activate effect"))) {
+                Monster monster;
                 activeEffect();
                 break;
             } else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches())
