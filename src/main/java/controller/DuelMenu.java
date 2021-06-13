@@ -667,18 +667,59 @@ public class DuelMenu {
         } else if (card.getName().equals("Messenger of peace")) {
 
         } else if (card.getName().equals("Twin Twisters")) {
-
+            TerminalOutput.output("Select Spell or trap");
+            int input = Integer.parseInt(ScanInput.getInput());
+            if (input < 1 || input > 6) {
+                TerminalOutput.output("Invalid number");
+                return;
+            }
+            currentTurnPlayer.getMat().deleteHandCard(input);
+            TerminalOutput.output("Enter how many spells you want to destroy");
+            input = Integer.parseInt(ScanInput.getInput());
+            for (int i = 0; i < input; i++) {
+                input = Integer.parseInt(ScanInput.getInput());
+                if (input < 1 || input > 5) {
+                    TerminalOutput.output("Invalid number");
+                    return;
+                }
+                if (input == 1) {
+                    input = 2;
+                } else if (input == 2) {
+                    input = 1;
+                } else if (input == 3) {
+                    input = 4;
+                } else if (input == 4) {
+                    input = 0;
+                } else {
+                    input = 4;
+                }
+                Card card1 = opponentMat.getSpellAndTrapZone(input);
+                opponentMat.getGraveyard().add(card1);
+                opponentMat.deleteSpellZone(input);
+            }
         } else if (card.getName().equals("Mystical space typhoon")) {
-            Mat opponentMat = opponentTurnPlayer.getMat();
             TerminalOutput.output("Select Spell or trap");
             int input = Integer.parseInt(ScanInput.getInput());
             if (input < 1 || input > 5) {
                 TerminalOutput.output("Invalid number");
                 return;
             }
-            
+            if (input == 1) {
+                input = 2;
+            } else if (input == 2) {
+                input = 1;
+            } else if (input == 3) {
+                input = 4;
+            } else if (input == 4) {
+                input = 0;
+            } else {
+                input = 4;
+            }
+            Card card1 = opponentMat.getSpellAndTrapZone(input);
+            opponentMat.getGraveyard().add(card1);
+            opponentMat.deleteSpellZone(input);
         } else if (card.getName().equals("Ring of Defense")) {
-
+            
         } else if (card.getName().equals("Yami")) {
             for (int i = 0; i < 5; i++) {
                 Monster monster = currentTurnPlayer.getMat().getMonsterZone(i);
@@ -722,6 +763,17 @@ public class DuelMenu {
                 TerminalOutput.output("Invalid number!");
                 return;
             }
+            if (input == 1) {
+                input = 2;
+            } else if (input == 2) {
+                input = 1;
+            } else if (input == 3) {
+                input = 4;
+            } else if (input == 4) {
+                input = 0;
+            } else {
+                input = 4;
+            }
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
             if (monster == null) {
                 TerminalOutput.output("No monster!");
@@ -739,6 +791,17 @@ public class DuelMenu {
             if (input < 1 || input > 5) {
                 TerminalOutput.output("Invalid number!");
                 return;
+            }
+            if (input == 1) {
+                input = 2;
+            } else if (input == 2) {
+                input = 1;
+            } else if (input == 3) {
+                input = 4;
+            } else if (input == 4) {
+                input = 0;
+            } else {
+                input = 4;
             }
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
             if (monster == null) {
@@ -762,6 +825,17 @@ public class DuelMenu {
                 TerminalOutput.output("Invalid number!");
                 return;
             }
+            if (input == 1) {
+                input = 2;
+            } else if (input == 2) {
+                input = 1;
+            } else if (input == 3) {
+                input = 4;
+            } else if (input == 4) {
+                input = 0;
+            } else {
+                input = 4;
+            }
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
             if (monster == null) {
                 TerminalOutput.output("No monster!");
@@ -778,6 +852,17 @@ public class DuelMenu {
             if (input < 1 || input > 5) {
                 TerminalOutput.output("Invalid number!");
                 return;
+            }
+            if (input == 1) {
+                input = 2;
+            } else if (input == 2) {
+                input = 1;
+            } else if (input == 3) {
+                input = 4;
+            } else if (input == 4) {
+                input = 0;
+            } else {
+                input = 4;
             }
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
             if (monster == null) {
@@ -807,13 +892,13 @@ public class DuelMenu {
             }
             if (input == 1) {
                 input = 2;
-            }else if (input == 2){
+            } else if (input == 2) {
                 input = 1;
-            }else if (input == 3){
+            } else if (input == 3) {
                 input = 4;
-            }else if (input == 4){
+            } else if (input == 4) {
                 input = 0;
-            }else {
+            } else {
                 input = 4;
             }
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
