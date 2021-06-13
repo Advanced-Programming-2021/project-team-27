@@ -1,6 +1,5 @@
 package model.battle;
 
-import com.sun.tools.javac.Main;
 import model.card.Card;
 import model.card.Monster;
 import model.card.Spell;
@@ -8,10 +7,7 @@ import model.card.Trap;
 import model.mat.Mat;
 import model.user.MainDeck;
 import model.user.User;
-import view.TerminalOutput;
 
-import javax.management.monitor.MonitorSettingException;
-import java.lang.management.MonitorInfo;
 import java.util.ArrayList;
 
 public class Player {
@@ -22,6 +18,7 @@ public class Player {
     private Mat mat;
     private String selectedName;
     private boolean isSummoned = false;
+    public boolean isSpell = false;
     private int lifePoint;
     private int handNumber;
     protected ArrayList<Card> mainDeckCard = new ArrayList<>();
@@ -143,6 +140,15 @@ public class Player {
         return false;
     }
 
+
+
+    public void setSpell(boolean spell) {
+        this.isSpell = spell;
+    }
+
+    public ArrayList<Card> getSelectedCards() {
+        return selectedCards;
+    }
 
     public void changeScore(){
 
