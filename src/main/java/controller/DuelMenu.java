@@ -614,16 +614,46 @@ public class DuelMenu {
     }
 
     private void effectCheckerInActiveEffect(Card card) {
+        Mat opponentMat = opponentTurnPlayer.getMat();
+        Mat currentMat = currentTurnPlayer.getMat();
         if (card.getName().equals("Monster Reborn")) {
-
+            // retual summon
         } else if (card.getName().equals("Terraforming")) {
 
         } else if (card.getName().equals("Pot of Greed")) {
 
         } else if (card.getName().equals("Raigeki")) {
-
+            for (int i = 0; i < 5; i++) {
+                if (opponentMat.getMonsterZone(i) != null) {
+                    opponentMat.addCardToGraveyard(opponentMat.getHandCard(i));
+                }
+                opponentMat.deleteMonsterZone(i);
+            }
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                }
+            }
         } else if (card.getName().equals("Change of Heart")) {
-
+            int input;
+            Monster monster;
+            while (true) {
+                TerminalOutput.output("Enter monster number");
+                input = Integer.parseInt(ScanInput.getInput());
+                if (input < 1 || input > 5) {
+                    TerminalOutput.output("Invalid number!");
+                } else {
+                    break;
+                }
+            }
+            input -= 1;
+            monster = opponentMat.getMonsterZone(input);
+            if (monster == null) {
+                TerminalOutput.output("No Monster");
+                return;
+            }
+            opponentMat.deleteHandCard(input);
+            currentMat.addMonster(monster);
         } else if (card.getName().equals("Harpie's Feather Duster")) {
 
         } else if (card.getName().equals("Swords of Revealing Light")) {
@@ -774,6 +804,17 @@ public class DuelMenu {
             if (input < 1 || input > 5) {
                 TerminalOutput.output("Invalid number!");
                 return;
+            }
+            if (input == 1) {
+                input = 2;
+            }else if (input == 2){
+                input = 1;
+            }else if (input == 3){
+                input = 4;
+            }else if (input == 4){
+                input = 0;
+            }else {
+                input = 4;
             }
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
             if (monster == null) {
