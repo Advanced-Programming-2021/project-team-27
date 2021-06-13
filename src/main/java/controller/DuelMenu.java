@@ -719,7 +719,7 @@ public class DuelMenu {
             opponentMat.getGraveyard().add(card1);
             opponentMat.deleteSpellZone(input);
         } else if (card.getName().equals("Ring of Defense")) {
-            
+
         } else if (card.getName().equals("Yami")) {
             for (int i = 0; i < 5; i++) {
                 Monster monster = currentTurnPlayer.getMat().getMonsterZone(i);
