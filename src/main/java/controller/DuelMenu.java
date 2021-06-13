@@ -34,6 +34,8 @@ public class DuelMenu {
     private User currentTurnUser;
     private Phase phase;
     private Ai ai;
+    public boolean isDoAttack;
+    public boolean permissionForAttack;
     public Monster onAttack;
     public boolean isDoAttack;
     private boolean isDuelIsOn;
@@ -996,7 +998,7 @@ public class DuelMenu {
             Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
             if (monster == null) {
                 TerminalOutput.output("No monster!");
-                return;
+                return ;
             }
             if (!monster.isOn()) {
                 TerminalOutput.output("Invalid monster!");
@@ -1064,7 +1066,9 @@ public class DuelMenu {
         } else if (card.getName().equals("Time Seal")) {
 
         } else if (card.getName().equals("Negate Attack")) {
-
+            if(isDoAttack){
+                nextPhase();
+            }
         } else if (card.getName().equals("Solemn Warning")) {
 
         } else if (card.getName().equals("Magic Jammer")) {
@@ -1313,6 +1317,9 @@ public class DuelMenu {
             terminalOutput = "there is no card to attack here";
             return;
         }
+        if (!permissionForAttack){
+            return;
+        }
         Card attackedCard = opponentMat.getMonsterZone(number);
         if (attackedCard.isAttack()) {
             int attackDifference = getAttack(selectedCard) - getAttack(attackedCard);
@@ -1432,6 +1439,7 @@ public class DuelMenu {
         // if(kossher){
 
         // }
+        isDoAttack = true;
         Player player = currentTurnPlayer;
         currentTurnPlayer = opponentTurnPlayer;
         opponentTurnPlayer = player;
@@ -1471,6 +1479,7 @@ public class DuelMenu {
             TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
             showBoard();
         }
+        isDoAttack =false;
     }
 
     public void selectSpellOrTrap(Matcher matcher) {
