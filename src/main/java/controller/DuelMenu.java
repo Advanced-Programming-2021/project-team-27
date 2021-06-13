@@ -613,6 +613,76 @@ public class DuelMenu {
         }
     }
 
+    private void effectCheckerInActiveEffect(Card card) {
+        if (card.getName().equals("Monster Reborn")) {
+
+        } else if (card.getName().equals("Terraforming")) {
+
+        } else if (card.getName().equals("Pot of Greed")) {
+
+        } else if (card.getName().equals("Raigeki")) {
+
+        } else if (card.getName().equals("Change of Heart")) {
+
+        } else if (card.getName().equals("Harpie's Feather Duster")) {
+
+        } else if (card.getName().equals("Swords of Revealing Light")) {
+
+        } else if (card.getName().equals("Dark Hole")) {
+
+        } else if (card.getName().equals("Supply Squad")) {
+
+        } else if (card.getName().equals("Spell Absorption")) {
+
+        } else if (card.getName().equals("Messenger of peace")) {
+
+        } else if (card.getName().equals("Twin Twisters")) {
+
+        } else if (card.getName().equals("Mystical space typhoon")) {
+
+        } else if (card.getName().equals("Ring of Defense")) {
+
+        } else if (card.getName().equals("Yami")) {
+
+        } else if (card.getName().equals("Forest")) {
+
+        } else if (card.getName().equals("Closed Forest")) {
+
+        } else if (card.getName().equals("UMIIRUKA")) {
+
+        } else if (card.getName().equals("Sword of Dark Destruction")) {
+
+        } else if (card.getName().equals("Black Pendant")) {
+
+        } else if (card.getName().equals("United We Stand")) {
+
+        } else if (card.getName().equals("Magnum Shield")) {
+
+        } else if (card.getName().equals("Advanced Ritual Art")) {
+
+        } else if (card.getName().equals("Magic Cylinder")) {
+
+        } else if (card.getName().equals("Mirror Force")) {
+
+        } else if (card.getName().equals("Mind Crush")) {
+
+        } else if (card.getName().equals("Trap Hole")) {
+
+        } else if (card.getName().equals("Torrential Tribute")) {
+
+        } else if (card.getName().equals("Time Seal")) {
+
+        } else if (card.getName().equals("Negate Attack")) {
+
+        } else if (card.getName().equals("Solemn Warning")) {
+
+        } else if (card.getName().equals("Magic Jammer")) {
+
+        } else if (card.getName().equals("Call of the Haunted")) {
+
+        }
+    }
+
 
     public void summonWithTribute(Monster monster) {
         int counter = 0;
