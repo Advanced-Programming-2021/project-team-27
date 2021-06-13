@@ -673,7 +673,20 @@ public class DuelMenu {
         } else if (card.getName().equals("United We Stand")) {
 
         } else if (card.getName().equals("Magnum Shield")) {
-
+            TerminalOutput.output("Enter monster number");
+            int input = Integer.parseInt(ScanInput.getInput());
+            if (input < 1 || input > 5) {
+                TerminalOutput.output("Invalid number!");
+                return;
+            }
+            Monster monster = currentTurnPlayer.getMat().getMonsterZone(input);
+            if (monster.getType().equals("Warrior")) {
+                if (monster.isAttack()) {
+                    monster.setAttack(monster.getAttack() + monster.getDefence());
+                } else {
+                    monster.setDefence(monster.getAttack() + monster.getDefence());
+                }
+            }
         } else if (card.getName().equals("Advanced Ritual Art")) {
 
         } else if (card.getName().equals("Magic Cylinder")) {
