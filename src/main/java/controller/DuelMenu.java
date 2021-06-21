@@ -37,7 +37,6 @@ public class DuelMenu {
     public boolean isDoAttack;
     public boolean permissionForAttack;
     public Monster onAttack;
-    public boolean isDoAttack;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
@@ -1023,6 +1022,7 @@ public class DuelMenu {
                     if (monster.getName().equals(onAttack.getName())) {
                         opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - onAttack.getAttack());
                         opponentMat.deleteMonsterZone(i);
+                        permissionForAttack = false;
                         return;
                     }
                 }
