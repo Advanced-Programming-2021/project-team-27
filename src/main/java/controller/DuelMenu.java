@@ -37,6 +37,7 @@ public class DuelMenu {
     public boolean isDoAttack;
     public boolean permissionForAttack;
     public Monster onAttack;
+    public boolean isDoAttack;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
@@ -1016,19 +1017,52 @@ public class DuelMenu {
         } else if (card.getName().equals("Advanced Ritual Art")) {
 
         } else if (card.getName().equals("Magic Cylinder")) {
-
+            if (isDoAttack) {
+                for (int i = 0; i < 5; i++) {
+                    Monster monster = opponentMat.getMonsterZone(i);
+                    if (monster.getName().equals(onAttack.getName())) {
+                        opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - onAttack.getAttack());
+                        opponentMat.deleteMonsterZone(i);
+                        return;
+                    }
+                }
+            }
         } else if (card.getName().equals("Mirror Force")) {
             if (isDoAttack){
                 for (int i = 0; i < 5; i++) {
                     if (opponentMat.getMonsterZone(i).isAttack()){
                         opponentMat.addCardToGraveyard(opponentMat.getMonsterZone(i));
+            if (isDoAttack) {
+                for (int i = 0; i < 5; i++) {
+                    Monster monster = opponentMat.getMonsterZone(i);
+                    if (monster.isAttack()) {
+                        opponentMat.getGraveyard().add(monster);
                         opponentMat.deleteMonsterZone(i);
                     }
                 }
             }
-
         } else if (card.getName().equals("Mind Crush")) {
-
+            TerminalOutput.output("Enter a card name");
+            String input = ScanInput.getInput();
+            boolean doesOpponentHaveThis = false;
+            for (int i = 0; i < 6; i++) {
+                if (opponentMat.getHandCard(i).getName().equals(input))
+                    doesOpponentHaveThis = true;
+            }
+            if (doesOpponentHaveThis) {
+                for (int i = 0; i < 6; i++) {
+                    if (opponentMat.getHandCard(i).getName().equals(input)) {
+                        opponentMat.deleteHandCard(i);
+                    }
+                }
+            } else {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
+                }
+            }
         } else if (card.getName().equals("Trap Hole")) {
 
         } else if (card.getName().equals("Torrential Tribute")) {
@@ -1262,6 +1296,7 @@ public class DuelMenu {
     }
 
     public void attack(int number) {
+        isDoAttack = true;
         Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
         onAttack = (Monster) currentTurnPlayer.getCurrentSelectedCard();
         if (selectedCard == null) {
@@ -1333,6 +1368,7 @@ public class DuelMenu {
                 currentTurnPlayer.setLifePoint(currentTurnPlayer.getLifePoint() + differenceOfAttackAndDefence);
             }
         }
+        isDoAttack = false;
     }
 
     public void directAttack() {
