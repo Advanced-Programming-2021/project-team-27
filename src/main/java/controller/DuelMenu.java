@@ -34,6 +34,7 @@ public class DuelMenu {
     private User currentTurnUser;
     private Phase phase;
     private Ai ai;
+    private boolean isAi;
     public boolean isDoAttack;
     public boolean permissionForAttack;
     public Monster onAttack;
@@ -45,7 +46,10 @@ public class DuelMenu {
     private boolean canCardBeSetAfterTerratiger = true;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
+        this.isAi = isAi;
         setCurrentUser(User.getUserByUsername(currentUser));
+        firstPlayer = new Player(this.currentUser);
+        secondPlayer = new Player(this.secondUser);
         if (!isAi) {
             if (!isUsernameExist(secondUser)) {
                 terminalOutput = "there is no player with this username";
@@ -54,6 +58,8 @@ public class DuelMenu {
             }
             setSecondUser(User.getUserByUsername(secondUser));
         } else {
+            ai = new Ai(firstPlayer);
+            ai.setDeck();
             this.isDuelIsOn = true;
             return;
         }
@@ -85,8 +91,6 @@ public class DuelMenu {
         setNumberOfRounds(numberOfRounds);
         wholeNumberOfRounds = numberOfRounds;
         isDuelIsOn = true;
-        firstPlayer = new Player(this.currentUser);
-        secondPlayer = new Player(this.secondUser);
         this.phase = new Phase(this);
     }
 
