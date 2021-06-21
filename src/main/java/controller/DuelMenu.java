@@ -1028,10 +1028,6 @@ public class DuelMenu {
                 }
             }
         } else if (card.getName().equals("Mirror Force")) {
-            if (isDoAttack){
-                for (int i = 0; i < 5; i++) {
-                    if (opponentMat.getMonsterZone(i).isAttack()){
-                        opponentMat.addCardToGraveyard(opponentMat.getMonsterZone(i));
             if (isDoAttack) {
                 for (int i = 0; i < 5; i++) {
                     Monster monster = opponentMat.getMonsterZone(i);
