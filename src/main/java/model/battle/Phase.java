@@ -49,6 +49,11 @@ public class Phase {
     }
 
     public String drawPhase(Player player) {
+        if (!player.isPermissionForDrawPhase){
+            terminalOutput = "cant get card";
+            player.setPermissionForDrawPhase(true);
+            return terminalOutput;
+        }
         ArrayList<Card> cards=player.getMainDeckCard();
         if (player.getMat().isHandFull()){
             terminalOutput = "Hand is full";
