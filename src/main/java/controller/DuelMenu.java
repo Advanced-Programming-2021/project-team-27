@@ -1355,6 +1355,13 @@ public class DuelMenu {
             terminalOutput = "you can’t do this action in this phase";
             return;
         }
+        for (int i = 0; i < 5; i++) {
+            if (opponentTurnPlayer.getMat().getMonsterZone(i) == null) {
+                terminalOutput = "opponent has monster in monster zone";
+                return;
+            }
+
+        }
         terminalOutput = "you opponent receives " + getAttack(selectedCard) + " battle damage";
         opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - getAttack(selectedCard));
     }
