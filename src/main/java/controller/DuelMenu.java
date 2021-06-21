@@ -37,7 +37,6 @@ public class DuelMenu {
     public boolean isDoAttack;
     public boolean permissionForAttack;
     public Monster onAttack;
-    public boolean isDoAttack;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
@@ -1023,15 +1022,12 @@ public class DuelMenu {
                     if (monster.getName().equals(onAttack.getName())) {
                         opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - onAttack.getAttack());
                         opponentMat.deleteMonsterZone(i);
+                        permissionForAttack = false;
                         return;
                     }
                 }
             }
         } else if (card.getName().equals("Mirror Force")) {
-            if (isDoAttack){
-                for (int i = 0; i < 5; i++) {
-                    if (opponentMat.getMonsterZone(i).isAttack()){
-                        opponentMat.addCardToGraveyard(opponentMat.getMonsterZone(i));
             if (isDoAttack) {
                 for (int i = 0; i < 5; i++) {
                     Monster monster = opponentMat.getMonsterZone(i);
