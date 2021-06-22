@@ -22,7 +22,7 @@ public class ProfileMenu {
             TerminalOutput.output("user with nickname " + nickname + " already exists");
             return;
         }
-        String fileAddress = "resources/users/" + currentUser.getUsername() + ".json";
+        String fileAddress = "src/main/resources/users/" + currentUser.getUsername() + ".json";
         currentUser.setNickname(nickname);
         JSONParser jsonParser = new JSONParser();
 
@@ -55,7 +55,7 @@ public class ProfileMenu {
         }
         currentUser.setPassword(newPassword);
 
-        String fileAddress = "resources/users/" + currentUser.getUsername() + ".json";
+        String fileAddress = "src/main/resources/users/" + currentUser.getUsername() + ".json";
         JSONParser jsonParser = new JSONParser();
 
         try (FileReader reader = new FileReader(fileAddress)) {

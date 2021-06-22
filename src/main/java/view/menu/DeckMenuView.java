@@ -86,9 +86,10 @@ public class DeckMenuView {
                 break;
             }
 
-            else
+            else {
                 TerminalOutput.output("invalid command");
-
+                continue;
+            }
             TerminalOutput.output(deckMenu.getTerminalOutput());
         }
     }

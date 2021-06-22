@@ -134,7 +134,7 @@ public class Card {
             cardInfo += "Type : " + monster.monsterType + "\n";
             cardInfo += "ATK : " + monster.attack + "\n";
             cardInfo += "DEF : " + monster.defence + "\n";
-            cardInfo += "Description : " + monster.getDescription() + "\n";
+            cardInfo += "Description : " + monster.getDescription();
         }
         return cardInfo;
     }

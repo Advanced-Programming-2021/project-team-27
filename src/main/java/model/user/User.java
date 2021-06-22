@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.json.simple.JSONArray;
 
+import javax.naming.ldap.SortResponseControl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -146,7 +147,14 @@ public class User {
         return decks;
     }
 
-
+    public void deleteCard(String name){
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).getName().equals(name)){
+                cards.remove(i);
+                return;
+            }
+        }
+    }
 
     public boolean isUserLoggedIn() {
         return isUserLoggedIn;
