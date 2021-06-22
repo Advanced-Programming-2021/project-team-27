@@ -45,6 +45,14 @@ public class DeckMenu {
         if (!decks.containsKey(deckName))
             terminalOutput = "deck with name " + deckName + " does not exist";
         else {
+            ArrayList<Card> cards = Deck.getDeckByName(deckName, currentUser.getUsername()).getMainDeck().getMainDeckCards();
+            ArrayList<Card> cards2 = Deck.getDeckByName(deckName, currentUser.getUsername()).getSideDeck().getSideDeckCards();
+            for (Card card : cards) {
+                currentUser.addCard(card);
+            }
+            for (Card card : cards2) {
+                currentUser.addCard(card);
+            }
             currentUser.deleteDeck(deckName);
             terminalOutput = "deck deleted successfully!";
         }
@@ -101,6 +109,7 @@ public class DeckMenu {
             terminalOutput = "there are already three cards with name " + cardName + " in deck " + deckName;
             return;
         }
+        currentUser.deleteCard(cardName);
         if (!isSideDeck) {
             deck.getMainDeck().addCard(card);
             if (deck.getMainDeck().getMainDeckSize() >= 40)

@@ -15,8 +15,10 @@ public class ScoreboardMenuView {
             input = ScanInput.getInput();
             if (input.matches("menu enter [\\w]+"))
                 TerminalOutput.output("menu navigation is not possible");
-            else if (input.matches("menu exit"))
+            else if (input.matches("menu exit")) {
+                TerminalOutput.output("exit successfully!");
                 break;
+            }
             else if (input.matches("menu show-current"))
                 TerminalOutput.output("Scoreboard Menu");
             else if (input.matches("scoreboard show"))
