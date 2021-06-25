@@ -20,7 +20,7 @@ public class User {
     private String password;
     private String nickname;
     private int score;
-    private Deck activeDeck = null;
+    private Deck activeDeck;
     private HashMap<String, Deck> decks;
     private ArrayList<Card> cards;
     private int credit = 1000000;
