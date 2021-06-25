@@ -39,7 +39,7 @@ public class Phase {
 
 
     public String getCurrentPhase() {
-        return currentPhase;
+        return currentPhase + "\n";
     }
 
     public String drawPhase(Player player) {
@@ -76,7 +76,7 @@ public class Phase {
     }
 
     public String endPhase(Player player) { 
-        terminalOutput = "\nits "+player.getUser().getNickname()+"'s turn\n";
+        terminalOutput = "its "+player.getUser().getNickname()+"'s turn\n";
         duelMenu.changeTurn();
         return terminalOutput;
     }
