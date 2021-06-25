@@ -179,14 +179,15 @@ public class Mat {
         return true;
     }
 
-    public String printMat(Deck deck, boolean isReversed) {
+    public String printMat(Deck deck, boolean isReversed,int mainDeckSize) {
         MainDeck mainDeck = deck.getMainDeck();
         String ret = "";
         if (isReversed) {
+            ret+="\t";
             for (int i = 0; i < 6; i++)
                 if (handCard[i] != null)
-                    ret += "c   ";
-            ret += "\n" + mainDeck.getMainDeckSize();
+                    ret += "c\t";
+            ret += "\n" + mainDeckSize;
             ret += "\n" + printSpellZone();
             ret += "\n" + printMonsterZone() + "\n";
             ret += graveyard.size() + "                  " + ((fieldZone == null) ? "E" : "O");
@@ -194,10 +195,10 @@ public class Mat {
             ret += ((fieldZone == null) ? "E" : "O") + "                  " + graveyard.size();
             ret += "\n" + printMonsterZone();
             ret += "\n" + printSpellZone();
-            ret += "\n                  " + mainDeck.getMainDeckSize() + "\n";
+            ret += "\n                   " + mainDeckSize  + "\n";
             for (int i = 0; i < 6; i++)
                 if (handCard[i] != null)
-                    ret += "c   ";
+                    ret += "c\t";
         }
         return ret + "\n";
     }
@@ -206,13 +207,13 @@ public class Mat {
         String ret = "";
         for (int i = 0; i < 5; i++) {
             if (monsterZone[i] == null)
-                ret += "E    ";
+                ret += "E\t";
             else if (!monsterZone[i].isAttack() && monsterZone[i].isOn())
-                ret += "DO   ";
+                ret += "DO\t";
             else if (!monsterZone[i].isAttack() && !monsterZone[i].isOn())
-                ret += "DH   ";
+                ret += "DH\t";
             else if (monsterZone[i].isAttack())
-                ret += "OO   ";
+                ret += "OO\t";
         }
         return ret;
     }
@@ -221,11 +222,11 @@ public class Mat {
         String ret = "";
         for (int i = 0; i < 5; i++) {
             if (spellAndTrapZone[i] == null)
-                ret += "E    ";
+                ret += "E\t";
             else if (spellAndTrapZone[i].isOn())
-                ret += "O    ";
+                ret += "O\t";
             else
-                ret += "H    ";
+                ret += "H\t";
         }
         return ret;
     }

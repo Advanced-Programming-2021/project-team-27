@@ -25,22 +25,22 @@ public class Phase {
         if (currentPhase.equals("Draw Phase")) {
             currentPhase = "Standby Phase";
         }
-        if (currentPhase.equals("Standby Phase")) {
+        else if (currentPhase.equals("Standby Phase")) {
             currentPhase = "First Main Phase";
         }
-        if (currentPhase.equals("First Main Phase")) {
+        else if (currentPhase.equals("First Main Phase")) {
             currentPhase = "Battle Phase";
         }
-        if (currentPhase.equals("Battle Phase")) {
+        else if (currentPhase.equals("Battle Phase")) {
             currentPhase = "Second Main Phase";
         }
-        if (currentPhase.equals("Second Main Phase")) {
+        else if (currentPhase.equals("Second Main Phase")) {
             currentPhase = "End Phase";
         }
-        if (currentPhase.equals("End Phase")){
+        else if (currentPhase.equals("End Phase")){
             currentPhase = "Draw Phase";
         }
-
+        System.out.print(currentPhase);
     }
 
 

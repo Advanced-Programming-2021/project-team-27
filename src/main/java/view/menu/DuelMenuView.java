@@ -116,7 +116,7 @@ public class DuelMenuView {
             else if ((getMatcher(input, "flip-summon")).matches())
                 flipSummon();
 
-            else if ((getMatcher(input, "attack ([\\d]+)")).matches())
+            else if ((matcher = getMatcher(input, "attack ([\\d]+)")).matches())
                 attack(matcher);
 
             else if ((getMatcher(input, "attack direct")).matches())
