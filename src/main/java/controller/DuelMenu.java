@@ -656,10 +656,20 @@ public class DuelMenu {
                 }
                 opponentMat.deleteMonsterZone(i);
             }
+            boolean isDelete = false;
             for (int i = 0; i < 5; i++) {
                 if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
                     currentMat.deleteSpellZone(i);
+                    isDelete = true;
+                }
+            }
+            if (isDelete = false) {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null && currentMat.getHandCard(i).getName().equals("Raigeki")) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
                 }
             }
             if (currentTurnPlayer.isSpell) {
@@ -1215,7 +1225,13 @@ public class DuelMenu {
                 return;
             }
             card.setOn(false);
-            mat.addSpellOrTrap(card);
+            if (card.getType().equals("Field")){
+                mat.setFieldZone(null);
+                mat.setFieldZone(card);
+            }
+            else {
+                mat.addSpellOrTrap(card);
+            }
             currentTurnPlayer.setCurrentSelectedCard(null);
             currentTurnPlayer.setSelectedName(null);
             currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
