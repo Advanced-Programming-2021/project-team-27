@@ -85,7 +85,7 @@ class MatTest {
     @Test
     void printMat() {
         Deck deck = new Deck("arad", "arad");
-        Assertions.assertNotNull(mat.printMat(deck, true));
-        Assertions.assertNotNull(mat.printMat(deck, false));
+        Assertions.assertNotNull(mat.printMat(deck, true,deck.getMainDeckSize()));
+        Assertions.assertNotNull(mat.printMat(deck, false, deck.getMainDeckSize()));
     }
 }

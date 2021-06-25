@@ -32,6 +32,10 @@ public class Player {
         this.isPermissionForDrawPhase = isPermissionForDrawPhase;
     }
 
+    public int getSizeOfDeck(){
+        return mainDeckCard.size();
+    }
+
     public Player(User user) {
         setUser(user);
         MainDeck mainDeck = user.getActiveDeck().getMainDeck();
@@ -39,6 +43,11 @@ public class Player {
         this.lifePoint = 8000;
         mat = new Mat();
         currentSelectedCard = null;
+        for (int i = 0; i < 5; i++) {
+            this.getMat().addToHand(mainDeckCard.get(mainDeckCard.size()-1));
+            this.deleteCard();
+
+        }
     }
 
     public void generateMainDeck(MainDeck mainDeck) {

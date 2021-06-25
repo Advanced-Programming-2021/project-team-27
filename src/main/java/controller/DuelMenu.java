@@ -38,7 +38,7 @@ public class DuelMenu {
     private boolean isAi;
     private boolean hasAiMoved;
     public boolean isDoAttack;
-    public boolean permissionForAttack;
+    public boolean permissionForAttack = true;
     public Monster onAttack;
     private boolean isDuelIsOn;
     private String terminalOutput = "";
@@ -140,13 +140,13 @@ public class DuelMenu {
     }
 
     public void showBoard() {
-        String opponentMat = opponentTurnPlayer.getMat().printMat(opponentTurnPlayer.getUser().getActiveDeck(), true);
-        String currentMat = currentTurnPlayer.getMat().printMat(currentTurnPlayer.getUser().getActiveDeck(), false);
+        String opponentMat = opponentTurnPlayer.getMat().printMat(opponentTurnPlayer.getUser().getActiveDeck(), true,opponentTurnPlayer.getSizeOfDeck());
+        String currentMat = currentTurnPlayer.getMat().printMat(currentTurnPlayer.getUser().getActiveDeck(), false,currentTurnPlayer.getSizeOfDeck());
         User currentTurnUser = currentTurnPlayer.getUser();
         User opponentTurnUser = opponentTurnPlayer.getUser();
-        terminalOutput = opponentTurnUser.getNickname() + " : " + opponentTurnPlayer.getLifePoint();
+        terminalOutput = opponentTurnUser.getNickname() + " : " + opponentTurnPlayer.getLifePoint()+"\n";
         terminalOutput += opponentMat;
-        terminalOutput += "--------------------------------\n";
+        terminalOutput += "-----------------------------\n";
         terminalOutput += currentMat;
         terminalOutput += currentTurnUser.getNickname() + " : " + currentTurnPlayer.getLifePoint();
     }
@@ -175,7 +175,6 @@ public class DuelMenu {
         }
         selectMonsterCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
         currentTurnPlayer.setSelectedName("MonsterOpponent");
-
     }
 
     private void selectMonsterCheck(int number, Player opponentTurnPlayer, int i, int i2, int i3, int i4) {
@@ -1312,6 +1311,18 @@ public class DuelMenu {
     }
 
     public void attack(int number) {
+        if (number == 1){
+            number = 2;
+        }
+        else if (number == 2){
+            number = 1;
+        }
+        else if (number == 4){
+            number = 0;
+        }else if (number == 5){
+            number = 4;
+        }
+
         isDoAttack = true;
         Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
         onAttack = (Monster) currentTurnPlayer.getCurrentSelectedCard();
@@ -1322,7 +1333,7 @@ public class DuelMenu {
         Mat mat = currentTurnPlayer.getMat();
         boolean isInMonsters = false;
         for (int i = 0; i < 5; i++) {
-            if (mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+            if (mat.getMonsterZone(i) != null && mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
                 isInMonsters = true;
         }
         if (!isInMonsters) {
@@ -1360,9 +1371,11 @@ public class DuelMenu {
                     }
                 }
             } else {
-                terminalOutput = "Your monster card is destroyed and you received <damage> battle damage";
+                terminalOutput = "Your monster card is destroyed and you received " +
+                        (-attackDifference) + "battle damage";
+                currentTurnPlayer.setLifePoint(currentTurnPlayer.getLifePoint() + attackDifference);
                 for (int i = 0; i < 5; i++) {
-                    if (mat.getMonsterZone(i).getName().equals(selectedCard.getName())) {
+                    if (mat.getMonsterZone(i) != null && mat.getMonsterZone(i).getName().equals(selectedCard.getName())) {
                         mat.addCardToGraveyard(mat.getMonsterZone(i));
                         mat.setMonsterZone(i, null);
                         break;
@@ -1396,7 +1409,7 @@ public class DuelMenu {
         Mat mat = currentTurnPlayer.getMat();
         boolean isInMonsters = false;
         for (int i = 0; i < 5; i++) {
-            if (mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+            if (mat.getMonsterZone(i) !=null && mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
                 isInMonsters = true;
         }
         if (!isInMonsters) {
@@ -1408,7 +1421,7 @@ public class DuelMenu {
             return;
         }
         for (int i = 0; i < 5; i++) {
-            if (opponentTurnPlayer.getMat().getMonsterZone(i) == null) {
+            if (opponentTurnPlayer.getMat().getMonsterZone(i) != null) {
                 terminalOutput = "opponent has monster in monster zone";
                 return;
             }
@@ -1625,8 +1638,8 @@ public class DuelMenu {
     public void changeTurn() {
         if (!isAi) {
             Player player = currentTurnPlayer;
-            opponentTurnPlayer = currentTurnPlayer;
-            currentTurnPlayer = player;
+            currentTurnPlayer = opponentTurnPlayer;
+            opponentTurnPlayer = player;
             if (isFirstRound) {
                 isFirstRound = false;
             }
