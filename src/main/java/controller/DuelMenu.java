@@ -34,6 +34,8 @@ public class DuelMenu {
     private User currentTurnUser;
     private Phase phase;
     private Ai ai;
+    private boolean isAi;
+    private boolean hasAiMoved;
     public boolean isDoAttack;
     public boolean permissionForAttack;
     public Monster onAttack;
@@ -45,7 +47,17 @@ public class DuelMenu {
     private boolean canCardBeSetAfterTerratiger = true;
 
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
+        this.isAi = isAi;
         setCurrentUser(User.getUserByUsername(currentUser));
+        firstPlayer = new Player(this.currentUser);
+        if (!isAi) {
+            setSecondUser(User.getUserByUsername(secondUser));
+            secondPlayer = new Player(this.secondUser);
+        }
+        else {
+            User user = new User("AI", "AI", "AI");
+            secondPlayer = new Player(user);
+        }
         if (!isAi) {
             if (!isUsernameExist(secondUser)) {
                 terminalOutput = "there is no player with this username";
@@ -54,6 +66,8 @@ public class DuelMenu {
             }
             setSecondUser(User.getUserByUsername(secondUser));
         } else {
+            ai = new Ai(firstPlayer, secondPlayer);
+            ai.setDeck();
             this.isDuelIsOn = true;
             return;
         }
@@ -85,8 +99,6 @@ public class DuelMenu {
         setNumberOfRounds(numberOfRounds);
         wholeNumberOfRounds = numberOfRounds;
         isDuelIsOn = true;
-        firstPlayer = new Player(this.currentUser);
-        secondPlayer = new Player(this.secondUser);
         this.phase = new Phase(this);
     }
 
@@ -1603,11 +1615,21 @@ public class DuelMenu {
     }
 
     public void changeTurn() {
-        Player player = currentTurnPlayer;
-        opponentTurnPlayer = currentTurnPlayer;
-        currentTurnPlayer = player;
-        if (isFirstRound) {
-            isFirstRound = false;
+        if (!isAi) {
+            Player player = currentTurnPlayer;
+            opponentTurnPlayer = currentTurnPlayer;
+            currentTurnPlayer = player;
+            if (isFirstRound) {
+                isFirstRound = false;
+            }
+        } else {
+            if (hasAiMoved) {
+                hasAiMoved = false;
+            } else {
+                ai.doTurn();
+                hasAiMoved = true;
+                changeTurn();
+            }
         }
     }
 
