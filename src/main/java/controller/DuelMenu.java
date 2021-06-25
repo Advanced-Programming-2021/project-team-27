@@ -15,6 +15,7 @@ import view.TerminalOutput;
 
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,21 +52,16 @@ public class DuelMenu {
         setCurrentUser(User.getUserByUsername(currentUser));
         firstPlayer = new Player(this.currentUser);
         if (!isAi) {
-            setSecondUser(User.getUserByUsername(secondUser));
-            secondPlayer = new Player(this.secondUser);
-        }
-        else {
-            User user = new User("AI", "AI", "AI");
-            secondPlayer = new Player(user);
-        }
-        if (!isAi) {
             if (!isUsernameExist(secondUser)) {
                 terminalOutput = "there is no player with this username";
                 this.isDuelIsOn = false;
                 return;
             }
             setSecondUser(User.getUserByUsername(secondUser));
+            secondPlayer = new Player(this.secondUser);
         } else {
+            User user = new User("AI", "AI", "AI");
+            secondPlayer = new Player(user);
             ai = new Ai(firstPlayer, secondPlayer);
             ai.setDeck();
             this.isDuelIsOn = true;
@@ -100,8 +96,20 @@ public class DuelMenu {
         wholeNumberOfRounds = numberOfRounds;
         isDuelIsOn = true;
         this.phase = new Phase(this);
+        Random random = new Random();
+        int dice = random.nextInt(2);
+        if (dice == 0) {
+            currentTurnPlayer = firstPlayer;
+            opponentTurnPlayer = secondPlayer;
+        } else {
+            opponentTurnPlayer = firstPlayer;
+            currentTurnPlayer = secondPlayer;
+        }
     }
 
+    public boolean isDuelIsOn() {
+        return isDuelIsOn;
+    }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -138,9 +146,9 @@ public class DuelMenu {
         User opponentTurnUser = opponentTurnPlayer.getUser();
         terminalOutput = opponentTurnUser.getNickname() + " : " + opponentTurnPlayer.getLifePoint();
         terminalOutput += opponentMat;
-        terminalOutput += "--------------------------------";
+        terminalOutput += "--------------------------------\n";
         terminalOutput += currentMat;
-        terminalOutput = currentTurnUser.getNickname() + " : " + currentTurnPlayer.getLifePoint();
+        terminalOutput += currentTurnUser.getNickname() + " : " + currentTurnPlayer.getLifePoint();
     }
 
     public void selectMonster(int number, boolean isOpponent) {
