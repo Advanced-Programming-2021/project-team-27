@@ -9,6 +9,7 @@ import model.card.Spell;
 import model.card.Trap;
 import model.mat.Mat;
 import model.user.MainDeck;
+import model.user.SideDeck;
 import model.user.User;
 import view.ScanInput;
 import view.TerminalOutput;
@@ -43,6 +44,7 @@ public class DuelMenu {
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
+    private Card summonedMonster;
     private User firstRoundWinner;
     private User secondRoundWinner;
     private boolean canCardBeSetAfterTerratiger = true;
@@ -374,6 +376,7 @@ public class DuelMenu {
             }
         }
         terminalOutput = "summon successfully";
+        summonedMonster = monster;
         monster.setAttack(true);
         monster.setOn(true);
         mat.addMonster(monster);
@@ -646,9 +649,59 @@ public class DuelMenu {
         if (card.getName().equals("Monster Reborn")) {
             // retual summon
         } else if (card.getName().equals("Terraforming")) {
-
+            for (Card card1 : currentTurnPlayer.getMainDeckCard()) {
+                if (card1 instanceof Trap || card1 instanceof Spell) {
+                    if (card1.getType().equals("Field") && currentMat.getHandCard(5) == null) {
+                        currentMat.addToHand(card1);
+                    }
+                }
+            }
+            boolean isDelete = false;
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Terraforming")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                    isDelete = true;
+                }
+            }
+            if (isDelete = false) {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null && currentMat.getHandCard(i).getName().equals("Terraforming")) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
+                }
+            }
+            if (currentTurnPlayer.isSpell) {
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Pot of Greed")) {
-
+            if (currentMat.getHandCard(4) == null) {
+                ArrayList<Card> cards = currentTurnPlayer.getMainDeckCard();
+                currentTurnPlayer.getMat().addToHand(cards.get(cards.size() - 1));
+                currentTurnPlayer.deleteCard();
+                currentTurnPlayer.getMat().addToHand(cards.get(cards.size() - 2));
+                currentTurnPlayer.deleteCard();
+            }
+            boolean isDelete = false;
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Pot of Greed")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                    isDelete = true;
+                }
+            }
+            if (isDelete = false) {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null && currentMat.getHandCard(i).getName().equals("Pot of Greed")) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
+                }
+            }
+            if (currentTurnPlayer.isSpell) {
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Raigeki")) {
             for (int i = 0; i < 5; i++) {
                 if (opponentMat.getMonsterZone(i) != null) {
@@ -656,10 +709,20 @@ public class DuelMenu {
                 }
                 opponentMat.deleteMonsterZone(i);
             }
+            boolean isDelete = false;
             for (int i = 0; i < 5; i++) {
                 if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
                     currentMat.deleteSpellZone(i);
+                    isDelete = true;
+                }
+            }
+            if (isDelete = false) {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null && currentMat.getHandCard(i).getName().equals("Raigeki")) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
                 }
             }
             if (currentTurnPlayer.isSpell) {
@@ -693,7 +756,7 @@ public class DuelMenu {
                 TerminalOutput.output("No Monster");
                 return;
             }
-            opponentMat.deleteHandCard(input);
+            opponentMat.deleteMonsterZone(input);
             currentMat.addMonster(monster);
             for (int i = 0; i < 5; i++) {
                 if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
@@ -1084,9 +1147,21 @@ public class DuelMenu {
                 }
             }
         } else if (card.getName().equals("Trap Hole")) {
-
+            if (opponentTurnPlayer.isSummoned() && summonedMonster.getAttack() > 1000) {
+                for (int i = 0; i < 5; i++) {
+                    if (opponentMat.getMonsterZone(i) != null && opponentMat.getMonsterZone(i).getName().equals(summonedMonster.getName()))
+                        opponentMat.deleteMonsterZone(i);
+                }
+            }
         } else if (card.getName().equals("Torrential Tribute")) {
-
+            if (currentTurnPlayer.isSummoned() || opponentTurnPlayer.isSummoned()) {
+                for (int i = 0; i < 5; i++) {
+                    if (currentMat.getMonsterZone(i) != null)
+                        currentMat.deleteMonsterZone(i);
+                    if (opponentMat.getMonsterZone(i) != null)
+                        opponentMat.deleteMonsterZone(i);
+                }
+            }
         } else if (card.getName().equals("Time Seal")) {
             opponentTurnPlayer.setPermissionForDrawPhase(false);
         } else if (card.getName().equals("Negate Attack")) {
@@ -1099,7 +1174,17 @@ public class DuelMenu {
         } else if (card.getName().equals("Magic Jammer")) {
 
         } else if (card.getName().equals("Call of the Haunted")) {
-
+            Card haunted = null;
+            for (Card card1 : currentTurnPlayer.getMat().getGraveyard()) {
+                if (card1 instanceof Monster) {
+                    haunted = card1;
+                    haunted.setAttack(true);
+                    break;
+                }
+            }
+            if (haunted != null && !currentMat.isMonsterZoneIsFull()) {
+                currentMat.addMonster((Monster) haunted);
+            }
         }
     }
 
@@ -1215,7 +1300,13 @@ public class DuelMenu {
                 return;
             }
             card.setOn(false);
-            mat.addSpellOrTrap(card);
+            if (card.getType().equals("Field")){
+                mat.setFieldZone(null);
+                mat.setFieldZone(card);
+            }
+            else {
+                mat.addSpellOrTrap(card);
+            }
             currentTurnPlayer.setCurrentSelectedCard(null);
             currentTurnPlayer.setSelectedName(null);
             currentTurnPlayer.getMat().deleteHandCard(currentTurnPlayer.getHandNumber());
@@ -1641,6 +1732,132 @@ public class DuelMenu {
     public boolean hasGameEnded() {
         int firstPlayerHealth = firstPlayer.getLifePoint();
         int secondPlayerHealth = secondPlayer.getLifePoint();
+        if (wholeNumberOfRounds == 3) {
+            System.out.println("Do you want to switch cards from side deck?(yes1/no1/yes2/no2)");
+            String string = ScanInput.getInput();
+            MainDeck mainDeck = null;
+            SideDeck sideDeck = null;
+            if (string.equals("yes1")) {
+                mainDeck = currentUser.getActiveDeck().getMainDeck();
+                sideDeck = currentUser.getActiveDeck().getSideDeck();
+                System.out.println("Input name of main card");
+                String mainName = ScanInput.getInput();
+                System.out.println("Input name of side card");
+                String sideName = ScanInput.getInput();
+                Card mainCard = null;
+                Card sideCard = null;
+                boolean isValid = false;
+                for (Card card : mainDeck.getMainDeckCards()) {
+                    if (card.getName().equals(mainName)) {
+                        isValid = true;
+                        mainCard = card;
+                    }
+                }
+                boolean isSideValid = false;
+                for (Card card : sideDeck.getSideDeckCards()) {
+                    if (card.getName().equals(sideName)) {
+                        isSideValid = true;
+                        sideCard = card;
+                    }
+                }
+                if (isValid && isSideValid) {
+                    mainDeck.removeCard(mainCard);
+                    sideDeck.removeCard(sideCard);
+                    mainDeck.addCard(sideCard);
+                    sideDeck.addCard(mainCard);
+                }
+            } else if (string.equals("yes2")) {
+                mainDeck = secondUser.getActiveDeck().getMainDeck();
+                sideDeck = secondUser.getActiveDeck().getSideDeck();
+                System.out.println("Input name of main card");
+                String mainName = ScanInput.getInput();
+                System.out.println("Input name of side card");
+                String sideName = ScanInput.getInput();
+                Card mainCard = null;
+                Card sideCard = null;
+                boolean isValid = false;
+                for (Card card : mainDeck.getMainDeckCards()) {
+                    if (card.getName().equals(mainName)) {
+                        isValid = true;
+                        mainCard = card;
+                    }
+                }
+                boolean isSideValid = false;
+                for (Card card : sideDeck.getSideDeckCards()) {
+                    if (card.getName().equals(sideName)) {
+                        isSideValid = true;
+                        sideCard = card;
+                    }
+                }
+                if (isValid && isSideValid) {
+                    mainDeck.removeCard(mainCard);
+                    sideDeck.removeCard(sideCard);
+                    mainDeck.addCard(sideCard);
+                    sideDeck.addCard(mainCard);
+                }
+            }
+            System.out.println("Do you want to switch cards from side deck?(yes1/no1/yes2/no2)");
+            string = ScanInput.getInput();
+            if (string.equals("yes1")) {
+                mainDeck = currentUser.getActiveDeck().getMainDeck();
+                sideDeck = currentUser.getActiveDeck().getSideDeck();
+                System.out.println("Input name of main card");
+                String mainName = ScanInput.getInput();
+                System.out.println("Input name of side card");
+                String sideName = ScanInput.getInput();
+                Card mainCard = null;
+                Card sideCard = null;
+                boolean isValid = false;
+                for (Card card : mainDeck.getMainDeckCards()) {
+                    if (card.getName().equals(mainName)) {
+                        isValid = true;
+                        mainCard = card;
+                    }
+                }
+                boolean isSideValid = false;
+                for (Card card : sideDeck.getSideDeckCards()) {
+                    if (card.getName().equals(sideName)) {
+                        isSideValid = true;
+                        sideCard = card;
+                    }
+                }
+                if (isValid && isSideValid) {
+                    mainDeck.removeCard(mainCard);
+                    sideDeck.removeCard(sideCard);
+                    mainDeck.addCard(sideCard);
+                    sideDeck.addCard(mainCard);
+                }
+            } else if (string.equals("yes2")) {
+                mainDeck = secondUser.getActiveDeck().getMainDeck();
+                sideDeck = secondUser.getActiveDeck().getSideDeck();
+                System.out.println("Input name of main card");
+                String mainName = ScanInput.getInput();
+                System.out.println("Input name of side card");
+                String sideName = ScanInput.getInput();
+                Card mainCard = null;
+                Card sideCard = null;
+                boolean isValid = false;
+                for (Card card : mainDeck.getMainDeckCards()) {
+                    if (card.getName().equals(mainName)) {
+                        isValid = true;
+                        mainCard = card;
+                    }
+                }
+                boolean isSideValid = false;
+                for (Card card : sideDeck.getSideDeckCards()) {
+                    if (card.getName().equals(sideName)) {
+                        isSideValid = true;
+                        sideCard = card;
+                    }
+                }
+                if (isValid && isSideValid) {
+                    mainDeck.removeCard(mainCard);
+                    sideDeck.removeCard(sideCard);
+                    mainDeck.addCard(sideCard);
+                    sideDeck.addCard(mainCard);
+                }
+            }
+        }
         if (firstPlayerHealth <= 0 ||
                 (currentTurnPlayer.isEqual(firstPlayer) && phase.getCurrentPhase().equals("Draw Phase") && isEndCard())) {
             secondPlayerWins++;
