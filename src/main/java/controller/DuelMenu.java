@@ -656,6 +656,25 @@ public class DuelMenu {
                     }
                 }
             }
+            boolean isDelete = false;
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Terraforming")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                    isDelete = true;
+                }
+            }
+            if (isDelete = false) {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null && currentMat.getHandCard(i).getName().equals("Terraforming")) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
+                }
+            }
+            if (currentTurnPlayer.isSpell) {
+                currentTurnPlayer.changeLifePoint(500);
+            }
         } else if (card.getName().equals("Pot of Greed")) {
             if (currentMat.getHandCard(5) == null) {
                 ArrayList<Card> cards = currentTurnPlayer.getMainDeckCard();
@@ -663,6 +682,25 @@ public class DuelMenu {
                 currentTurnPlayer.deleteCard();
                 currentTurnPlayer.getMat().addToHand(cards.get(cards.size() - 2));
                 currentTurnPlayer.deleteCard();
+            }
+            boolean isDelete = false;
+            for (int i = 0; i < 5; i++) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Pot of Greed")) {
+                    currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
+                    currentMat.deleteSpellZone(i);
+                    isDelete = true;
+                }
+            }
+            if (isDelete = false) {
+                for (int i = 0; i < 6; i++) {
+                    if (currentMat.getHandCard(i) != null && currentMat.getHandCard(i).getName().equals("Pot of Greed")) {
+                        currentMat.addCardToGraveyard(currentMat.getHandCard(i));
+                        currentMat.deleteHandCard(i);
+                    }
+                }
+            }
+            if (currentTurnPlayer.isSpell) {
+                currentTurnPlayer.changeLifePoint(500);
             }
         } else if (card.getName().equals("Raigeki")) {
             for (int i = 0; i < 5; i++) {
