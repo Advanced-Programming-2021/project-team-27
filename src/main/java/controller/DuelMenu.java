@@ -1600,6 +1600,7 @@ public class DuelMenu {
                 }
                 currentUser.setCredit(currentUser.getCredit() + firstPlayerCredit);
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
+                secondUser.setScore(secondUser.getScore() + 1000*wholeNumberOfRounds);
                 return true;
             }
             refresh();
@@ -1624,6 +1625,7 @@ public class DuelMenu {
                 }
                 currentUser.setCredit(currentUser.getCredit() + firstPlayerCredit);
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
+                currentUser.setScore(currentUser.getScore() + 1000*wholeNumberOfRounds);
                 return true;
             }
             refresh();

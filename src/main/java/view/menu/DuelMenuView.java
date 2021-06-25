@@ -167,7 +167,9 @@ public class DuelMenuView {
 
             else if ((getMatcher(input, "menu exit")).matches())
                 break;
-
+            else if (input.matches("menu show-current")) {
+                TerminalOutput.output("Duel Menu");
+            }
             else
                 TerminalOutput.output("invalid command");
 
