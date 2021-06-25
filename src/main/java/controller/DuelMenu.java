@@ -1554,6 +1554,7 @@ public class DuelMenu {
     }
 
     public void surrender() {
+        numberOfRounds = 1;
         currentTurnPlayer.setLifePoint(0);
     }
 
@@ -1575,6 +1576,7 @@ public class DuelMenu {
     public void setWinner(String nickname) {
         String firstPlayerName = currentUser.getNickname();
         String secondPlayerName = secondUser.getNickname();
+        numberOfRounds = 1;
         if (firstPlayerName.equals(nickname))
             secondPlayer.setLifePoint(0);
         if (secondPlayerName.equals(nickname))
@@ -1592,6 +1594,7 @@ public class DuelMenu {
             terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
             if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == secondPlayer.getUser())) {
                 refresh();
+                terminalOutput += username + " won the whole match and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
                 int firstPlayerCredit = 100;
                 int secondPlayerCredit = 1000 + secondPlayerMaxLP;
                 if (wholeNumberOfRounds == 3) {
@@ -1616,6 +1619,7 @@ public class DuelMenu {
             String username = currentUser.getUsername();
             terminalOutput += username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
             if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == firstPlayer.getUser())) {
+                terminalOutput += username + " won the whole match and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
                 refresh();
                 int secondPlayerCredit = 100;
                 int firstPlayerCredit = 1000 + firstPlayerMaxLP;
