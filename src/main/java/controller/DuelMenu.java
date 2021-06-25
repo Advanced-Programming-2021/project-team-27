@@ -651,13 +651,13 @@ public class DuelMenu {
         } else if (card.getName().equals("Terraforming")) {
             for (Card card1 : currentTurnPlayer.getMainDeckCard()) {
                 if (card1 instanceof Trap || card1 instanceof Spell) {
-                    if (card1.getType().equals("Field") && currentMat.getHandCard(6) == null) {
+                    if (card1.getType().equals("Field") && currentMat.getHandCard(5) == null) {
                         currentMat.addToHand(card1);
                     }
                 }
             }
         } else if (card.getName().equals("Pot of Greed")) {
-            if (currentMat.getHandCard(5) == null) {
+            if (currentMat.getHandCard(4) == null) {
                 ArrayList<Card> cards = currentTurnPlayer.getMainDeckCard();
                 currentTurnPlayer.getMat().addToHand(cards.get(cards.size() - 1));
                 currentTurnPlayer.deleteCard();
@@ -708,7 +708,7 @@ public class DuelMenu {
                 TerminalOutput.output("No Monster");
                 return;
             }
-            opponentMat.deleteHandCard(input);
+            opponentMat.deleteMonsterZone(input);
             currentMat.addMonster(monster);
             for (int i = 0; i < 5; i++) {
                 if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
@@ -1126,7 +1126,17 @@ public class DuelMenu {
         } else if (card.getName().equals("Magic Jammer")) {
 
         } else if (card.getName().equals("Call of the Haunted")) {
-
+            Card haunted = null;
+            for (Card card1 : currentTurnPlayer.getMat().getGraveyard()) {
+                if (card1 instanceof Monster) {
+                    haunted = card1;
+                    haunted.setAttack(true);
+                    break;
+                }
+            }
+            if (haunted != null && !currentMat.isMonsterZoneIsFull()) {
+                currentMat.addMonster((Monster) haunted);
+            }
         }
     }
 
