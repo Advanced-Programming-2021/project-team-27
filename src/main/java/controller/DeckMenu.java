@@ -176,7 +176,7 @@ public class DeckMenu {
         terminalOutput += "Other decks:\n";
         for (Map.Entry<String, Deck> entry : decks.entrySet()) {
             Deck deck = entry.getValue();
-            if (!deck.isActiveDeck())
+            if (!deck.getName().equals(activeDeck.getName()))
                 printDeckForAllDeck(deck);
         }
     }
