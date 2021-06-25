@@ -1,6 +1,7 @@
 package controller;
 
 import model.card.Card;
+import model.card.Monster;
 import model.user.Deck;
 import model.user.MainDeck;
 import model.user.SideDeck;
@@ -160,6 +161,7 @@ public class DeckMenu {
                 terminalOutput = "card with name " + cardName + " does not exist in side deck";
             else {
                 deck.getSideDeck().removeCard(wantedCard);
+                currentUser.addCard(wantedCard);
                 terminalOutput = "card removed form deck successfully";
             }
         }
@@ -193,6 +195,11 @@ public class DeckMenu {
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> spellsAndTraps = new ArrayList<>();
         ArrayList<Card> cards = new ArrayList<>();
+        HashMap<String, Deck> decks = currentUser.getDecks();
+        if (!decks.containsKey(deckName)) {
+            terminalOutput = "deck with name " + deckName + " does not exist";
+            return;
+        }
         if (!isSideDeck) {
             terminalOutput += "Main deck:\nMonsters:\n";
             MainDeck mainDeck = Deck.getDeckByName(deckName, currentUser.getUsername()).getMainDeck();
@@ -204,7 +211,7 @@ public class DeckMenu {
             cards = sideDeck.getSideDeckCards();
         }
         for (Card card : cards) {
-            if (card.getType().equals("monster"))
+            if (card instanceof Monster)
                 monsters.add(card);
             else
                 spellsAndTraps.add(card);

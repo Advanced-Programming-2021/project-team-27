@@ -23,7 +23,7 @@ public class User {
     private Deck activeDeck = null;
     private HashMap<String, Deck> decks;
     private ArrayList<Card> cards;
-    private int credit;
+    private int credit = 100000;
     private boolean isUserLoggedIn = false;
 
     public User(String username, String nickname, String password) {
