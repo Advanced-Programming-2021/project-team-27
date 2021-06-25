@@ -7,6 +7,7 @@ import model.user.User;
 import view.ScanInput;
 import view.TerminalOutput;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -1186,7 +1186,7 @@ public class DuelMenu {
             }
             Monster monster = (Monster) currentTurnPlayer.getCurrentSelectedCard();
             if (monster.getLevel() > 4) {
-                summonWithTribute(monster);
+                setWithTribute(monster);
                 return;
             }
             monster.setAttack(false);
@@ -1269,7 +1269,7 @@ public class DuelMenu {
             terminalOutput = "you can't do this action phase";
             return;
         }
-        if ((isOnAttack && !card.isAttack()) || (!isOnAttack && card.isAttack())) {
+        if ((isOnAttack && card.isAttack()) || (!isOnAttack && !card.isAttack())) {
             terminalOutput = "this card is already in the wanted position";
             return;
         }
@@ -1291,7 +1291,7 @@ public class DuelMenu {
         Mat mat = currentTurnPlayer.getMat();
         boolean isInMonsters = false;
         for (int i = 0; i < 5; i++) {
-            if (mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+            if (mat.getMonsterZone(i) != null && mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
                 isInMonsters = true;
         }
         if (!isInMonsters) {
@@ -1351,10 +1351,12 @@ public class DuelMenu {
             terminalOutput = "there is no card to attack here";
             return;
         }
+
+        Card attackedCard = opponentMat.getMonsterZone(number);
+        effectCheckerInAttack(currentTurnPlayer.getMat(),opponentTurnPlayer.getMat(),(Monster) selectedCard,(Monster) attackedCard);
         if (!permissionForAttack) {
             return;
         }
-        Card attackedCard = opponentMat.getMonsterZone(number);
         if (attackedCard.isAttack()) {
             int attackDifference = getAttack(selectedCard) - getAttack(attackedCard);
             if (attackDifference > 0) {
@@ -1474,7 +1476,7 @@ public class DuelMenu {
             terminalOutput = "spell card zone is full";
             return;
         }
-        //NEEDS TO IMPLEMENT CARDS FIRST
+        effectCheckerInActiveEffect(selectedCard);
         terminalOutput = "spell activated";
     }
 
@@ -1554,6 +1556,14 @@ public class DuelMenu {
         if (card == null){
             terminalOutput = "no card selected yet";
             return;
+        }
+        if (currentTurnPlayer.getSelectedName().equals("MonsterOpponent") ||
+                currentTurnPlayer.getSelectedName().equals("SpellOpponent") ||
+                currentTurnPlayer.getSelectedName().equals("TrapOpponent")){
+            if (!card.isOn()){
+                terminalOutput = "card is not visible" ;
+                return;
+            }
         }
         String cardName = card.getName();
         terminalOutput = Card.showCard(cardName);
