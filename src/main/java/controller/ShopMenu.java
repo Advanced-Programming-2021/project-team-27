@@ -21,6 +21,7 @@ public class ShopMenu {
 
     }
 
+
     public void buyCard(String cardName) {
         if (Card.getCardByName(cardName) == null) {
             TerminalOutput.output("There is no card with this name");

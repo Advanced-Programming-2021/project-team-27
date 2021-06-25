@@ -23,7 +23,7 @@ public class User {
     private Deck activeDeck = null;
     private HashMap<String, Deck> decks;
     private ArrayList<Card> cards;
-    private int credit;
+    private int credit = 1000000;
     private boolean isUserLoggedIn = false;
 
     public User(String username, String nickname, String password) {
@@ -33,7 +33,7 @@ public class User {
         setScore(0);
         cards = new ArrayList<>();
         decks = new HashMap<>();
-        setCredit(100000);
+        setCredit(1000000);
         allUsers.add(this);
         JSONObject newUser = new JSONObject();
         newUser.put("username", username);
