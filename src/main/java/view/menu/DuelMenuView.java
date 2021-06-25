@@ -173,10 +173,15 @@ public class DuelMenuView {
 
             TerminalOutput.output(duelMenu.getTerminalOutput());
 
-            if (hasGameEnded()) {
+            if (duelMenu.isDuelIsOn() && hasGameEnded()) {
+                TerminalOutput.output(duelMenu.getTerminalOutput());
+                duelMenu.showBoard();
                 TerminalOutput.output(duelMenu.getTerminalOutput());
                 break;
             }
+            duelMenu.showBoard();
+            TerminalOutput.output(duelMenu.getTerminalOutput());
+
         }
     }
 
