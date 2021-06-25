@@ -65,4 +65,12 @@ public class Deck {
         }
         return null;
     }
+
+    public static void addToAllDeck(Deck deck){
+        allDecks.add(deck);
+    }
+
+    public static ArrayList<Deck> getAllDecks() {
+        return allDecks;
+    }
 }
