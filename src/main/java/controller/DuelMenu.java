@@ -50,6 +50,7 @@ public class DuelMenu {
     public DuelMenu(String currentUser, String secondUser, int numberOfRounds, boolean isAi) {
         this.isAi = isAi;
         setCurrentUser(User.getUserByUsername(currentUser));
+        setSecondUser(User.getUserByUsername(secondUser));
         firstPlayer = new Player(this.currentUser);
         if (!isAi) {
             if (!isUsernameExist(secondUser)) {
@@ -57,15 +58,13 @@ public class DuelMenu {
                 this.isDuelIsOn = false;
                 return;
             }
-            setSecondUser(User.getUserByUsername(secondUser));
             secondPlayer = new Player(this.secondUser);
         } else {
-            User user = new User("AI", "AI", "AI");
+            User user = User.getUserByUsername("AI");
             secondPlayer = new Player(user);
             ai = new Ai(firstPlayer, secondPlayer);
             ai.setDeck();
             this.isDuelIsOn = true;
-            return;
         }
         if (!isPlayerHadActiveDeck(this.currentUser)) {
             terminalOutput = currentUser + " has no active deck";
@@ -104,6 +103,10 @@ public class DuelMenu {
         } else {
             opponentTurnPlayer = firstPlayer;
             currentTurnPlayer = secondPlayer;
+        }
+        if (isAi) {
+            currentTurnPlayer = firstPlayer;
+            opponentTurnPlayer = secondPlayer;
         }
     }
 

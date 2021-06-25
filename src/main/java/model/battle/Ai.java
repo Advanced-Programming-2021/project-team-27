@@ -17,6 +17,7 @@ public class Ai {
     private Player opponent;
     private Player ai;
     private Deck deck;
+    private ArrayList<Card> mainDeck = new ArrayList<>();
 
     public Ai(Player opponent, Player ai) {
         this.opponent = opponent;
@@ -24,38 +25,32 @@ public class Ai {
     }
 
     public void setDeck() {
-        User user = User.getUserByUsername("AI");
-        deck = new Deck("AI", "AI");
-        MainDeck mainDeck = deck.getMainDeck();
-        for (int i = 0; i < 40; i++) {
-            Random random = new Random();
-            int randInt = random.nextInt(70);
-            ArrayList<Card> allCards = Card.getAllCards();
-            Card card = allCards.get(randInt);
-            if (card instanceof Monster) {
-                Monster monster = (Monster) card;
+        deck = ai.getUser().getActiveDeck();
+        ArrayList<Card> cards = deck.getMainDeck().getMainDeckCards();
+        for (Card card : cards) {
+            if (card.getCardType().equals("Spell")) {
+                Card spell = card;
+                Spell spell1 = new Spell(spell.getName(), spell.getIcon(), spell.getDescription(), spell.getStatus(), spell.getPrice());
+                mainDeck.add(spell1);
+            }
+            if (card.getCardType().equals("Trap")) {
+                Card trap = card;
+                Trap trap1 = new Trap(trap.getName(), trap.getIcon(), trap.getDescription(), trap.getStatus(), trap.getPrice());
+                mainDeck.add(trap1);
+            } else {
+                Card monster =card;
                 Monster monster1 = new Monster(monster.getName(), monster.getLevel(), monster.getAttribute()
                         , monster.getMonsterType(), monster.getCardType(), monster.getAttack(), monster.getDefence(), monster.getDescription(), monster.getPrice());
-                mainDeck.addCard(monster1);
-            }
-            if (card instanceof Spell) {
-                Spell spell = (Spell) card;
-                Spell spell1 = new Spell(spell.getName(), spell.getIcon(), spell.getDescription(), spell.getStatus(), spell.getPrice());
-                mainDeck.addCard(spell1);
-            }
-            if (card instanceof Trap) {
-                Trap trap = (Trap) card;
-                Trap trap1 = new Trap(trap.getName(), trap.getIcon(), trap.getDescription(), trap.getStatus(), trap.getPrice());
-                mainDeck.addCard(trap1);
+                mainDeck.add(monster1);
+
             }
         }
-        user.setActiveDeck(deck);
     }
 
     public void doTurn() {
         for (int i = 0; i < 5; i++) {
             if (ai.getMat().getMonsterZone(i) == null) {
-                for (Card card : deck.getMainDeck().getMainDeckCards()) {
+                for (Card card : mainDeck) {
                     if (card instanceof Monster) {
                         ai.getMat().setMonsterZone(i, (Monster) card);
                         break;
@@ -65,6 +60,11 @@ public class Ai {
             }
         }
         Card card = ai.getMat().getMonsterZone(0);
+        for (int i = 0; i < 5; i++) {
+            if (ai.getMat().getMonsterZone(i) != null && ai.getMat().getMonsterZone(i).getAttack() > card.getAttack()) {
+                card = ai.getMat().getMonsterZone(i);
+            }
+        }
         boolean doesOpponentHaveMonster = false;
         for (int i = 0; i < 5; i++) {
             if (opponent.getMat().getMonsterZone(i) != null) {
