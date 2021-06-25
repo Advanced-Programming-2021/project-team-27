@@ -1442,7 +1442,9 @@ public class DuelMenu {
             terminalOutput = "there is no card to attack here";
             return;
         }
-        checkForQuickChangeTurn();
+        if (!isAi) {
+            checkForQuickChangeTurn();
+        }
         if (!permissionForAttack) {
             return;
         }
