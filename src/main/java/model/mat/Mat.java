@@ -91,6 +91,10 @@ public class Mat {
 
     public void deleteHandCard(int number){
         handCard[number-1] = null;
+        for (int i = number; i < 6; i++) {
+            handCard[number-1] = handCard[number];
+            handCard[number] = null;
+        }
     }
 
     public void deleteMonsterZone(int address){
