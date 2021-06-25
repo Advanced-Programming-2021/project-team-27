@@ -173,14 +173,11 @@ public class DuelMenuView {
             else
                 TerminalOutput.output("invalid command");
 
-            TerminalOutput.output(duelMenu.getTerminalOutput());
-
             if (duelMenu.isDuelIsOn() && hasGameEnded()) {
-                TerminalOutput.output(duelMenu.getTerminalOutput());
-                duelMenu.showBoard();
                 TerminalOutput.output(duelMenu.getTerminalOutput());
                 break;
             }
+            TerminalOutput.output(duelMenu.getTerminalOutput());
             duelMenu.showBoard();
             TerminalOutput.output(duelMenu.getTerminalOutput());
 

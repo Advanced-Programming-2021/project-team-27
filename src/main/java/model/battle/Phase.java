@@ -82,7 +82,7 @@ public class Phase {
     }
 
     public String endPhase(Player player) {
-        terminalOutput = "its "+player.getUser().getNickname()+"'s turn";
+        terminalOutput = "\nits "+player.getUser().getNickname()+"'s turn";
         duelMenu.changeTurn();
         return terminalOutput;
     }
