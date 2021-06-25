@@ -1,17 +1,20 @@
 package model.user;
 
+
 import java.util.ArrayList;
 
 public class Deck {
     private static ArrayList<Deck> allDecks = new ArrayList<>();
     private String name;
     private String creatorUsername;
-    private MainDeck mainDeck = new MainDeck();
-    private SideDeck sideDeck = new SideDeck();
+    private MainDeck mainDeck;
+    private SideDeck sideDeck;
     private boolean activeDeck;
     private boolean isValid = false;
 
     public Deck(String name, String creatorUsername){
+        mainDeck = new MainDeck();
+        sideDeck = new SideDeck();
         this.name = name;
         this.creatorUsername = creatorUsername;
         allDecks.add(this);

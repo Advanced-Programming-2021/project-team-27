@@ -1,7 +1,6 @@
 package model.user;
 
 import model.card.Card;
-import model.card.Monster;
 
 import java.util.ArrayList;
 

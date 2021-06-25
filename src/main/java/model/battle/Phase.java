@@ -35,7 +35,6 @@ public class Phase {
         } else if (currentPhase.equals("End Phase")) {
             currentPhase = "Draw Phase";
         }
-        System.out.print(currentPhase);
     }
 
 
@@ -76,8 +75,8 @@ public class Phase {
 
     }
 
-    public String endPhase(Player player) {
-        terminalOutput = "its " + player.getUser().getNickname() + "'s turn\n";
+    public String endPhase(Player player) { 
+        terminalOutput = "\nits "+player.getUser().getNickname()+"'s turn\n";
         duelMenu.changeTurn();
         return terminalOutput;
     }

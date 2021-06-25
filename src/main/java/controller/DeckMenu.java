@@ -88,7 +88,7 @@ public class DeckMenu {
             return;
         }
         card = cards.get(cards.indexOf(card));
-        Deck deck = decks.get(deckName);
+        Deck deck = Deck.getDeckByName(deckName, currentUser.getUsername());
         if (!isSideDeck && deck.getMainDeck().getMainDeckSize() == 40) {
             terminalOutput = "main deck is full";
             return;
@@ -127,7 +127,7 @@ public class DeckMenu {
             terminalOutput = "deck with name " + deckName + " does not exist";
             return;
         }
-        Deck deck = decks.get(deckName);
+        Deck deck = Deck.getDeckByName(deckName, currentUser.getUsername());
         if (!isSideDeck) {
             ArrayList<Card> cards = deck.getMainDeck().getMainDeckCards();
             Card wantedCard = null;
@@ -136,6 +136,7 @@ public class DeckMenu {
                 if (card.getName().equals(cardName)) {
                     isCardInDeck = true;
                     wantedCard = card;
+                    break;
                 }
             }
             if (!isCardInDeck)

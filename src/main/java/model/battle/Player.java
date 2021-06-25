@@ -9,6 +9,7 @@ import model.user.MainDeck;
 import model.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Player {
     private User user;
@@ -43,10 +44,10 @@ public class Player {
         this.lifePoint = 8000;
         mat = new Mat();
         currentSelectedCard = null;
+        //Collections.shuffle(mainDeckCard);
         for (int i = 0; i < 5; i++) {
             this.getMat().addToHand(mainDeckCard.get(mainDeckCard.size()-1));
             this.deleteCard();
-
         }
     }
 
