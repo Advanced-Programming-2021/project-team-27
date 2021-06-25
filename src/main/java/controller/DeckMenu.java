@@ -211,10 +211,10 @@ public class DeckMenu {
             cards = sideDeck.getSideDeckCards();
         }
         for (Card card : cards) {
-            if (card instanceof Monster)
-                monsters.add(card);
-            else
+            if (card.getCardType().equals("Trap") || card.getCardType().equals("Spell"))
                 spellsAndTraps.add(card);
+            else
+                monsters.add(card);
         }
         monsters.sort(Card.nameComparator);
         spellsAndTraps.sort(Card.nameComparator);
