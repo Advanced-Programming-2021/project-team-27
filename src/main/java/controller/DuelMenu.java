@@ -44,6 +44,7 @@ public class DuelMenu {
     private boolean isDuelIsOn;
     private String terminalOutput = "";
     private boolean isFirstRound;
+    private Card summonedMonster;
     private User firstRoundWinner;
     private User secondRoundWinner;
     private boolean canCardBeSetAfterTerratiger = true;
@@ -375,6 +376,7 @@ public class DuelMenu {
             }
         }
         terminalOutput = "summon successfully";
+        summonedMonster = monster;
         monster.setAttack(true);
         monster.setOn(true);
         mat.addMonster(monster);
@@ -647,9 +649,21 @@ public class DuelMenu {
         if (card.getName().equals("Monster Reborn")) {
             // retual summon
         } else if (card.getName().equals("Terraforming")) {
-
+            for (Card card1 : currentTurnPlayer.getMainDeckCard()) {
+                if (card1 instanceof Trap || card1 instanceof Spell) {
+                    if (card1.getType().equals("Field") && currentMat.getHandCard(6) == null) {
+                        currentMat.addToHand(card1);
+                    }
+                }
+            }
         } else if (card.getName().equals("Pot of Greed")) {
-
+            if (currentMat.getHandCard(5) == null) {
+                ArrayList<Card> cards = currentTurnPlayer.getMainDeckCard();
+                currentTurnPlayer.getMat().addToHand(cards.get(cards.size() - 1));
+                currentTurnPlayer.deleteCard();
+                currentTurnPlayer.getMat().addToHand(cards.get(cards.size() - 2));
+                currentTurnPlayer.deleteCard();
+            }
         } else if (card.getName().equals("Raigeki")) {
             for (int i = 0; i < 5; i++) {
                 if (opponentMat.getMonsterZone(i) != null) {
@@ -1085,9 +1099,21 @@ public class DuelMenu {
                 }
             }
         } else if (card.getName().equals("Trap Hole")) {
-
+            if (opponentTurnPlayer.isSummoned() && summonedMonster.getAttack() > 1000) {
+                for (int i = 0; i < 5; i++) {
+                    if (opponentMat.getMonsterZone(i) != null && opponentMat.getMonsterZone(i).getName().equals(summonedMonster.getName()))
+                        opponentMat.deleteMonsterZone(i);
+                }
+            }
         } else if (card.getName().equals("Torrential Tribute")) {
-
+            if (currentTurnPlayer.isSummoned() || opponentTurnPlayer.isSummoned()) {
+                for (int i = 0; i < 5; i++) {
+                    if (currentMat.getMonsterZone(i) != null)
+                        currentMat.deleteMonsterZone(i);
+                    if (opponentMat.getMonsterZone(i) != null)
+                        opponentMat.deleteMonsterZone(i);
+                }
+            }
         } else if (card.getName().equals("Time Seal")) {
             opponentTurnPlayer.setPermissionForDrawPhase(false);
         } else if (card.getName().equals("Negate Attack")) {
