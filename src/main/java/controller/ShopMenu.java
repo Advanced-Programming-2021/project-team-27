@@ -23,6 +23,7 @@ public class ShopMenu {
 
     public void buyCard(String cardName){
         if (Card.getCardByName(cardName) == null){
+            System.out.println(cardName);
             TerminalOutput.output("There is no card with this name");
             return;
         }
