@@ -140,11 +140,11 @@ public class DuelMenu {
     }
 
     public void showBoard() {
-        String opponentMat = opponentTurnPlayer.getMat().printMat(opponentTurnPlayer.getUser().getActiveDeck(), true,opponentTurnPlayer.getSizeOfDeck());
-        String currentMat = currentTurnPlayer.getMat().printMat(currentTurnPlayer.getUser().getActiveDeck(), false,currentTurnPlayer.getSizeOfDeck());
+        String opponentMat = opponentTurnPlayer.getMat().printMat(opponentTurnPlayer.getUser().getActiveDeck(), true, opponentTurnPlayer.getSizeOfDeck());
+        String currentMat = currentTurnPlayer.getMat().printMat(currentTurnPlayer.getUser().getActiveDeck(), false, currentTurnPlayer.getSizeOfDeck());
         User currentTurnUser = currentTurnPlayer.getUser();
         User opponentTurnUser = opponentTurnPlayer.getUser();
-        terminalOutput = opponentTurnUser.getNickname() + " : " + opponentTurnPlayer.getLifePoint()+"\n";
+        terminalOutput = opponentTurnUser.getNickname() + " : " + opponentTurnPlayer.getLifePoint() + "\n";
         terminalOutput += opponentMat;
         terminalOutput += "-----------------------------\n";
         terminalOutput += currentMat;
@@ -225,10 +225,10 @@ public class DuelMenu {
     }
 
     public void selectSpellOrTrap(int number, boolean isOpponent) {
-        Card card;
         if (!isOpponent) {
             selectSpellOrTrapCheck(number, currentTurnPlayer, 3, 1, 4, 0);
             currentTurnPlayer.setSelectedName("Spell");
+            return;
         }
         selectSpellOrTrapCheck(number, opponentTurnPlayer, 1, 3, 0, 4);
         currentTurnPlayer.setSelectedName("SpellOpponent");
@@ -330,7 +330,7 @@ public class DuelMenu {
         phase.nextPhase();
         System.out.print(phase.getCurrentPhase());
         if (phase.getCurrentPhase().equals("End Phase")) {
-            terminalOutput = phase.endPhase(opponentTurnPlayer) + "\n" + "Draw Phase" +"\n"+phase.drawPhase(currentTurnPlayer);
+            terminalOutput = phase.endPhase(opponentTurnPlayer) + "\n" + "Draw Phase" + "\n" + phase.drawPhase(currentTurnPlayer);
             phase.nextPhase();
         }
     }
@@ -654,7 +654,7 @@ public class DuelMenu {
                 opponentMat.deleteMonsterZone(i);
             }
             for (int i = 0; i < 5; i++) {
-                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
                     currentMat.deleteSpellZone(i);
                 }
@@ -693,7 +693,7 @@ public class DuelMenu {
             opponentMat.deleteHandCard(input);
             currentMat.addMonster(monster);
             for (int i = 0; i < 5; i++) {
-                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Reigeki")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
                     currentMat.deleteSpellZone(i);
                 }
@@ -709,7 +709,7 @@ public class DuelMenu {
                 opponentMat.deleteSpellZone(i);
             }
             for (int i = 0; i < 5; i++) {
-                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Harpie's Feather Duster")) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Harpie's Feather Duster")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
                     currentMat.deleteSpellZone(i);
                 }
@@ -723,7 +723,7 @@ public class DuelMenu {
             }
         } else if (card.getName().equals("Dark Hole")) {
             for (int i = 0; i < 5; i++) {
-                if (currentMat.getMonsterZone(i) != null) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getMonsterZone(i) != null) {
                     currentMat.addCardToGraveyard(currentMat.getMonsterZone(i));
                 }
                 currentMat.deleteMonsterZone(i);
@@ -733,7 +733,7 @@ public class DuelMenu {
                 opponentMat.deleteMonsterZone(i);
             }
             for (int i = 0; i < 5; i++) {
-                if (currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Harpie's Feather Duster")) {
+                if (currentMat.getSpellAndTrapZone(i) != null && currentMat.getSpellAndTrapZone(i).getName().equalsIgnoreCase("Harpie's Feather Duster")) {
                     currentMat.addCardToGraveyard(currentMat.getSpellAndTrapZone(i));
                     currentMat.deleteSpellZone(i);
                 }
@@ -1040,7 +1040,7 @@ public class DuelMenu {
             if (isDoAttack) {
                 for (int i = 0; i < 5; i++) {
                     Monster monster = opponentMat.getMonsterZone(i);
-                    if (monster.getName().equals(onAttack.getName())) {
+                    if (monster != null && monster.getName().equals(onAttack.getName())) {
                         opponentTurnPlayer.setLifePoint(opponentTurnPlayer.getLifePoint() - onAttack.getAttack());
                         opponentMat.deleteMonsterZone(i);
                         permissionForAttack = false;
@@ -1313,18 +1313,15 @@ public class DuelMenu {
     }
 
     public void attack(int number) {
-        if (number == 1){
+        if (number == 1) {
             number = 2;
-        }
-        else if (number == 2){
+        } else if (number == 2) {
             number = 1;
-        }
-        else if (number == 4){
+        } else if (number == 4) {
             number = 0;
-        }else if (number == 5){
+        } else if (number == 5) {
             number = 4;
         }
-
         isDoAttack = true;
         Card selectedCard = currentTurnPlayer.getCurrentSelectedCard();
         onAttack = (Monster) currentTurnPlayer.getCurrentSelectedCard();
@@ -1351,12 +1348,12 @@ public class DuelMenu {
             terminalOutput = "there is no card to attack here";
             return;
         }
-
-        Card attackedCard = opponentMat.getMonsterZone(number);
-        effectCheckerInAttack(currentTurnPlayer.getMat(),opponentTurnPlayer.getMat(),(Monster) selectedCard,(Monster) attackedCard);
+        checkForQuickChangeTurn();
         if (!permissionForAttack) {
             return;
         }
+        Card attackedCard = opponentMat.getMonsterZone(number);
+        effectCheckerInAttack(currentTurnPlayer.getMat(), opponentTurnPlayer.getMat(), (Monster) selectedCard, (Monster) attackedCard);
         if (attackedCard.isAttack()) {
             int attackDifference = getAttack(selectedCard) - getAttack(attackedCard);
             if (attackDifference > 0) {
@@ -1413,7 +1410,7 @@ public class DuelMenu {
         Mat mat = currentTurnPlayer.getMat();
         boolean isInMonsters = false;
         for (int i = 0; i < 5; i++) {
-            if (mat.getMonsterZone(i) !=null && mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
+            if (mat.getMonsterZone(i) != null && mat.getMonsterZone(i).getName().equals(selectedCard.getName()))
                 isInMonsters = true;
         }
         if (!isInMonsters) {
@@ -1449,27 +1446,30 @@ public class DuelMenu {
             terminalOutput = "no card is selected yet";
             return;
         }
-        if (!selectedCard.getType().equals("Spell")) {
+        if (!selectedCard.getCardType().equals("Spell") && !selectedCard.getCardType().equals("Trap")) {
             terminalOutput = "activate effect is only for spell cards.";
             return;
         }
-        if (!phase.getCurrentPhase().equals("Main Phase")) {
+        if (!phase.getCurrentPhase().equals("First Main Phase") && !phase.getCurrentPhase().equals("Battle Phase")) {
             terminalOutput = "you can’t activate an effect on this turn";
             return;
         }
         Mat opponentMat = opponentTurnPlayer.getMat();
         for (int i = 0; i < 5; i++) {
             Monster monster = opponentMat.getMonsterZone(i);
-            if (monster.getName().equals("Mirage Dragon")) {
+            if (monster != null && monster.getName().equals("Mirage Dragon")) {
                 terminalOutput = "opponent has mirage dragon";
                 return;
             }
         }
         Mat mat = currentTurnPlayer.getMat();
         for (int i = 0; i < 5; i++) {
-            if (mat.getSpellAndTrapZone(i).getName().equals(selectedCard.getName())) {
-                terminalOutput = "you have already activated this card";
-                return;
+            if (mat.getSpellAndTrapZone(i) != null && mat.getSpellAndTrapZone(i).getName().equals(selectedCard.getName())) {
+                if (mat.getActivate(i)) {
+                    terminalOutput = "you have already activated this card";
+                    return;
+                }
+                mat.setActivate(i);
             }
         }
         if (mat.isSpellAndTrapZoneIsFull() && !selectedCard.isField()) {
@@ -1481,49 +1481,74 @@ public class DuelMenu {
     }
 
     public void checkForQuickChangeTurn() {
-        // if(kossher){
-
-        // }
         isDoAttack = true;
         Player player = currentTurnPlayer;
         currentTurnPlayer = opponentTurnPlayer;
         opponentTurnPlayer = player;
-        TerminalOutput.output("now it will be " + opponentTurnPlayer.getUser().getUsername() + "'s turn");
+        TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
         showBoard();
         TerminalOutput.output("do you want to active your trap and spell?");
         String input = ScanInput.getInput();
         if (input.equals("no")) {
-            TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
+            TerminalOutput.output("now it will be " + opponentTurnPlayer.getUser().getUsername() + "'s turn");
+            terminalOutput = "";
             showBoard();
-        }
-        while (true) {
-            Matcher matcher;
-            input = ScanInput.getInput();
-            if (!(input.matches("activate effect"))) {
-                Monster monster;
-                activeEffect();
-                break;
-            } else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches())
-                selectSpellOrTrap(matcher);
-            else if ((matcher = getMatcher(input, "select (--spell|-s)(?<opponent> --opponent| -o|) (?<number>[\\d]+)")).matches())
-                selectSpellOrTrap(matcher);
-            else if ((matcher = getMatcher(input, "select (?<number>[\\d]+) (--spell|-s)(?<opponent> --opponent| -o|)")).matches())
-                selectSpellOrTrap(matcher);
-            else if ((matcher = getMatcher(input, "select (?<number>[\\d]+)(?<opponent> --opponent| -o|) (--spell|-s)")).matches())
-                selectSpellOrTrap(matcher);
-            else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (--spell|-s) (?<number>[\\d]+)")).matches())
-                selectSpellOrTrap(matcher);
-            else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (?<number>[\\d]+) (--spell|-s)")).matches())
-                selectSpellOrTrap(matcher);
-            else {
-                TerminalOutput.output("it's noy your turn to play this kind of moves");
-            }
+            TerminalOutput.output(terminalOutput);
             player = currentTurnPlayer;
             currentTurnPlayer = opponentTurnPlayer;
             opponentTurnPlayer = player;
-            TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
-            showBoard();
+            return;
         }
+        while (true) {
+            terminalOutput = "";
+            Matcher matcher;
+            input = ScanInput.getInput();
+            if ((input.matches("activate effect"))) {
+                activeEffect();
+                break;
+            } else if ((matcher = getMatcher(input, "select (--spell|-s) (?<number>[\\d]+)(?<opponent> --opponent| -o|)")).matches()) {
+                int number = Integer.parseInt(matcher.group("number"));
+                String opponent = matcher.group("opponent");
+                boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+                selectSpellOrTrap(number, isOpponent);
+            } else if ((matcher = getMatcher(input, "select (--spell|-s)(?<opponent> --opponent| -o|) (?<number>[\\d]+)")).matches()) {
+                int number = Integer.parseInt(matcher.group("number"));
+                String opponent = matcher.group("opponent");
+                boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+                selectSpellOrTrap(number, isOpponent);
+            } else if ((matcher = getMatcher(input, "select (?<number>[\\d]+) (--spell|-s)(?<opponent> --opponent| -o|)")).matches()) {
+                int number = Integer.parseInt(matcher.group("number"));
+                String opponent = matcher.group("opponent");
+                boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+                selectSpellOrTrap(number, isOpponent);
+            } else if ((matcher = getMatcher(input, "select (?<number>[\\d]+)(?<opponent> --opponent| -o|) (--spell|-s)")).matches()) {
+                int number = Integer.parseInt(matcher.group("number"));
+                String opponent = matcher.group("opponent");
+                boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+                selectSpellOrTrap(number, isOpponent);
+            } else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (--spell|-s) (?<number>[\\d]+)")).matches()) {
+                int number = Integer.parseInt(matcher.group("number"));
+                String opponent = matcher.group("opponent");
+                boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+                selectSpellOrTrap(number, isOpponent);
+            } else if ((matcher = getMatcher(input, "select(?<opponent> --opponent| -o|) (?<number>[\\d]+) (--spell|-s)")).matches()) {
+                int number = Integer.parseInt(matcher.group("number"));
+                String opponent = matcher.group("opponent");
+                boolean isOpponent = opponent.equals(" --opponent") || opponent.equals(" -o");
+                selectSpellOrTrap(number, isOpponent);
+            } else if (input.equals("exit")) {
+                break;
+            } else if (input.equals("card show -s")) {
+                selectedCardShow();
+            } else {
+                TerminalOutput.output("it's noy your turn to play this kind of moves");
+            }
+            TerminalOutput.output(terminalOutput);
+        }
+        player = currentTurnPlayer;
+        currentTurnPlayer = opponentTurnPlayer;
+        opponentTurnPlayer = player;
+        TerminalOutput.output("now it will be " + currentTurnPlayer.getUser().getUsername() + "'s turn");
         isDoAttack = false;
     }
 
@@ -1553,15 +1578,15 @@ public class DuelMenu {
 
     public void selectedCardShow() {
         Card card = currentTurnPlayer.getCurrentSelectedCard();
-        if (card == null){
+        if (card == null) {
             terminalOutput = "no card selected yet";
             return;
         }
         if (currentTurnPlayer.getSelectedName().equals("MonsterOpponent") ||
                 currentTurnPlayer.getSelectedName().equals("SpellOpponent") ||
-                currentTurnPlayer.getSelectedName().equals("TrapOpponent")){
-            if (!card.isOn()){
-                terminalOutput = "card is not visible" ;
+                currentTurnPlayer.getSelectedName().equals("TrapOpponent")) {
+            if (!card.isOn()) {
+                terminalOutput = "card is not visible";
                 return;
             }
         }
@@ -1572,11 +1597,11 @@ public class DuelMenu {
     public void surrender() {
         numberOfRounds = 1;
         currentTurnPlayer.setLifePoint(0);
-        if (currentTurnPlayer.getUser().getUsername().equals(currentUser.getUsername())){
+        if (currentTurnPlayer.getUser().getUsername().equals(currentUser.getUsername())) {
             secondPlayerWins = wholeNumberOfRounds;
         }
 
-        if (currentTurnPlayer.getUser().getUsername().equals(secondUser.getUsername())){
+        if (currentTurnPlayer.getUser().getUsername().equals(secondUser.getUsername())) {
             firstPlayerWins = wholeNumberOfRounds;
         }
     }
@@ -1618,7 +1643,7 @@ public class DuelMenu {
             secondPlayerWins++;
             secondPlayerMaxLP = Math.max(secondPlayerMaxLP, secondPlayer.getLifePoint());
             String username = secondUser.getUsername();
-            terminalOutput +="\n"+ username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
+            terminalOutput += "\n" + username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
             if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == secondPlayer.getUser())) {
                 terminalOutput += username + " won the whole match and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
                 int firstPlayerCredit = 100;
@@ -1629,7 +1654,7 @@ public class DuelMenu {
                 }
                 currentUser.setCredit(currentUser.getCredit() + firstPlayerCredit);
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
-                secondUser.setScore(secondUser.getScore() + 1000*wholeNumberOfRounds);
+                secondUser.setScore(secondUser.getScore() + 1000 * wholeNumberOfRounds);
                 return true;
             }
             firstPlayer = new Player(this.currentUser);
@@ -1644,7 +1669,7 @@ public class DuelMenu {
             firstPlayerWins++;
             firstPlayerMaxLP = Math.max(firstPlayerMaxLP, firstPlayer.getLifePoint());
             String username = currentUser.getUsername();
-            terminalOutput +="\n" + username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
+            terminalOutput += "\n" + username + " won the game and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
             if (numberOfRounds == 1 || (numberOfRounds == 2 && firstRoundWinner == firstPlayer.getUser())) {
                 terminalOutput += username + " won the whole match and the score is: " + firstPlayerWins + "-" + secondPlayerWins + "\n";
                 int secondPlayerCredit = 100;
@@ -1655,7 +1680,7 @@ public class DuelMenu {
                 }
                 currentUser.setCredit(currentUser.getCredit() + firstPlayerCredit);
                 secondUser.setCredit(secondUser.getCredit() + secondPlayerCredit);
-                currentUser.setScore(currentUser.getScore() + 1000*wholeNumberOfRounds);
+                currentUser.setScore(currentUser.getScore() + 1000 * wholeNumberOfRounds);
                 return true;
             }
             firstPlayer = new Player(this.currentUser);
@@ -1669,6 +1694,8 @@ public class DuelMenu {
     }
 
     public void changeTurn() {
+        currentTurnPlayer.setSummoned(false);
+        opponentTurnPlayer.setSummoned(false);
         if (!isAi) {
             currentTurnPlayer.setCurrentSelectedCard(null);
             opponentTurnPlayer.setCurrentSelectedCard(null);

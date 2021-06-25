@@ -11,6 +11,7 @@ public class Mat {
     private ArrayList<Card> graveyard = new ArrayList<>();
     private Monster[] monsterZone = new Monster[5];
     private Card[] spellAndTrapZone = new Card[5];
+    private boolean[] activate = new boolean[5];
     private Card fieldZone;
     private Card[] handCard = new Card[6];
     private boolean[] isChanged = new boolean[5];
@@ -24,6 +25,14 @@ public class Mat {
         }
         handCard[5] = null;
         fieldZone = null;
+    }
+
+    public void setActivate(int i) {
+        this.activate[i] = true;
+    }
+
+    public boolean getActivate(int i) {
+        return activate[i];
     }
 
     public void setIsChanged(boolean isChanged, int number) {
