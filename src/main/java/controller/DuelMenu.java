@@ -124,7 +124,7 @@ public class DuelMenu {
     }
 
     public void cardShow(String cardName) {
-        Card.showCard(cardName);
+        terminalOutput = Card.showCard(cardName);
     }
 
     public boolean isPlayerHadActiveDeck(User user) {
@@ -328,8 +328,10 @@ public class DuelMenu {
 
     public void nextPhase() {
         phase.nextPhase();
+        System.out.print(phase.getCurrentPhase());
         if (phase.getCurrentPhase().equals("End Phase")) {
-            terminalOutput = phase.endPhase(opponentTurnPlayer) + "\n" + phase.drawPhase(currentTurnPlayer);
+            terminalOutput = phase.endPhase(opponentTurnPlayer) + "\n" + "Draw Phase" +"\n"+phase.drawPhase(currentTurnPlayer);
+            phase.nextPhase();
         }
     }
 
@@ -1549,8 +1551,12 @@ public class DuelMenu {
 
     public void selectedCardShow() {
         Card card = currentTurnPlayer.getCurrentSelectedCard();
+        if (card == null){
+            terminalOutput = "no card selected yet";
+            return;
+        }
         String cardName = card.getName();
-        Card.showCard(cardName);
+        terminalOutput = Card.showCard(cardName);
     }
 
     public void surrender() {
@@ -1654,6 +1660,8 @@ public class DuelMenu {
 
     public void changeTurn() {
         if (!isAi) {
+            currentTurnPlayer.setCurrentSelectedCard(null);
+            opponentTurnPlayer.setCurrentSelectedCard(null);
             Player player = currentTurnPlayer;
             currentTurnPlayer = opponentTurnPlayer;
             opponentTurnPlayer = player;

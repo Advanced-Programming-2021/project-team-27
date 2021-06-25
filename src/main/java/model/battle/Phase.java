@@ -40,7 +40,6 @@ public class Phase {
         else if (currentPhase.equals("End Phase")){
             currentPhase = "Draw Phase";
         }
-        System.out.print(currentPhase);
     }
 
 

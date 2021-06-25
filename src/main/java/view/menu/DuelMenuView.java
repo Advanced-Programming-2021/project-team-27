@@ -1,7 +1,6 @@
 package view.menu;
 
 import controller.DuelMenu;
-import model.card.Card;
 import view.ScanInput;
 import view.TerminalOutput;
 
@@ -161,9 +160,6 @@ public class DuelMenuView {
 
             else if ((getMatcher(input, "menu enter [\\w]+")).matches())
                 TerminalOutput.output("menu navigation is not possible");
-
-            else if ((getMatcher(input, "menu enter [\\w]+")).matches())
-                TerminalOutput.output("duel menu");
 
             else if ((getMatcher(input, "menu exit")).matches())
                 break;
