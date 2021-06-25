@@ -9,6 +9,7 @@ import model.user.MainDeck;
 import model.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Player {
     private User user;
@@ -32,6 +33,10 @@ public class Player {
         this.isPermissionForDrawPhase = isPermissionForDrawPhase;
     }
 
+    public int getSizeOfDeck(){
+        return mainDeckCard.size();
+    }
+
     public Player(User user) {
         setUser(user);
         MainDeck mainDeck = user.getActiveDeck().getMainDeck();
@@ -39,26 +44,31 @@ public class Player {
         this.lifePoint = 8000;
         mat = new Mat();
         currentSelectedCard = null;
+        //Collections.shuffle(mainDeckCard);
+        for (int i = 0; i < 5; i++) {
+            this.getMat().addToHand(mainDeckCard.get(mainDeckCard.size()-1));
+            this.deleteCard();
+        }
     }
 
     public void generateMainDeck(MainDeck mainDeck) {
         ArrayList<Card> cards = mainDeck.getMainDeckCards();
         for (Card card : cards) {
-            if (card instanceof Monster) {
-                Monster monster = (Monster) card;
-                Monster monster1 = new Monster(monster.getName(), monster.getLevel(), monster.getAttribute()
-                        , monster.getMonsterType(), monster.getCardType(), monster.getAttack(), monster.getDefence(), monster.getDescription(), monster.getPrice());
-                mainDeckCard.add(monster1);
-            }
-            if (card instanceof Spell) {
-                Spell spell = (Spell) card;
+            if (card.getCardType().equals("Spell")) {
+                Card spell = card;
                 Spell spell1 = new Spell(spell.getName(), spell.getIcon(), spell.getDescription(), spell.getStatus(), spell.getPrice());
                 mainDeckCard.add(spell1);
             }
-            if (card instanceof Trap) {
-                Trap trap = (Trap) card;
+            if (card.getCardType().equals("Trap")) {
+                Card trap = card;
                 Trap trap1 = new Trap(trap.getName(), trap.getIcon(), trap.getDescription(), trap.getStatus(), trap.getPrice());
                 mainDeckCard.add(trap1);
+            } else {
+                Card monster =card;
+                Monster monster1 = new Monster(monster.getName(), monster.getLevel(), monster.getAttribute()
+                        , monster.getMonsterType(), monster.getCardType(), monster.getAttack(), monster.getDefence(), monster.getDescription(), monster.getPrice());
+                mainDeckCard.add(monster1);
+
             }
         }
     }

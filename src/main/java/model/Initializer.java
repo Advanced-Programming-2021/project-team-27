@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import model.card.Monster;
 import model.card.Spell;
 import model.card.Trap;
+import model.user.Deck;
 import model.user.User;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
@@ -20,6 +20,7 @@ public class Initializer {
         initializeMonster();
         initializeSpellsAndTraps();
         addUsers();
+        addDecks();
         //showAllUsers();
     }
 
@@ -150,6 +151,20 @@ public class Initializer {
             Reader reader = new FileReader(file);
             User user = gson.fromJson(reader, User.class);
             User.addToAllUsers(user);
+
+        }
+    }
+
+    private static void addDecks() throws IOException {
+        File directoryPath = new File("src/main/resources/decks");
+        File[] filesList = directoryPath.listFiles();
+        assert filesList != null;
+        for (File file : filesList) {
+
+            Gson gson = new Gson();
+            Reader reader = new FileReader(file);
+            Deck deck = gson.fromJson(reader, Deck.class);
+            Deck.addToAllDeck(deck);
 
         }
     }
